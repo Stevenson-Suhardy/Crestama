@@ -1,10 +1,10 @@
-package com.crestama.crestamawebsite.service;
+package com.crestama.crestamawebsite.service.product;
 
 import com.crestama.crestamawebsite.entity.Product;
 
 import java.util.List;
 
-public interface ProductService {
+public interface IProductService {
     List<Product> findAll();
 
     Product findById(int id);

@@ -1,4 +1,4 @@
-package com.crestama.crestamawebsite.service;
+package com.crestama.crestamawebsite.service.product;
 
 import com.crestama.crestamawebsite.dao.ProductRepository;
 import com.crestama.crestamawebsite.entity.Product;
@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductService implements IProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
