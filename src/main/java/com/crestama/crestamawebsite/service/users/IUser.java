@@ -7,9 +7,9 @@ import java.util.List;
 public interface IUser {
     List<User> findAll();
 
-    User findByUsername(String username);
+    User findById(Long id);
 
     User save(User user);
 
-    void deleteByUsername(String username);
+    void deleteById(Long id);
 }

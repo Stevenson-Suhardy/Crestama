@@ -24,7 +24,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(Long id) {
         Optional<Product> result = productRepository.findById(id);
 
         Product product = null;
@@ -45,7 +45,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 }

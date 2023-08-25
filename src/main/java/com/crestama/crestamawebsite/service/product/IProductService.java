@@ -7,9 +7,9 @@ import java.util.List;
 public interface IProductService {
     List<Product> findAll();
 
-    Product findById(int id);
+    Product findById(Long id);
 
     Product save(Product product);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 }

@@ -25,8 +25,8 @@ public class UserService implements IUser {
     }
 
     @Override
-    public User findByUsername(String username) {
-        Optional<User> result = userRepository.findById(username);
+    public User findById(Long id) {
+        Optional<User> result = userRepository.findById(id);
 
         User user = null;
 
@@ -42,7 +42,7 @@ public class UserService implements IUser {
     }
 
     @Override
-    public void deleteByUsername(String username) {
-        userRepository.deleteById(username);
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }

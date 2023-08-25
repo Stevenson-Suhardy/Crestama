@@ -1,68 +1,31 @@
 package com.crestama.crestamawebsite.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
+
+import java.util.Collection;
 
 @Entity
-@Table(name="users")
 public class User {
-    // Attribute Fields
     @Id
-    @Column(name="username")
-    @NotNull(message="Username is required.")
-    @NotEmpty(message="Username is required.")
-    private String username;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Column(name="password")
-    @NotNull(message="Password is required.")
-    @NotEmpty(message="Password is required.")
+    private String firstName;
+    private String lastName;
+    private String email;
     private String password;
+    private boolean enabled;
+    private boolean tokenExpired;
 
-    @Column(name="enabled")
-    private Boolean enabled;
-
-    // Constructors
-    public User() {
-
-    }
-
-    public User(String username, String password) {
-        set(username, password, true);
-    }
-
-    // Getters and setters
-
-    public void set(String username, String password, Boolean enabled) {
-        setUsername(username);
-        setPassword(password);
-        setEnabled(enabled);
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
+    @ManyToMany
+    @JoinTable(
+            name="users_roles",
+            joinColumns = @JoinColumn(
+                    name="user_id", referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name="role_id", referencedColumnName = "id"
+            )
+    )
+    private Collection<Role> roles;
 }
