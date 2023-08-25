@@ -1,4 +1,4 @@
-package com.crestama.crestamawebsite.service.users;
+package com.crestama.crestamawebsite.service.user;
 
 import com.crestama.crestamawebsite.dao.UserRepository;
 import com.crestama.crestamawebsite.entity.User;
