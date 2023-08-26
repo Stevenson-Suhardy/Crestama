@@ -2,6 +2,7 @@ package com.crestama.crestamawebsite.component;
 
 import com.crestama.crestamawebsite.entity.Permission;
 import com.crestama.crestamawebsite.entity.Role;
+import com.crestama.crestamawebsite.entity.User;
 import com.crestama.crestamawebsite.service.permission.PermissionService;
 import com.crestama.crestamawebsite.service.role.RoleService;
 import com.crestama.crestamawebsite.service.user.UserService;
@@ -38,17 +39,40 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (alreadySetup) {
+        if (alreadySetup)
             return;
-        }
+
         Permission readPermission = createPermissionIfNotFound("READ_PERMISSION");
         Permission writePermission = createPermissionIfNotFound("WRITE_PERMISSION");
+        Permission deletePermission = createPermissionIfNotFound("DELETE_PERMISSION");
 
         List<Permission> adminPermissions = Arrays.asList(
+                readPermission, writePermission, deletePermission
+        );
+        List<Permission> staffPermissions = Arrays.asList(
                 readPermission, writePermission
         );
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
+        createRoleIfNotFound("ROLE_STAFF", staffPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
+
+        User admin = userService.findByEmail("admin");
+
+        if (admin == null) {
+            Role adminRole = roleService.findByName("ROLE_ADMIN");
+            User user = new User();
+
+            user.setFirstName("admin");
+            user.setLastName("admin");
+            user.setPassword(passwordEncoder.encode("admin"));
+            user.setEmail("admin");
+            user.setRoles(Arrays.asList(adminRole));
+            user.setEnabled(true);
+
+            userService.save(user);
+        }
+
+        alreadySetup = true;
     }
 
     @Transactional

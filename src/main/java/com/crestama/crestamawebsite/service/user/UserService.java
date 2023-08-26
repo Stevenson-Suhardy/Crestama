@@ -37,6 +37,11 @@ public class UserService implements IUser {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
