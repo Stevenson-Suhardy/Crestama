@@ -42,14 +42,14 @@ public class RegisterController {
     }
 
     @PostMapping("/processRegistrationForm")
-    public RedirectView processRegistration(
+    public String processRegistration(
             @Valid @ModelAttribute("user") User user,
             BindingResult bindingResult,
             HttpSession session,
             Model model
     ) {
         if (bindingResult.hasErrors()) {
-            return new RedirectView("registration-form");
+            return "redirect:/registration-form";
         }
 
         User existingUser = userService.findByEmail(user.getEmail());
@@ -58,7 +58,7 @@ public class RegisterController {
             model.addAttribute("user", new User());
             model.addAttribute("error", "Email address has already been taken.");
 
-            return new RedirectView("registration-form");
+            return "redirect:/registration-form";
         }
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -69,6 +69,6 @@ public class RegisterController {
         userService.save(user);
 
         session.setAttribute("user", user);
-        return new RedirectView("/about");
+        return "redirect:/";
     }
 }
