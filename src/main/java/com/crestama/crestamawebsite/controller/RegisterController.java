@@ -19,7 +19,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Arrays;
 
 @Controller
-@RequestMapping("/register")
 public class RegisterController {
     private UserService userService;
 
@@ -34,7 +33,7 @@ public class RegisterController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/registration-form")
+    @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("user", new User());
 

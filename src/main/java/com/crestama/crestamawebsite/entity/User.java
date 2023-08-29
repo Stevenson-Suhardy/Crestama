@@ -1,6 +1,7 @@
 package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.Collection;
 
@@ -10,12 +11,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotEmpty(message = "First Name is required.")
+    @NotNull(message = "First Name is required.")
     private String firstName;
+
+    @NotEmpty(message = "Last Name is required.")
+    @NotNull(message = "Last Name is required.")
     private String lastName;
+
+    @NotNull(message = "Email Address is required.")
+    @NotEmpty(message = "Email Address is required.")
+    @Email(message = "Email Address is not valid.")
     private String email;
+
+    @NotEmpty(message = "Password is required.")
+    @NotNull(message = "Password is required.")
+    @Pattern(
+        regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,68}$",
+        message = "Password does not match the requirements."
+    )
     private String password;
     private boolean enabled;
-    private boolean tokenExpired;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -40,7 +56,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.enabled = enabled;
-        this.tokenExpired = tokenExpired;
         this.roles = roles;
     }
 
@@ -92,14 +107,6 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public boolean isTokenExpired() {
-        return tokenExpired;
-    }
-
-    public void setTokenExpired(boolean tokenExpired) {
-        this.tokenExpired = tokenExpired;
     }
 
     public Collection<Role> getRoles() {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>Header</title>
   <meta charset="UTF-8">
@@ -37,7 +37,7 @@
     <div class="w3-top">
       <div class="w3-bar w3-white w3-card" id="myNavbar">
         <div class="w3-left w3-hide-small">
-          <a href="#home" class="w3-bar-item w3-button w3-wide">
+          <a th:href="@{/}" class="w3-bar-item w3-button w3-wide">
             <img src="/assets/images/PT.-Crescendo-Solusi-Tama-Logo-74x58.png" alt="crestama-logo">
           </a>
         </div>
@@ -46,10 +46,12 @@
           <a th:href="@{/}" class="w3-bar-item w3-button">Home</a>
           <a href="#about" class="w3-bar-item w3-button">About Us</a>
           <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> Contact</a>
-          <a th:href="@{/login}" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Login</a>
-          <form action="#" th:action="@{/logout}" method="POST">
-            <input type="submit" class="w3-bar-item w3-button" value="Logout" />
-          </form>
+          <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Login</a>
+          <div sec:authorize="isAuthenticated()">
+            <form action="#" th:action="@{/logout}" method="POST">
+              <input type="submit" class="w3-bar-item w3-button" value="Logout" />
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String home(HttpSession session) {
-        System.out.println(session.getAttribute("user"));
-        System.out.println(session.getAttribute("token"));
         return "index";
     }
 

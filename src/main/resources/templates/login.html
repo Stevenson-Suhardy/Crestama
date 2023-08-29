@@ -30,18 +30,19 @@
                 </div>
             </div>
         </div>
-        <div class="text-center">
+        <div class="text-center" style="margin-bottom: 10px;">
             <img src="/assets/images/PT.-Crescendo-Solusi-Tama-Logo-74x58.png" alt="crestama-logo">
         </div>
-        <h2 class="form-signin-heading text-center">Please login</h2>
+        <h2 class="form-signin-heading text-center">Login</h2>
         <input type="text" class="form-control" name="username" placeholder="Email Address" />
         <input type="password" class="form-control" name="password" placeholder="Password" />
         <label class="checkbox">
             <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
         </label>
-        <div class="d-grid gap-2">
+        <div class="d-grid gap-2" style="margin-bottom: 10px;">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
         </div>
+        <p>Don't have an account? Sign up <a th:href="@{/register}">here</a>.</p>
     </form>
 </div>
 </body>
