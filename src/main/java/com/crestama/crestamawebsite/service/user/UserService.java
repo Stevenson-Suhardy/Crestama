@@ -1,9 +1,10 @@
 package com.crestama.crestamawebsite.service.user;
 
-import com.crestama.crestamawebsite.dao.UserRepository;
+import com.crestama.crestamawebsite.repository.UserRepository;
 import com.crestama.crestamawebsite.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,13 @@ public class UserService implements IUser {
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }

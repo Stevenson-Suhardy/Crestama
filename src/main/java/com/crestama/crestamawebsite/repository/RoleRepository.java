@@ -1,4 +1,4 @@
-package com.crestama.crestamawebsite.dao;
+package com.crestama.crestamawebsite.repository;
 
 import com.crestama.crestamawebsite.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

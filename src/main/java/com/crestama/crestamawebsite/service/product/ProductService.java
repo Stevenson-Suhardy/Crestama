@@ -1,9 +1,10 @@
 package com.crestama.crestamawebsite.service.product;
 
-import com.crestama.crestamawebsite.dao.ProductRepository;
+import com.crestama.crestamawebsite.repository.ProductRepository;
 import com.crestama.crestamawebsite.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,11 +41,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Transactional
     public Product save(Product product) {
         return productRepository.save(product);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }

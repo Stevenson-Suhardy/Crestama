@@ -1,9 +1,10 @@
 package com.crestama.crestamawebsite.service.permission;
 
-import com.crestama.crestamawebsite.dao.PermissionRepository;
+import com.crestama.crestamawebsite.repository.PermissionRepository;
 import com.crestama.crestamawebsite.entity.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,13 @@ public class PermissionService implements IPermission {
     }
 
     @Override
+    @Transactional
     public Permission save(Permission permission) {
         return permissionRepository.save(permission);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         permissionRepository.deleteById(id);
     }

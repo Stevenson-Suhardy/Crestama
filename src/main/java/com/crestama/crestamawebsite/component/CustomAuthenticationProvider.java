@@ -1,8 +1,10 @@
 package com.crestama.crestamawebsite.component;
 
+import com.crestama.crestamawebsite.entity.RefreshToken;
 import com.crestama.crestamawebsite.entity.Role;
 import com.crestama.crestamawebsite.entity.User;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
+import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,19 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private PasswordEncoder passwordEncoder;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
+    private RefreshTokenService refreshTokenService;
 
     @Autowired
     public CustomAuthenticationProvider(UserService userService, PasswordEncoder passwordEncoder,
                                         CustomUserDetailService customUserDetailService,
-                                        TokenManager tokenManager
+                                        TokenManager tokenManager,
+                                        RefreshTokenService refreshTokenService
                                         ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetailService = customUserDetailService;
         this.tokenManager = tokenManager;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -58,6 +63,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 // Generating JWT Token storing the user details
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(tempUser.getEmail());
                 String token = tokenManager.generateJwtToken(userDetails);
+
+                // Generating Refresh Token and saving it to the database
+                RefreshToken refreshToken = refreshTokenService.save(
+                        refreshTokenService.createRefreshToken(tempUser.getId())
+                );
+                // Log the refresh token
+                System.out.println(refreshToken);
 
                 // Setting session attributes
                 session.setAttribute("user", tempUser);

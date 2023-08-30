@@ -1,9 +1,10 @@
 package com.crestama.crestamawebsite.service.role;
 
-import com.crestama.crestamawebsite.dao.RoleRepository;
+import com.crestama.crestamawebsite.repository.RoleRepository;
 import com.crestama.crestamawebsite.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,13 @@ public class RoleService implements IRole {
     }
 
     @Override
+    @Transactional
     public Role save(Role role) {
         return roleRepository.save(role);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         roleRepository.deleteById(id);
     }
