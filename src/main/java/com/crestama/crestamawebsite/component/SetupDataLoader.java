@@ -56,7 +56,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound("ROLE_STAFF", staffPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
 
-        User admin = userService.findByEmail("admin");
+        User admin = userService.findByEmail("admin@gmail.com");
 
         if (admin == null) {
             Role adminRole = roleService.findByName("ROLE_ADMIN");

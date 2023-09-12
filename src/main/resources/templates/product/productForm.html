@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <form action="#" th:action="@{/products/save}" th:object="${product}" enctype="multipart/form-data" method="POST">
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+
+        <label for="name">Name</label>
+        <input id="name" type="text" th:field="*{name}" class="form-control mb-4 w-25" />
+
+        <label for="image">Image</label>
+        <input id="image" type="file" name="image" accept="image/*" class="form-control mb-4 w-25" />
+
+        <br>
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+    </form>
+</div>
+</body>
+</html>

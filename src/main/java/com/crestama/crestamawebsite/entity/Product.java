@@ -42,8 +42,13 @@ public class Product {
         this.name = name;
     }
 
+    @Transient
     public String getImagePath() {
-        return imagePath;
+        if (imagePath == null || id == null) {
+            return null;
+        }
+
+        return "/product-photos/" + id + "/" + imagePath;
     }
 
     public void setImagePath(String imagePath) {

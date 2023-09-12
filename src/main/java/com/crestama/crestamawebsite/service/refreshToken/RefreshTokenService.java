@@ -94,8 +94,8 @@ public class RefreshTokenService implements IRefreshToken {
     }
 
     @Transactional
-    public int deleteByUserId(Long id) {
-        return refreshTokenRepository.deleteByUser(userService.findById(id));
+    public void deleteByUserId(Long id) {
+        refreshTokenRepository.deleteByUser(userService.findById(id));
     }
 
 
