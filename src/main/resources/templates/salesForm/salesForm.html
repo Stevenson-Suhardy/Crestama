@@ -6,6 +6,9 @@
     <link rel="stylesheet"  href="/styles/bootstrap-5.3.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/fontawesome-free-6.4.2-web/css/all.css">
     <link rel="stylesheet" href="/styles/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+    <script src="/js/filterSearch.js"></script>
 </head>
 <body>
 <div class="container">
@@ -26,9 +29,18 @@
             <input id="activityType" type="text" th:field="*{activityType}" class="form-control mb-4 w-25" />
 
             <label for="companyType">Company Type</label>
-            <select id="companyType" type="text" th:field="*{companyType}" class="form-control mb-4 w-25">
-                <option th:each="type: ${companyTypes}" th:value="${type.getId()}" th:text="${type.getType()}">
-            </select>
+            <div id="companyType" th:field="*{companyType}" class="dropdown">
+                <button class="form-control mb-4 w-25" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                >Choose a Company Type</button>
+                <div id="companyTypeDropdown" class="dropdown-menu">
+                    <input class="form-control m-lg-auto w-75" type="text" placeholder="Search" id="searchCompanyType"
+                           onkeyup="companyTypeFilterFunction()"
+                    />
+                    <a class="dropdown-item" th:each="type: ${companyTypes}"
+                       th:text="${type.getType()}" onclick="showType(this)" />
+                </div>
+            </div>
 
             <label for="companyName">Company Name</label>
             <input id="companyName" type="text" th:field="*{companyName}" class="form-control mb-4 w-25" />
@@ -37,9 +49,18 @@
             <input id="streetAddress" type="text" th:field="*{streetAddress}" class="form-control mb-4 w-25" />
 
             <label for="city">City</label>
-            <select id="city" type="text" th:field="*{city}" class="form-control mb-4 w-25">
-                <option th:each="city: ${cities}" th:value="${city.getId()}" th:text="${city.getCityName()}" />
-            </select>
+            <div id="city" th:field="*{city}" class="dropdown">
+                <button class="form-control mb-4 w-25" type="button" id="cityDropdownMenuButton" data-toggle="dropdown"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                >Choose a City</button>
+                <div id="cityDropdown" class="dropdown-menu">
+                    <input class="form-control m-lg-auto w-75" type="text" placeholder="Search" id="searchCity"
+                           onkeyup="cityFilterFunction()"
+                    />
+                    <a class="dropdown-item" th:each="city: ${cities}"
+                       th:text="${city.getCityName()}" onclick="showCity(this)" />
+                </div>
+            </div>
 
             <label for="contactPersonName">Contact Person Name</label>
             <input id="contactPersonName" type="text" th:field="*{contactPersonName}" class="form-control mb-4 w-25" />
