@@ -50,6 +50,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(configurer ->
                 configurer
                         .requestMatchers("/roleHierarchy").hasRole("STAFF")
+                        .requestMatchers("/salesForm/**").hasRole("SALES")
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers("/products/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
@@ -67,7 +68,7 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ROLE_ADMIN > ROLE_STAFF \n ROLE_STAFF > ROLE_USER";
+        String hierarchy = "ROLE_ADMIN > ROLE_STAFF \n ROLE_ADMIN > ROLE_SALES \n ROLE_STAFF > ROLE_USER";
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }

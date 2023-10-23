@@ -5,20 +5,19 @@ import com.crestama.crestamawebsite.service.product.ProductService;
 import com.crestama.crestamawebsite.utility.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
-    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
+    protected final String photoDirectory = "product-photos/";
     private ProductService productService;
 
     @Autowired
@@ -36,13 +35,25 @@ public class ProductController {
     @GetMapping("/addProduct")
     public String addProduct(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("oldImage", "something");
 
         return "product/productForm";
     }
 
+    @GetMapping("/editProduct")
+    public String editProduct(Model model, @RequestParam("productId") Long id) {
+        Product product = productService.findById(id);
+
+        model.addAttribute("product", product);
+
+        return "product/productForm";
+    }
+
+    @Transactional
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile multipartFile)
             throws IOException {
+        System.out.println(product.getImagePath());
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
         product.setImagePath(fileName);
@@ -53,5 +64,48 @@ public class ProductController {
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
         return "redirect:/products/products";
+    }
+
+    @GetMapping("/deleteProduct")
+    @Transactional
+    public String deleteProduct(@RequestParam("productId") Long id) {
+        try {
+            deleteProductFolder(productService.findById(id));
+
+            productService.deleteById(id);
+        }
+        catch (Exception e) {
+            System.out.println("Cannot delete product images");
+        }
+
+        return "redirect:/products/products";
+    }
+
+    @Transactional
+    public void deleteProductFolder(Product product) {
+        try {
+            File folder = new File(photoDirectory + product.getId());
+            String[] files = folder.list();
+
+            assert files != null;
+            for (String file: files) {
+                File currentFile = new File(folder.getPath(), file);
+                if (currentFile.delete()) {
+                    System.out.println("File deleted.");
+                }
+                else {
+                    System.out.println("Cannot delete file.");
+                }
+            }
+            if (folder.delete()) {
+                System.out.println("Folder deleted.");
+            }
+            else {
+                System.out.println("Cannot delete folder.");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Failed to delete image!");
+        }
     }
 }
