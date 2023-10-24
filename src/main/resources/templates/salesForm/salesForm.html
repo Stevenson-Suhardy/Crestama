@@ -19,28 +19,20 @@
             <!-- Add hidden form field to handle update -->
             <input type="hidden" th:field="*{id}" />
 
-            <label for="start">Start Activity Date</label>
-            <input id="start" type="date" th:field="*{startActivityDate}" class="form-control mb-4 w-25" />
+            <label for="start">Start Activity Date and Time</label>
+            <input id="start" type="datetime-local" th:field="*{startActivityDate}" class="form-control mb-4 w-25" />
 
-            <label for="end">End Activity Date</label>
-            <input id="end" type="date" th:field="*{endActivityDate}" class="form-control mb-4 w-25" />
+            <label for="end">End Activity Date and Time</label>
+            <input id="end" type="datetime-local" th:field="*{endActivityDate}" class="form-control mb-4 w-25" />
 
             <label for="activityType">Activity Type</label>
             <input id="activityType" type="text" th:field="*{activityType}" class="form-control mb-4 w-25" />
 
-            <label for="companyType">Company Type</label>
-            <div id="companyType" th:field="*{companyType}" class="dropdown">
-                <button class="form-control mb-4 w-25" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                >Choose a Company Type</button>
-                <div id="companyTypeDropdown" class="dropdown-menu">
-                    <input class="form-control m-lg-auto w-75" type="text" placeholder="Search" id="searchCompanyType"
-                           onkeyup="companyTypeFilterFunction()"
-                    />
-                    <a class="dropdown-item" th:each="type: ${companyTypes}"
-                       th:text="${type.getType()}" onclick="showType(this)" />
-                </div>
-            </div>
+            <label for="companyTypes">Company Type</label>
+            <input class="form-control mb-4 w-25" list="companyTypes" name="companyType" th:field="*{companyType}">
+            <datalist id="companyTypes">
+                <option th:each="type: ${companyTypes}" th:text="${type.getType()}" th:value="${type.getId()}"></option>
+            </datalist>
 
             <label for="companyName">Company Name</label>
             <input id="companyName" type="text" th:field="*{companyName}" class="form-control mb-4 w-25" />
@@ -48,19 +40,11 @@
             <label for="streetAddress">Street Address</label>
             <input id="streetAddress" type="text" th:field="*{streetAddress}" class="form-control mb-4 w-25" />
 
-            <label for="city">City</label>
-            <div id="city" th:field="*{city}" class="dropdown">
-                <button class="form-control mb-4 w-25" type="button" id="cityDropdownMenuButton" data-toggle="dropdown"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                >Choose a City</button>
-                <div id="cityDropdown" class="dropdown-menu">
-                    <input class="form-control m-lg-auto w-75" type="text" placeholder="Search" id="searchCity"
-                           onkeyup="cityFilterFunction()"
-                    />
-                    <a class="dropdown-item" th:each="city: ${cities}"
-                       th:text="${city.getCityName()}" onclick="showCity(this)" />
-                </div>
-            </div>
+            <label for="cities">City</label>
+            <input class="form-control mb-4 w-25" list="cities" name="city" th:field="*{city}">
+            <datalist id="cities">
+                <option th:each="city: ${cities}" th:text="${city.getCityName()}" th:value="${city.getId()}"></option>
+            </datalist>
 
             <label for="contactPersonName">Contact Person Name</label>
             <input id="contactPersonName" type="text" th:field="*{contactPersonName}" class="form-control mb-4 w-25" />

@@ -23,8 +23,9 @@ public class SalesReportForm {
     @Column(name = "activityType")
     private String activityType;
 
-    @Column(name = "companyType")
-    private int companyType;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "companyType_id", referencedColumnName = "id")
+    private CompanyType companyType;
 
     @Column(name = "companyName")
     private String companyName;
@@ -32,8 +33,9 @@ public class SalesReportForm {
     @Column(name = "streetAddress")
     private String streetAddress;
 
-    @Column(name = "city")
-    private String city;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
+    private City city;
 
     @Column(name = "contactPersonName")
     private String contactPersonName;
@@ -44,15 +46,19 @@ public class SalesReportForm {
     @Column(name = "detailedActivity")
     private String detailedActivity;
 
-    @Column(name = "prospect")
-    private int prospect;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "prospect_id", referencedColumnName = "id")
+    private Prospect prospect;
 
     @Column(name = "comments")
     private String comments;
 
     public SalesReportForm() {}
 
-    public SalesReportForm(Date submissionDate, Date startActivityDate, Date endActivityDate, String activityType, int companyType, String companyName, String streetAddress, String city, String contactPersonName, String contactPersonPhone, String detailedActivity, int prospect, String comments) {
+    public SalesReportForm(Date submissionDate, Date startActivityDate, Date endActivityDate, String activityType,
+                           CompanyType companyType, String companyName, String streetAddress, City city,
+                           String contactPersonName, String contactPersonPhone, String detailedActivity,
+                           Prospect prospect, String comments) {
         this.submissionDate = submissionDate;
         this.startActivityDate = startActivityDate;
         this.endActivityDate = endActivityDate;
@@ -108,11 +114,11 @@ public class SalesReportForm {
         this.activityType = activityType;
     }
 
-    public int getCompanyType() {
+    public CompanyType getCompanyType() {
         return companyType;
     }
 
-    public void setCompanyType(int companyType) {
+    public void setCompanyType(CompanyType companyType) {
         this.companyType = companyType;
     }
 
@@ -132,11 +138,11 @@ public class SalesReportForm {
         this.streetAddress = streetAddress;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
@@ -164,11 +170,11 @@ public class SalesReportForm {
         this.detailedActivity = detailedActivity;
     }
 
-    public int getProspect() {
+    public Prospect getProspect() {
         return prospect;
     }
 
-    public void setProspect(int prospect) {
+    public void setProspect(Prospect prospect) {
         this.prospect = prospect;
     }
 

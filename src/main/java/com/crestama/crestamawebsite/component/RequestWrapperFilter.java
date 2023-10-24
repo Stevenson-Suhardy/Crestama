@@ -20,9 +20,12 @@ public class RequestWrapperFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
         // Getting session
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
+        String token = "";
 
-        String token = (String) session.getAttribute("token");
+        if (session != null && session.getAttribute("token") != null) {
+            token = (String) session.getAttribute("token");
+        }
 
         RequestHeaderWrapper requestHeaderWrapper = new RequestHeaderWrapper(request);
 

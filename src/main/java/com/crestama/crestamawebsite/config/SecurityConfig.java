@@ -2,6 +2,7 @@ package com.crestama.crestamawebsite.config;
 
 import com.crestama.crestamawebsite.component.CustomAuthenticationProvider;
 import com.crestama.crestamawebsite.component.JwtFilter;
+import com.crestama.crestamawebsite.component.RequestWrapperFilter;
 import com.crestama.crestamawebsite.component.TokenManager;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
 import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,7 +27,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
     private UserService userService;
-    private JwtFilter filter;
+    private JwtFilter jwtFilter;
+    private RequestWrapperFilter requestWrapperFilter;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
 
@@ -33,13 +36,15 @@ public class SecurityConfig {
     @Autowired
     public SecurityConfig(
             UserService userService,
-            JwtFilter filter,
+            JwtFilter jwtFilter,
+            RequestWrapperFilter requestWrapperFilter,
             CustomUserDetailService customUserDetailService,
             TokenManager tokenManager,
             RefreshTokenService refreshTokenService
     ) {
         this.userService = userService;
-        this.filter = filter;
+        this.jwtFilter = jwtFilter;
+        this.requestWrapperFilter = requestWrapperFilter;
         this.customUserDetailService = customUserDetailService;
         this.tokenManager = tokenManager;
         this.refreshTokenService = refreshTokenService;
@@ -61,7 +66,8 @@ public class SecurityConfig {
         ).logout(logout ->
                 logout.permitAll()
         );
-        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, ExceptionTranslationFilter.class);
+        http.addFilterBefore(requestWrapperFilter, JwtFilter.class);
         return http.build();
     }
 

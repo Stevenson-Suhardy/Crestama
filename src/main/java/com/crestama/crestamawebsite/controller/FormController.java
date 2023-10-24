@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,6 +19,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -26,6 +31,7 @@ public class FormController {
     private SalesReportFormService salesReportFormService;
     private CityService cityService;
     private CompanyTypeService companyTypeService;
+    private final int HEADINGS = 15;
 
     @Autowired
     public FormController(SalesReportFormService salesReportFormService,
@@ -46,14 +52,50 @@ public class FormController {
     }
 
     @PostMapping("/save")
+    public String saveForm(@ModelAttribute SalesReportForm salesReportForm) {
+        salesReportFormService.save(salesReportForm);
+
+        return "redirect:/salesForm/salesForm";
+    }
+
+    @GetMapping("/createExcelForm")
     public void createForm() throws IOException {
         File currDir = new File("sales-reports");
         String path = currDir.getAbsolutePath();
-        String fileLocation = "fastexcel.xlsx";
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fileLocation = dtf.format(LocalDateTime.now()) + ".xlsx";
 
         try (OutputStream os = Files.newOutputStream(Paths.get(path, fileLocation));
              Workbook workbook = new Workbook(os, "MyApplication", "1.0")) {
             Worksheet ws = formHeadings(workbook);
+
+            List<SalesReportForm> listSalesReportForm = salesReportFormService.findAll();
+
+            String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
+                    {
+                            s.getSubmissionDate().toString(),
+                            "1",
+                            s.getStartActivityDate().toString(),
+                            s.getActivityType(),
+                            s.getCompanyType().getType(),
+                            s.getCompanyName(),
+                            s.getStreetAddress(),
+                            s.getCity().getCityName(),
+                            s.getContactPersonName(),
+                            s.getContactPersonPhone(),
+                            "test email",
+                            s.getDetailedActivity(),
+                            s.getProspect().getDescription(),
+                            s.getComments(),
+                            ""
+                    }).toArray(String[][]::new);
+
+            for (int i = 0; i < listSalesReportForm.size(); i++) {
+                for (int j = 0; j < HEADINGS; j++) {
+                    ws.value(i+1, j, salesReportFormArray[i][j]);
+                }
+            }
         }
     }
 
@@ -70,21 +112,20 @@ public class FormController {
                 .fillColor("83F28F")
                 .set();
         ws.value(0, 0, "Submission Date");
-        ws.value(0, 1, "Tanggal Pengisian");
-        ws.value(0, 2, "Kode Sales");
-        ws.value(0, 3, "Tanggal & Jam Mulai Aktivitas");
-        ws.value(0, 4, "Jenis Aktivitas");
-        ws.value(0, 5, "Jenis Perusahaan Customer");
-        ws.value(0, 6, "Nama Lengkap Perusahaan Customer");
-        ws.value(0, 7, "Street Address");
-        ws.value(0, 8, "City");
-        ws.value(0, 9, "Nama Contact Person");
-        ws.value(0, 10, "Nomor HP Contact Person");
-        ws.value(0, 11, "Email Customer (Perusahaan)");
-        ws.value(0, 12, "Detail Aktivitas");
-        ws.value(0, 13, "Prospek");
-        ws.value(0, 14, "Catatan");
-        ws.value(0, 15, "File Upload");
+        ws.value(0, 1, "Kode Sales");
+        ws.value(0, 2, "Tanggal & Jam Mulai Aktivitas");
+        ws.value(0, 3, "Jenis Aktivitas");
+        ws.value(0, 4, "Jenis Perusahaan Customer");
+        ws.value(0, 5, "Nama Lengkap Perusahaan Customer");
+        ws.value(0, 6, "Street Address");
+        ws.value(0, 7, "City");
+        ws.value(0, 8, "Nama Contact Person");
+        ws.value(0, 9, "Nomor HP Contact Person");
+        ws.value(0, 10, "Email Customer (Perusahaan)");
+        ws.value(0, 11, "Detail Aktivitas");
+        ws.value(0, 12, "Prospek");
+        ws.value(0, 13, "Catatan");
+        ws.value(0, 14, "File Upload");
 
 
         return ws;
