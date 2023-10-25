@@ -3,6 +3,7 @@ package com.crestama.crestamawebsite.controller;
 import com.crestama.crestamawebsite.entity.SalesReportForm;
 import com.crestama.crestamawebsite.service.city.CityService;
 import com.crestama.crestamawebsite.service.companyType.CompanyTypeService;
+import com.crestama.crestamawebsite.service.prospect.ProspectService;
 import com.crestama.crestamawebsite.service.salesReportForm.SalesReportFormService;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
@@ -21,24 +22,26 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 
 @Controller
 @RequestMapping("/salesForm")
-public class FormController {
+public class SalesFormController {
     private SalesReportFormService salesReportFormService;
     private CityService cityService;
     private CompanyTypeService companyTypeService;
+    private ProspectService prospectService;
     private final int HEADINGS = 15;
 
     @Autowired
-    public FormController(SalesReportFormService salesReportFormService,
-                          CityService cityService, CompanyTypeService companyTypeService) {
+    public SalesFormController(SalesReportFormService salesReportFormService,
+                               CityService cityService, CompanyTypeService companyTypeService,
+                               ProspectService prospectService) {
         this.salesReportFormService = salesReportFormService;
         this.cityService = cityService;
         this.companyTypeService = companyTypeService;
+        this.prospectService = prospectService;
     }
 
     @GetMapping("/")
@@ -47,6 +50,7 @@ public class FormController {
 
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("companyTypes", companyTypeService.findAll());
+        model.addAttribute("prospects", prospectService.findAll());
 
         return "salesForm/salesForm";
     }
@@ -86,7 +90,7 @@ public class FormController {
                             s.getContactPersonPhone(),
                             "test email",
                             s.getDetailedActivity(),
-                            s.getProspect().getDescription(),
+                            s.getProspect().getId() + ": " + s.getProspect().getDescription(),
                             s.getComments(),
                             ""
                     }).toArray(String[][]::new);

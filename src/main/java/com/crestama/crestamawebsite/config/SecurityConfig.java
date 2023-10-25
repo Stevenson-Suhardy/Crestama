@@ -1,9 +1,6 @@
 package com.crestama.crestamawebsite.config;
 
-import com.crestama.crestamawebsite.component.CustomAuthenticationProvider;
-import com.crestama.crestamawebsite.component.JwtFilter;
-import com.crestama.crestamawebsite.component.RequestWrapperFilter;
-import com.crestama.crestamawebsite.component.TokenManager;
+import com.crestama.crestamawebsite.component.*;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
 import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import com.crestama.crestamawebsite.service.user.UserService;
@@ -21,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -68,6 +64,9 @@ public class SecurityConfig {
         );
         http.addFilterBefore(jwtFilter, ExceptionTranslationFilter.class);
         http.addFilterBefore(requestWrapperFilter, JwtFilter.class);
+        http.exceptionHandling((exception) -> exception
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .accessDeniedPage("/error/access-denied"));
         return http.build();
     }
 

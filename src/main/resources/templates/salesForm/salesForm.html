@@ -6,9 +6,6 @@
     <link rel="stylesheet"  href="/styles/bootstrap-5.3.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/fontawesome-free-6.4.2-web/css/all.css">
     <link rel="stylesheet" href="/styles/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
-    <script src="/js/filterSearch.js"></script>
 </head>
 <body>
 <div class="container">
@@ -28,11 +25,12 @@
             <label for="activityType">Activity Type</label>
             <input id="activityType" type="text" th:field="*{activityType}" class="form-control mb-4 w-25" />
 
-            <label for="companyTypes">Company Type</label>
-            <input class="form-control mb-4 w-25" list="companyTypes" name="companyType" th:field="*{companyType}">
-            <datalist id="companyTypes">
-                <option th:each="type: ${companyTypes}" th:text="${type.getType()}" th:value="${type.getId()}"></option>
-            </datalist>
+            <label for="companyType">Company Type</label>
+            <select name="companyType" id="companyType" type="text" th:field="*{prospect}" class="form-control mb-4 w-25">
+                <option th:each="companyType : ${companyTypes}"
+                        th:value="${companyType.getId()}" th:text="${companyType.getType()}">
+                </option>
+            </select>
 
             <label for="companyName">Company Name</label>
             <input id="companyName" type="text" th:field="*{companyName}" class="form-control mb-4 w-25" />
@@ -57,9 +55,9 @@
 
             <label for="prospect">Prospect</label>
             <select name="prospect" id="prospect" type="text" th:field="*{prospect}" class="form-control mb-4 w-25">
-                <option value=1>1: Bagus</option>
-                <option value=2>2: Cukup</option>
-                <option value=3>3: Kurang</option>
+                <option th:each="prospect : ${prospects}"
+                        th:value="${prospect.getId()}" th:text="${prospect.getId()} + ': ' + ${prospect.getDescription()}">
+                </option>
             </select>
 
             <label for="comments">Comments</label>
