@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" />
+    <link href="/styles/css/products/listOfProducts.style.css" rel="stylesheet" />
+
+    <title>List of Sales Activities</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-mynav">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">List of Sales Activities</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex bd-highlight mb-3">
+        <div class="me-auto p-2 bd-highlight"><h2>Sales Activities</h2></div>
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-primary" th:href="@{/salesForm}">Create</a>
+            <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table" style="white-space: nowrap;">
+            <thead>
+            <tr>
+                <th scope="col">Submission Date</th>
+                <th scope="col">Start Activity Date</th>
+                <th scope="col">End Activity Date</th>
+                <th scope="col">Activity Type</th>
+                <th scope="col">Company Type</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Street Address</th>
+                <th scope="col">City</th>
+                <th scope="col">Contact Person Name</th>
+                <th scope="col">Contact Person Phone Number</th>
+                <th scope="col">Detailed Activity</th>
+                <th scope="col">Prospect</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="mytable">
+            <tr th:each="salesActivity : ${salesActivities}">
+                <td th:text="${salesActivity.getSubmissionDate()}" />
+                <td th:text="${salesActivity.getStartActivityDate()}" />
+                <td th:text="${salesActivity.getEndActivityDate()}" />
+                <td th:text="${salesActivity.getActivityType()()}" />
+                <td th:text="${salesActivity.getCompanyType()}" />
+                <td th:text="${salesActivity.getCompanyName()}" />
+                <td th:text="${salesActivity.getStreetAddress()}" />
+                <td th:text="${salesActivity.getCity()}" />
+                <td th:text="${salesActivity.getContactPersonName()}" />
+                <td th:text="${salesActivity.getContactPersonPhone()}" />
+                <td th:text="${salesActivity.getDetailedActivity()}" />
+                <td th:text="${salesActivity.getProspect()}" />
+                <td th:text="${salesActivity.getComments()}" />
+
+                <td>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

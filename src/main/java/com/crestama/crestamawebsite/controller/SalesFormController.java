@@ -44,6 +44,13 @@ public class SalesFormController {
         this.prospectService = prospectService;
     }
 
+    @GetMapping("/salesActivities")
+    public String listOfSalesActivity(Model model) {
+        model.addAttribute("salesActivities", salesReportFormService.findAll());
+
+        return "salesForm/listOfSalesActivity";
+    }
+
     @GetMapping("/")
     public String showForm(Model model) {
         model.addAttribute("salesReportForm", new SalesReportForm());
