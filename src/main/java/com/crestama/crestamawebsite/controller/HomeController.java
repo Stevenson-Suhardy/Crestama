@@ -20,4 +20,8 @@ public class HomeController {
         return "about";
     }
 
+    @GetMapping("/manage")
+    public String manage() {
+        return "manage";
+    }
 }
