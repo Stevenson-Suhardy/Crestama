@@ -1,7 +1,12 @@
 package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -12,13 +17,16 @@ public class SalesReportForm {
     private Long id;
 
     @Column(name = "submissionDate")
-    private Date submissionDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime submissionDate;
 
     @Column(name = "startActivityDate")
-    private Date startActivityDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime startActivityDate;
 
     @Column(name = "endActivityDate")
-    private Date endActivityDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime endActivityDate;
 
     @Column(name = "activityType")
     private String activityType;
@@ -55,11 +63,12 @@ public class SalesReportForm {
 
     public SalesReportForm() {}
 
-    public SalesReportForm(Date submissionDate, Date startActivityDate, Date endActivityDate, String activityType,
+    public SalesReportForm(LocalDateTime startActivityDate, LocalDateTime endActivityDate, String activityType,
                            CompanyType companyType, String companyName, String streetAddress, City city,
                            String contactPersonName, String contactPersonPhone, String detailedActivity,
-                           Prospect prospect, String comments) {
-        this.submissionDate = submissionDate;
+                           Prospect prospect, String comments) throws Exception {
+
+        this.submissionDate = LocalDateTime.now();
         this.startActivityDate = startActivityDate;
         this.endActivityDate = endActivityDate;
         this.activityType = activityType;
@@ -82,27 +91,27 @@ public class SalesReportForm {
         this.id = id;
     }
 
-    public Date getSubmissionDate() {
+    public LocalDateTime getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setSubmissionDate(Date submissionDate) {
+    public void setSubmissionDate(LocalDateTime submissionDate) {
         this.submissionDate = submissionDate;
     }
 
-    public Date getStartActivityDate() {
+    public LocalDateTime getStartActivityDate() {
         return startActivityDate;
     }
 
-    public void setStartActivityDate(Date startActivityDate) {
+    public void setStartActivityDate(LocalDateTime startActivityDate) {
         this.startActivityDate = startActivityDate;
     }
 
-    public Date getEndActivityDate() {
+    public LocalDateTime getEndActivityDate() {
         return endActivityDate;
     }
 
-    public void setEndActivityDate(Date endActivityDate) {
+    public void setEndActivityDate(LocalDateTime endActivityDate) throws Exception {
         this.endActivityDate = endActivityDate;
     }
 

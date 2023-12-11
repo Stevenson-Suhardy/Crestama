@@ -3,7 +3,6 @@ package com.crestama.crestamawebsite.controller;
 import com.crestama.crestamawebsite.entity.Product;
 import com.crestama.crestamawebsite.service.product.ProductService;
 import com.crestama.crestamawebsite.utility.FileUploadUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -43,8 +40,8 @@ public class ProductController {
         return "product/productForm";
     }
 
-    @GetMapping("/editProduct")
-    public String editProduct(Model model, @RequestParam("productId") Long id) {
+    @GetMapping("/editProduct/{id}")
+    public String editProduct(Model model, @PathVariable Long id) {
         Product product = productService.findById(id);
 
         model.addAttribute("product", product);
@@ -68,9 +65,9 @@ public class ProductController {
         return "redirect:/products/products";
     }
 
-    @GetMapping("/deleteProduct")
+    @GetMapping("/deleteProduct/{id}")
     @Transactional
-    public String deleteProduct(@RequestParam("productId") Long id) {
+    public String deleteProduct(@PathVariable Long id) {
         try {
             deleteProductFolder(productService.findById(id));
 

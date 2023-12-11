@@ -2,23 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Product Form</title>
+    <title>Add Product Page</title>
+    <link href="/styles/css/products/productForm.style.css" rel="stylesheet" />
+    <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-<div>
-    <form action="#" th:action="@{/products/save}" th:object="${product}" enctype="multipart/form-data" method="POST">
-        <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{id}" />
-
+<div class="wrapper">
+    <form class="form-signin" action="#" th:action="@{/products/save}" th:object="${product}" enctype="multipart/form-data" method="POST">
+        <!-- Place for messages: error, alert etc ... -->
+        <div class="form-group">
+            <div class="col-xs-15">
+                <div>
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                            Invalid username and password.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class="form-signin-heading text-center">Add Product</h2>
         <label for="name">Name</label>
-        <input id="name" type="text" th:field="*{name}" class="form-control mb-4 w-25" />
+        <input id="name" type="text" th:field="*{name}" class="form-control" />
 
         <label for="image">Image</label>
-        <input id="image" type="file" name="image" accept="image/*" class="form-control mb-4 w-25" />
+        <input id="image" type="file" name="image" accept="image/*" class="form-control" />
 
-        <br>
-
-        <button type="submit" class="btn btn-info col-2">Save</button>
+        <div class="form-button gap-3 text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <a class="btn btn-danger" th:href="@{/products/products}">Cancel</a>
+        </div>
     </form>
 </div>
 </body>

@@ -57,6 +57,8 @@ public class SalesFormController {
 
     @PostMapping("/save")
     public String saveForm(@ModelAttribute SalesReportForm salesReportForm) {
+        salesReportForm.setSubmissionDate(LocalDateTime.now());
+
         salesReportFormService.save(salesReportForm);
 
         return "redirect:/salesForm/salesForm";
