@@ -10,11 +10,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -26,6 +28,11 @@ public class JwtFilter extends OncePerRequestFilter {
     private CustomUserDetailService userDetailService;
     private TokenManager tokenManager;
 
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final Set<String> excludedUrls = new HashSet<>(
+            Arrays.asList("/", "/about", "/login", "/processLogin", "/register", "/styles/**", "/assets/**")
+    );
+
     @Autowired
     public JwtFilter(CustomUserDetailService userDetailService, TokenManager tokenManager) {
         super();
@@ -36,6 +43,10 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        if (excludedUrls.stream().anyMatch(url -> pathMatcher.match(url, request.getRequestURI()))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String tokenHeader = request.getHeader("Authorization");
         String username = null;
@@ -46,13 +57,13 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 username = tokenManager.getUsernameFromToken(token);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }
         }
         else {
-            System.out.println("Bearer String not found in token");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
