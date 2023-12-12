@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/css/style.css">
+    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+
+        body, html {
+            height: 100%;
+            line-height: 1.8;
+        }
+
+        /* Full height image header */
+        .bgimg-1 {
+            background-position: center;
+            background-size: cover;
+            background-image: url("/assets/images/2.png");
+            min-height: 100%;
+            filter: grayscale(100%);
+        }
+
+        .w3-bar .w3-button {
+            padding: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- Header with full-height image -->
+<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+    <div class="w3-display-left image-text" style="padding:48px; margin-left: 30px;">
+        <span class="w3-jumbo w3-hide-small"><strong>Welcome to <br> PT. Crescendo Solusi Tama</strong></span><br>
+    </div>
+    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+        <i class="fa fa-facebook-official w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+        <i class="fa fa-snapchat w3-hover-opacity"></i>
+        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+        <i class="fa fa-twitter w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
+    </div>
+</header>
+
+<!-- About Section -->
+<section id="about">
+    <div class="container">
+        <div class="row align-items-center" style="padding:128px 16px; margin-left:auto; margin-right:auto;">
+            <div class="col-sm-6">
+                <h3>About Us</h3>
+                <p>
+                    Kami bergerak dalam bidang Mechanical, Electrical, Control dan Automation System, dengan spesialisasi pada bidang Control dan Automations (PLC, Inverter, Servo System, HMI, SCADA dsb), Panel, Repair/Troubleshooting, Desain, Instalasi, Modifikasi, dsb. Juga design dan pembuatan sistem pengolahan air limbah/air kotor, pembuatan dan pemasangan vessel pressure.
+                </p>
+                <p>
+                    Dengan didukung staf dan teknisi yang berpengalaman dan terpercaya, kami selalu berusaha untuk fokus pada kepuasan pelanggan kami dengan memberikan pelayanan kami yang terbaik dan memberikan solusi terbaik dan terlengkap.
+                </p>
+                <a class="btn btn-primary" th:href="@{/about}">
+                    More About Us
+                </a>
+            </div>
+            <div class="col-sm-6 text-center">
+                <img src="/assets/images/Tentang-Kami-Image.png" width="80%">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<div class="w3-container w3-light-grey" style="padding:128px 16px" id="contact">
+    <h3 class="w3-center">CONTACT</h3>
+    <p class="w3-center w3-large">Lets get in touch. Send us a message:</p>
+    <div style="margin-top:48px">
+        <p class="text-center"><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Surabaya, Indonesia</p>
+        <p class="text-center"><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: 031-30003311</p>
+        <p class="text-center"><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: info@crestama.com</p>
+        <br>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

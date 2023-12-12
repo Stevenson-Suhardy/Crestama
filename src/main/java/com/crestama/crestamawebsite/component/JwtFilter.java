@@ -5,12 +5,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +27,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private final Set<String> excludedUrls = new HashSet<>(
-            Arrays.asList("/", "/about", "/login", "/processLogin", "/register", "/styles/**", "/assets/**")
+            Arrays.asList("/", "/about", "/login", "/processLogin",
+                    "/register", "/styles/**", "/assets/**", "/js/**", "/fonts/**")
     );
 
     @Autowired

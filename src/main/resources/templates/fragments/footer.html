@@ -1,46 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <title>Crestama - Footer</title>
     <meta charset="UTF-8">
-    <title>Footer</title>
-    <link rel="stylesheet" href="/styles/css/style.css">
-    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Too plate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="/styles/css/home/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/css/home/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/css/home/animate.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.carousel.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.theme.default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 
-        body, html {
-            height: 100%;
-            line-height: 1.8;
-        }
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="/styles/css/home/tooplate-style.css">
 
-        /* Full height image header */
-        .bgimg-1 {
-            background-position: center;
-            background-size: cover;
-            background-image: url("/assets/images/2.png");
-            min-height: 100%;
-            filter: grayscale(100%);
-        }
-
-        .w3-bar .w3-button {
-            padding: 16px;
-        }
-    </style>
 </head>
 <body>
 <!-- Footer -->
-<footer class="w3-center w3-black w3-padding-64" th:fragment="footer">
-    <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
-    <div class="w3-xlarge w3-section">
-        <i class="fa fa-facebook-official w3-hover-opacity"></i>
-        <i class="fa fa-instagram w3-hover-opacity"></i>
-        <i class="fa fa-snapchat w3-hover-opacity"></i>
-        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-        <i class="fa fa-twitter w3-hover-opacity"></i>
-        <i class="fa fa-linkedin w3-hover-opacity"></i>
+<footer id="footer" data-stellar-background-ratio="5" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="footer-thumb">
+                    <h4 class="wow fadeInUp" data-wow-delay="0.4s">Contact Our Team</h4>
+                    <div class="contact-info">
+                        <p><i class="fa fa-phone"></i> 031-30003311</p>
+                        <p><i class="fa fa-envelope-o"></i> <a href="#">info@crestama.com</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="footer-thumb">
+                    <div class="opening-hours">
+                        <h4 class="wow fadeInUp" data-wow-delay="0.4s">Opening Hours</h4>
+                        <p>Monday - Friday <span>09:00 AM - 5:00 PM</span></p>
+                        <p>Saturday <span>09:00 AM - 02:00 PM</span></p>
+                        <p>Sunday <span>Closed</span></p>
+                    </div>
+
+                    <ul class="social-icon">
+                        <li><a href="https://www.facebook.com/crescendosolusitama" class="fa fa-facebook-square" attr="facebook icon"></a></li>
+                        <li><a href="https://www.instagram.com/ptcrestama/" class="fa fa-twitter"></a></li>
+                        <li><a href="https://www.linkedin.com/in/crestama/" class="fa fa-instagram"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
 </footer>
 </body>

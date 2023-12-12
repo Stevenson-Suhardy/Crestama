@@ -1,91 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Home</title>
+    <title>Crestama - Home Page</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/styles/css/style.css">
-    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Too plate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="/styles/css/home/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/css/home/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/css/home/animate.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.carousel.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.theme.default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 
-        body, html {
-            height: 100%;
-            line-height: 1.8;
-        }
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="/styles/css/home/tooplate-style.css">
 
-        /* Full height image header */
-        .bgimg-1 {
-            background-position: center;
-            background-size: cover;
-            background-image: url("/assets/images/2.png");
-            min-height: 100%;
-            filter: grayscale(100%);
-        }
-
-        .w3-bar .w3-button {
-            padding: 16px;
-        }
-    </style>
 </head>
-<body>
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
 
+<!-- PRE LOADER -->
+<section class="preloader">
+    <div class="spinner">
+
+        <span class="spinner-rotate"></span>
+
+    </div>
+</section>
+
+<!-- MENU -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-<!-- Header with full-height image -->
-<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-    <div class="w3-display-left image-text" style="padding:48px; margin-left: 30px;">
-        <span class="w3-jumbo w3-hide-small"><strong>Welcome to <br> PT. Crescendo Solusi Tama</strong></span><br>
-    </div>
-    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-        <i class="fa fa-facebook-official w3-hover-opacity"></i>
-        <i class="fa fa-instagram w3-hover-opacity"></i>
-        <i class="fa fa-snapchat w3-hover-opacity"></i>
-        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-        <i class="fa fa-twitter w3-hover-opacity"></i>
-        <i class="fa fa-linkedin w3-hover-opacity"></i>
-    </div>
-</header>
 
-<!-- About Section -->
+<!-- HOME -->
+<section id="home" class="slider" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row">
+
+            <div class="owl-carousel owl-theme">
+                <div class="item item-first">
+                    <div class="caption">
+                        <div class="col-md-offset-1 col-md-10">
+                            <h1>Welcome to PT. CRESCENDO SOLUSI TAMA</h1>
+                            <a href="#team" class="section-btn btn btn-blue smoothScroll">See Our Latest Products</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item item-second">
+                    <div class="caption">
+                        <div class="col-md-offset-1 col-md-10">
+                            <h1>We specialize in Mechanical, Electrical, Control, and Automation</h1>
+                            <a href="#about" class="section-btn btn btn-default btn-gray smoothScroll">More About Us</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item item-third">
+                    <div class="caption">
+                        <div class="col-md-offset-1 col-md-10">
+                            <h1>Authorized Agent of Mitsubishi Electric</h1>
+                            <a href="#news" class="section-btn btn btn-default btn-blue smoothScroll">Read Stories</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ABOUT -->
 <section id="about">
     <div class="container">
-        <div class="row align-items-center" style="padding:128px 16px; margin-left:auto; margin-right:auto;">
-            <div class="col-sm-6">
-                <h3>About Us</h3>
-                <p>
-                    Kami bergerak dalam bidang Mechanical, Electrical, Control dan Automation System, dengan spesialisasi pada bidang Control dan Automations (PLC, Inverter, Servo System, HMI, SCADA dsb), Panel, Repair/Troubleshooting, Desain, Instalasi, Modifikasi, dsb. Juga design dan pembuatan sistem pengolahan air limbah/air kotor, pembuatan dan pemasangan vessel pressure.
-                </p>
-                <p>
-                    Dengan didukung staf dan teknisi yang berpengalaman dan terpercaya, kami selalu berusaha untuk fokus pada kepuasan pelanggan kami dengan memberikan pelayanan kami yang terbaik dan memberikan solusi terbaik dan terlengkap.
-                </p>
-                <a class="btn btn-primary" th:href="@{/about}">
-                    More About Us
-                </a>
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="about-info" style="padding: 10px 10px 10px 10px">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.6s">About Us</h2>
+                    <div class="wow fadeInUp" data-wow-delay="0.8s">
+                        <p>
+                            Kami bergerak dalam bidang Mechanical, Electrical, Control dan Automation System, dengan
+                            spesialisasi pada bidang Control dan Automations (PLC, Inverter, Servo System, HMI, SCADA dsb),
+                            Panel, Repair/Troubleshooting, Desain, Instalasi, Modifikasi, dsb. Juga design dan pembuatan sistem
+                            pengolahan air limbah/air kotor, pembuatan dan pemasangan vessel pressure.
+                        </p>
+                        <p>
+                            Dengan didukung staf dan teknisi yang berpengalaman dan terpercaya, kami selalu berusaha untuk
+                            fokus pada kepuasan pelanggan kami dengan memberikan pelayanan kami yang terbaik dan memberikan
+                            solusi terbaik dan terlengkap.
+                        </p>
+
+                        <a class="btn btn-primary" th:href="@{/about}">
+                            More About Us
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6 text-center">
+            <div class="col-sm-6 text-center wow fadeInRight" data-wow-delay="0.8s">
                 <img src="/assets/images/Tentang-Kami-Image.png" width="80%">
             </div>
         </div>
     </div>
 </section>
 
-<!-- Contact Section -->
-<div class="w3-container w3-light-grey" style="padding:128px 16px" id="contact">
-    <h3 class="w3-center">CONTACT</h3>
-    <p class="w3-center w3-large">Lets get in touch. Send us a message:</p>
-    <div style="margin-top:48px">
-        <p class="text-center"><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Surabaya, Indonesia</p>
-        <p class="text-center"><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: 031-30003311</p>
-        <p class="text-center"><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: info@crestama.com</p>
-        <br>
-    </div>
-</div>
 
+<!-- GOOGLE MAP -->
+<section id="google-map">
+    <!-- How to change your own map point
+           1. Go to Google Maps
+           2. Click on your location point
+           3. Click "Share" and choose "Embed map" tab
+           4. Copy only URL and paste it within the src="" field below
+   -->
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.3013124310784!2d112.69503212642762!3d-7.330830693193765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fc8b73c1896f%3A0x58f6ceca8d5057dc!2sCRESCENDO%20SOLUSI%20TAMA%2C%20PT!5e0!3m2!1sen!2sca!4v1702343473030!5m2!1sen!2sca" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+</section>
+
+
+<!-- FOOTER -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/home/jquery.js"></script>
+<script src="/js/home/bootstrap.min.js"></script>
+<script src="/js/home/jquery.sticky.js"></script>
+<script src="/js/home/jquery.stellar.min.js"></script>
+<script src="/js/home/wow.min.js"></script>
+<script src="/js/home/smoothscroll.js"></script>
+<script src="/js/home/owl.carousel.min.js"></script>
+<script src="/js/home/custom.js"></script>
 
 </body>
 </html>
