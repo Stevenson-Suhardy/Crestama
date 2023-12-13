@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <form class="form-signin" action="#" th:action="@{/salesForm/save}" th:object="${salesReportForm}" enctype="multipart/form-data" method="POST">
+    <form class="form-signin" action="#" th:action="@{/salesForm/save}" th:object="${salesReportForm}" method="POST">
         <h2 class="form-signin-heading text-center">Add Product</h2>
         <input type="hidden" th:field="*{id}" />
 

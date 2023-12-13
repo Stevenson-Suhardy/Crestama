@@ -1,16 +1,25 @@
 package com.crestama.crestamawebsite.controller;
 
+import com.crestama.crestamawebsite.component.TokenManager;
 import com.crestama.crestamawebsite.entity.SalesReportForm;
+import com.crestama.crestamawebsite.entity.User;
 import com.crestama.crestamawebsite.service.city.CityService;
 import com.crestama.crestamawebsite.service.companyType.CompanyTypeService;
 import com.crestama.crestamawebsite.service.prospect.ProspectService;
 import com.crestama.crestamawebsite.service.salesReportForm.SalesReportFormService;
+import com.crestama.crestamawebsite.service.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,16 +39,22 @@ public class SalesFormController {
     private CityService cityService;
     private CompanyTypeService companyTypeService;
     private ProspectService prospectService;
+    private TokenManager tokenManager;
+    private UserService userService;
     private final int HEADINGS = 15;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
 
     @Autowired
     public SalesFormController(SalesReportFormService salesReportFormService,
                                CityService cityService, CompanyTypeService companyTypeService,
-                               ProspectService prospectService) {
+                               ProspectService prospectService, TokenManager tokenManager,
+                               UserService userService) {
         this.salesReportFormService = salesReportFormService;
         this.cityService = cityService;
         this.companyTypeService = companyTypeService;
         this.prospectService = prospectService;
+        this.tokenManager = tokenManager;
+        this.userService = userService;
     }
 
     @GetMapping("/salesActivities")
@@ -71,16 +87,48 @@ public class SalesFormController {
     }
 
     @PostMapping("/save")
-    public String saveForm(@ModelAttribute SalesReportForm salesReportForm) {
+    public String saveForm(@ModelAttribute SalesReportForm salesReportForm, HttpServletResponse response) throws IOException {
         salesReportForm.setSubmissionDate(LocalDateTime.now());
+        // Getting the session
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
 
-        salesReportFormService.save(salesReportForm);
+        if (session != null && session.getAttribute("token") != null) {
+            // Getting user using token
+            String token = (String) session.getAttribute("token");
+            String userEmail = tokenManager.getUsernameFromToken(token.substring(7));
+
+            User user = userService.findByEmail(userEmail);
+
+            salesReportForm.setUser(user);
+            salesReportFormService.save(salesReportForm);
+
+            return "redirect:/salesForm/salesActivities";
+        }
+        else {
+            response.sendError(HttpStatus.UNAUTHORIZED.value());
+        }
+        return "error/exception";
+    }
+
+    @GetMapping("/deleteSalesActivity/{id}")
+    public String deleteSalesActivity(@PathVariable Long id) {
+        salesReportFormService.deleteById(id);
 
         return "redirect:/salesForm/salesActivities";
     }
 
+    @GetMapping("/excelFormDateRange")
+    public String pickDateRange() {
+        return "salesForm/pickDateRange";
+    }
+
     @GetMapping("/createExcelForm")
-    public void createForm() throws IOException {
+    public String createForm(@RequestParam(required = false, value = "start")
+                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
+                           @RequestParam(required = false, value = "end")
+                           @DateTimeFormat(pattern = "yyyy-MM-dd") Date end)
+            throws IOException {
         File currDir = new File("sales-reports");
         String path = currDir.getAbsolutePath();
 
@@ -91,13 +139,20 @@ public class SalesFormController {
              Workbook workbook = new Workbook(os, "MyApplication", "1.0")) {
             Worksheet ws = formHeadings(workbook);
 
-            List<SalesReportForm> listSalesReportForm = salesReportFormService.findAll();
+            List<SalesReportForm> listSalesReportForm = null;
+
+            if (start == null || end == null) {
+                listSalesReportForm = salesReportFormService.findAll();
+            }
+            else {
+                listSalesReportForm = salesReportFormService.findByDateRange(start, end);
+            }
 
             String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
                     {
-                            s.getSubmissionDate().toString(),
-                            "1",
-                            s.getStartActivityDate().toString(),
+                            s.getSubmissionDate().format(formatter),
+                            s.getUser().getId().toString(),
+                            s.getStartActivityDate().format(formatter),
                             s.getActivityType(),
                             s.getCompanyType().getType(),
                             s.getCompanyName(),
@@ -118,6 +173,7 @@ public class SalesFormController {
                 }
             }
         }
+        return "redirect:/salesForm/salesActivities";
     }
 
     public Worksheet formHeadings(Workbook workbook) {

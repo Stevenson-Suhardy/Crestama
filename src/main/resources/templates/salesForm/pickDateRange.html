@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Sales Activity Page</title>
+    <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="/styles/css/sales/salesForm.style.css" rel="stylesheet" />
+</head>
+<body>
+<div class="wrapper">
+    <form class="form-signin" action="#" th:action="@{/salesForm/createExcelForm}" method="GET">
+        <h2 class="form-signin-heading text-center">Pick Date Range</h2>
+
+        <label for="start">Start</label>
+        <input id="start" th:name="start" type="date" class="form-control" />
+
+        <label for="end">End</label>
+        <input id="end" th:name="end" type="date"  class="form-control" />
+
+        <div class="form-button gap-3 text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <a class="btn btn-danger" th:href="@{/salesForm/salesActivities}">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

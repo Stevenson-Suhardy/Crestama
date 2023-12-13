@@ -2,6 +2,7 @@ package com.crestama.crestamawebsite.service.salesReportForm;
 
 import com.crestama.crestamawebsite.entity.SalesReportForm;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ISalesReportForm {
@@ -12,4 +13,6 @@ public interface ISalesReportForm {
     SalesReportForm save(SalesReportForm salesReportForm);
 
     void deleteById(Long id);
+
+    List<SalesReportForm> findByDateRange(Date start, Date end);
 }

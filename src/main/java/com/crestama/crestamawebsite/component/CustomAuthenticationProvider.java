@@ -73,11 +73,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 RefreshToken refreshToken = refreshTokenService.save(
                         refreshTokenService.createRefreshToken(tempUser.getId())
                 );
-                // Log the refresh token
-                System.out.println(refreshToken);
 
                 // Setting session attributes
-                session.setAttribute("user", tempUser);
                 session.setAttribute("token", "Bearer " + token);
 
                 return new UsernamePasswordAuthenticationToken(

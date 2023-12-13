@@ -20,6 +20,10 @@ public class SalesReportForm {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime submissionDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     @Column(name = "startActivityDate")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startActivityDate;
@@ -63,12 +67,14 @@ public class SalesReportForm {
 
     public SalesReportForm() {}
 
-    public SalesReportForm(LocalDateTime startActivityDate, LocalDateTime endActivityDate, String activityType,
+
+    public SalesReportForm(User user, LocalDateTime startActivityDate, LocalDateTime endActivityDate, String activityType,
                            CompanyType companyType, String companyName, String streetAddress, City city,
                            String contactPersonName, String contactPersonPhone, String detailedActivity,
                            Prospect prospect, String comments) throws Exception {
 
         this.submissionDate = LocalDateTime.now();
+        this.user = user;
         this.startActivityDate = startActivityDate;
         this.endActivityDate = endActivityDate;
         this.activityType = activityType;
@@ -97,6 +103,14 @@ public class SalesReportForm {
 
     public void setSubmissionDate(LocalDateTime submissionDate) {
         this.submissionDate = submissionDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getStartActivityDate() {
