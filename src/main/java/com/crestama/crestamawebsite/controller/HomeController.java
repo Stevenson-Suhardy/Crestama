@@ -24,4 +24,9 @@ public class HomeController {
     public String manage() {
         return "manage";
     }
+
+    @GetMapping("/career")
+    public String career() {
+        return "career";
+    }
 }

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>404 Not Found</title>
-    <link href="/styles/css/exceptions/notFound.style.css" rel="stylesheet" />
+    <link href="/styles/css/exceptions/exception.style.css" rel="stylesheet" />
 </head>
 <body>
 <div class="container">
     <div class="error">
-        <h1>404</h1>
-        <h2>Not Found</h2>
-        <p>Sorry, we can't find what you are looking for.</p>
+        <h1 th:text="${statusCode}"></h1>
+        <h2 th:text="${statusDescription}"></h2>
+        <p th:text="${message}"></p>
         <p><a th:href="@{/}">Go back to Home</a></p>
     </div>
     <div class="stack-container">

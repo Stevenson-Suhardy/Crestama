@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"  href="/styles/bootstrap-5.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome-free-6.4.2-web/css/all.css">
+</head>
+<body>
+<div class="container">
+    <h3>Sales Form</h3>
+
+    <div>
+        <form action="#" th:action="@{/salesForm/save}" th:object="${salesReportForm}" method="POST">
+            <!-- Add hidden form field to handle update -->
+            <input type="hidden" th:field="*{id}" />
+
+            <label for="start">Start Activity Date and Time</label>
+            <input id="start" type="datetime-local" th:field="*{startActivityDate}" class="form-control mb-4 w-25" />
+
+            <label for="end">End Activity Date and Time</label>
+            <input id="end" type="datetime-local" th:field="*{endActivityDate}" class="form-control mb-4 w-25" />
+
+            <label for="activityType">Activity Type</label>
+            <input id="activityType" type="text" th:field="*{activityType}" class="form-control mb-4 w-25" />
+
+            <label for="companyType">Company Type</label>
+            <select name="companyType" id="companyType" type="text" th:field="*{prospect}" class="form-control mb-4 w-25">
+                <option th:each="companyType : ${companyTypes}"
+                        th:value="${companyType.getId()}" th:text="${companyType.getType()}">
+                </option>
+            </select>
+
+            <label for="companyName">Company Name</label>
+            <input id="companyName" type="text" th:field="*{companyName}" class="form-control mb-4 w-25" />
+
+            <label for="streetAddress">Street Address</label>
+            <input id="streetAddress" type="text" th:field="*{streetAddress}" class="form-control mb-4 w-25" />
+
+            <label for="cities">City</label>
+            <input class="form-control mb-4 w-25" list="cities" name="city" th:field="*{city}">
+            <datalist id="cities">
+                <option th:each="city: ${cities}" th:text="${city.getCityName()}" th:value="${city.getId()}"></option>
+            </datalist>
+
+            <label for="contactPersonName">Contact Person Name</label>
+            <input id="contactPersonName" type="text" th:field="*{contactPersonName}" class="form-control mb-4 w-25" />
+
+            <label for="contactPersonPhone">Contact Person Phone Number</label>
+            <input id="contactPersonPhone" type="text" th:field="*{contactPersonPhone}" class="form-control mb-4 w-25" />
+
+            <label for="detailedActivity">Detailed Activity</label>
+            <input id="detailedActivity" type="text" th:field="*{detailedActivity}" class="form-control mb-4 w-25" />
+
+            <label for="prospect">Prospect</label>
+            <select name="prospect" id="prospect" type="text" th:field="*{prospect}" class="form-control mb-4 w-25">
+                <option th:each="prospect : ${prospects}"
+                        th:value="${prospect.getId()}" th:text="${prospect.getId()} + ': ' + ${prospect.getDescription()}">
+                </option>
+            </select>
+
+            <label for="comments">Comments</label>
+            <textarea id="comments" th:field="*{comments}" class="form-control mb-4 w-25"></textarea>
+
+            <br>
+
+            <button type="submit" class="btn btn-info col-2">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" />
-    <link href="/styles/css/products/listOfProducts.style.css" rel="stylesheet" />
+    <link href="/styles/css/sales/listOfSalesActivity.style.css" rel="stylesheet" />
 
     <title>List of Sales Activities</title>
 </head>
@@ -50,18 +50,18 @@
             </thead>
             <tbody id="mytable">
             <tr th:each="salesActivity : ${salesActivities}">
-                <td th:text="${salesActivity.getSubmissionDate()}" />
-                <td th:text="${salesActivity.getStartActivityDate()}" />
-                <td th:text="${salesActivity.getEndActivityDate()}" />
-                <td th:text="${salesActivity.getActivityType()()}" />
-                <td th:text="${salesActivity.getCompanyType()}" />
+                <td th:text="${#temporals.format(salesActivity.getSubmissionDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${#temporals.format(salesActivity.getStartActivityDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${#temporals.format(salesActivity.getEndActivityDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${salesActivity.getActivityType()}" />
+                <td th:text="${salesActivity.getCompanyType().getType()}" />
                 <td th:text="${salesActivity.getCompanyName()}" />
                 <td th:text="${salesActivity.getStreetAddress()}" />
-                <td th:text="${salesActivity.getCity()}" />
+                <td th:text="${salesActivity.getCity().getCityName()}" />
                 <td th:text="${salesActivity.getContactPersonName()}" />
                 <td th:text="${salesActivity.getContactPersonPhone()}" />
                 <td th:text="${salesActivity.getDetailedActivity()}" />
-                <td th:text="${salesActivity.getProspect()}" />
+                <td th:text="${salesActivity.getProspect().getDescription()}" />
                 <td th:text="${salesActivity.getComments()}" />
 
                 <td>

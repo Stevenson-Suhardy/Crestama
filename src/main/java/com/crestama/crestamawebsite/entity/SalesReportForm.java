@@ -31,7 +31,7 @@ public class SalesReportForm {
     @Column(name = "activityType")
     private String activityType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "companyType_id", referencedColumnName = "id")
     private CompanyType companyType;
 
@@ -41,7 +41,7 @@ public class SalesReportForm {
     @Column(name = "streetAddress")
     private String streetAddress;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
@@ -54,7 +54,7 @@ public class SalesReportForm {
     @Column(name = "detailedActivity")
     private String detailedActivity;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "prospect_id", referencedColumnName = "id")
     private Prospect prospect;
 

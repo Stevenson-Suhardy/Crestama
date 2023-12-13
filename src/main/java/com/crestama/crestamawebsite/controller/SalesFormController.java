@@ -51,7 +51,7 @@ public class SalesFormController {
         return "salesForm/listOfSalesActivity";
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String showForm(Model model) {
         model.addAttribute("salesReportForm", new SalesReportForm());
 
@@ -68,7 +68,7 @@ public class SalesFormController {
 
         salesReportFormService.save(salesReportForm);
 
-        return "redirect:/salesForm/salesForm";
+        return "redirect:/salesForm/salesActivities";
     }
 
     @GetMapping("/createExcelForm")
