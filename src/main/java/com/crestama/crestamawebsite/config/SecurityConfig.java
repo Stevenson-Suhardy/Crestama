@@ -50,11 +50,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers("/roleHierarchy").hasRole("STAFF")
+                        .requestMatchers("/roleHierarchy").hasRole("ADMIN")
                         .requestMatchers("/salesForm/**").hasRole("SALES")
                         .requestMatchers("/users/**").hasRole("ADMIN")
-                        .requestMatchers("/products/**").hasRole("ADMIN")
-                        .requestMatchers("/manage").hasRole("STAFF")
+                        .requestMatchers("/products/**").hasRole("STAFF")
+                        .requestMatchers("/manage").hasAnyRole("SALES", "STAFF")
                         .anyRequest().permitAll()
         ).formLogin(form ->
                 form.loginPage("/login")

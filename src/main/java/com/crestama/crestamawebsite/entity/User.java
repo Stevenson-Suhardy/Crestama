@@ -24,8 +24,6 @@ public class User {
     @Email(message = "Email Address is not valid.")
     private String email;
 
-    @NotEmpty(message = "Password is required.")
-    @NotNull(message = "Password is required.")
     @Pattern(
         regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,68}$",
         message = "Password does not match the requirements."

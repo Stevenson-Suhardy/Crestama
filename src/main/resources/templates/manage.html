@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -49,7 +49,7 @@
                                         </svg>
                                     </a>
                                 </div>
-                                <div class="hexagon-item">
+                                <div class="hexagon-item" sec:authorize="hasRole('ADMIN')">
                                     <div class="hex-item">
                                         <div></div>
                                         <div></div>
@@ -75,7 +75,7 @@
                                         </svg>
                                     </a>
                                 </div>
-                                <div class="hexagon-item">
+                                <div class="hexagon-item" sec:authorize="hasRole('STAFF')">
                                     <div class="hex-item">
                                         <div></div>
                                         <div></div>
@@ -101,7 +101,7 @@
                                         </svg>
                                     </a>
                                 </div>
-                                <div class="hexagon-item">
+                                <div class="hexagon-item" sec:authorize="hasRole('SALES')">
                                     <div class="hex-item">
                                         <div></div>
                                         <div></div>
