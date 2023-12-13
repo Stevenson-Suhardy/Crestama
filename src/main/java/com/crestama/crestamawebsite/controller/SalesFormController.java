@@ -8,8 +8,10 @@ import com.crestama.crestamawebsite.service.companyType.CompanyTypeService;
 import com.crestama.crestamawebsite.service.prospect.ProspectService;
 import com.crestama.crestamawebsite.service.salesReportForm.SalesReportFormService;
 import com.crestama.crestamawebsite.service.user.UserService;
+import com.crestama.crestamawebsite.service.validation.SalesFormValidation;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -41,6 +45,7 @@ public class SalesFormController {
     private ProspectService prospectService;
     private TokenManager tokenManager;
     private UserService userService;
+    private SalesFormValidation salesFormValidation;
     private final int HEADINGS = 15;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
 
@@ -48,13 +53,14 @@ public class SalesFormController {
     public SalesFormController(SalesReportFormService salesReportFormService,
                                CityService cityService, CompanyTypeService companyTypeService,
                                ProspectService prospectService, TokenManager tokenManager,
-                               UserService userService) {
+                               UserService userService, SalesFormValidation salesFormValidation) {
         this.salesReportFormService = salesReportFormService;
         this.cityService = cityService;
         this.companyTypeService = companyTypeService;
         this.prospectService = prospectService;
         this.tokenManager = tokenManager;
         this.userService = userService;
+        this.salesFormValidation = salesFormValidation;
     }
 
     @GetMapping("/salesActivities")
@@ -87,7 +93,23 @@ public class SalesFormController {
     }
 
     @PostMapping("/save")
-    public String saveForm(@ModelAttribute SalesReportForm salesReportForm, HttpServletResponse response) throws IOException {
+    public String saveForm(@ModelAttribute @Valid SalesReportForm salesReportForm,
+                           BindingResult result,
+                           HttpServletResponse response) throws IOException {
+        // Validate the form
+        String err = salesFormValidation.validateSalesForm(salesReportForm);
+
+        // Check if there are any errors
+        if (!err.isEmpty()) {
+            ObjectError error = new ObjectError("compareDateError", err);
+            result.addError(error);
+        }
+        if (result.hasErrors()) {
+            // Return to the form if there are any
+            return "salesForm/salesForm";
+        }
+
+        // Set the submission date
         salesReportForm.setSubmissionDate(LocalDateTime.now());
         // Getting the session
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -98,9 +120,12 @@ public class SalesFormController {
             String token = (String) session.getAttribute("token");
             String userEmail = tokenManager.getUsernameFromToken(token.substring(7));
 
+            // Find the user
             User user = userService.findByEmail(userEmail);
 
+            // Set the user
             salesReportForm.setUser(user);
+            // Save the form to the database
             salesReportFormService.save(salesReportForm);
 
             return "redirect:/salesForm/salesActivities";

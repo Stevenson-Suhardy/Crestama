@@ -1,6 +1,8 @@
 package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
@@ -18,48 +20,67 @@ public class SalesReportForm {
 
     @Column(name = "submissionDate")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull(message = "Submission Date is required.")
     private LocalDateTime submissionDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotNull(message = "User is required.")
     private User user;
 
     @Column(name = "startActivityDate")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull(message = "Start Activity Date is required.")
     private LocalDateTime startActivityDate;
 
     @Column(name = "endActivityDate")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull(message = "End Activity Date is required.")
     private LocalDateTime endActivityDate;
 
     @Column(name = "activityType")
+    @NotNull(message = "Activity Type is required.")
+    @NotEmpty(message = "Activity Type is required.")
     private String activityType;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "companyType_id", referencedColumnName = "id")
+    @NotNull(message = "Company Type is required.")
     private CompanyType companyType;
 
     @Column(name = "companyName")
+    @NotNull(message = "Company Name is required.")
+    @NotEmpty(message = "Company Name is required.")
     private String companyName;
 
     @Column(name = "streetAddress")
+    @NotNull(message = "Street Address is required.")
+    @NotEmpty(message = "Street Address is required.")
     private String streetAddress;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
+    @NotNull(message = "City is required.")
     private City city;
 
     @Column(name = "contactPersonName")
+    @NotNull(message = "Contact Person Name is required.")
+    @NotEmpty(message = "Contact Person Name is required.")
     private String contactPersonName;
 
     @Column(name = "contactPersonPhone")
+    @NotNull(message = "Contact Person Phone Number is required.")
+    @NotEmpty(message = "Contact Person Phone Number is required.")
     private String contactPersonPhone;
 
     @Column(name = "detailedActivity")
+    @NotNull(message = "Detailed Activity is required.")
+    @NotEmpty(message = "Detailed Activity is required.")
     private String detailedActivity;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "prospect_id", referencedColumnName = "id")
+    @NotNull(message = "Prospect is required.")
     private Prospect prospect;
 
     @Column(name = "comments")

@@ -1,6 +1,8 @@
 package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Product {
@@ -10,6 +12,8 @@ public class Product {
     private Long id;
 
     @Column(name="name")
+    @NotEmpty(message = "Product Name is required.")
+    @NotNull(message = "Product Name is required.")
     private String name;
 
     @Column(name="image_path")

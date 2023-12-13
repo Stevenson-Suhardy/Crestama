@@ -4,11 +4,13 @@ import com.crestama.crestamawebsite.entity.Product;
 import com.crestama.crestamawebsite.service.product.ProductService;
 import com.crestama.crestamawebsite.utility.FileUploadUtil;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/addProduct")
-    public String addProduct(Model model, HttpSession session) {
+    public String addProduct(Model model) {
         model.addAttribute("product", new Product());
 
         return "product/productForm";
@@ -51,8 +53,14 @@ public class ProductController {
 
     @Transactional
     @PostMapping("/save")
-    public String saveProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile multipartFile)
+    public String saveProduct(@ModelAttribute @Valid Product product,
+                              @RequestParam("image") MultipartFile multipartFile,
+                              BindingResult result)
             throws IOException {
+        if (result.hasErrors()) {
+            return "product/productForm";
+        }
+
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
         product.setImagePath(fileName);
