@@ -65,7 +65,9 @@
                 <td th:text="${salesActivity.getComments()}" />
 
                 <td>
-
+                    <a class="btn btn-info btn-sm" th:href="@{/salesForm/editSalesActivity/{id}(id=${salesActivity.getId()})}">
+                        Update
+                    </a>
                 </td>
             </tr>
             </tbody>

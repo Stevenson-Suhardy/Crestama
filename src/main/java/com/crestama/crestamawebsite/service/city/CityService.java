@@ -34,7 +34,7 @@ public class CityService implements ICity {
             city = result.get();
         }
         else {
-            throw new RuntimeException("Did not find permission id - " + id);
+            throw new RuntimeException("Did not find city id - " + id);
         }
 
         return city;

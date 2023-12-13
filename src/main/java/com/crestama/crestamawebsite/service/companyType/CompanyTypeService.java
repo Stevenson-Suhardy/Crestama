@@ -32,7 +32,7 @@ public class CompanyTypeService implements ICompanyType {
             companyType = result.get();
         }
         else {
-            throw new RuntimeException("Did not find permission id - " + id);
+            throw new RuntimeException("Did not find city id - " + id);
         }
 
         return companyType;

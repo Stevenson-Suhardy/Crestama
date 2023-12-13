@@ -10,10 +10,7 @@ import org.dhatim.fastexcel.Worksheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +51,17 @@ public class SalesFormController {
     @GetMapping
     public String showForm(Model model) {
         model.addAttribute("salesReportForm", new SalesReportForm());
+
+        model.addAttribute("cities", cityService.findAll());
+        model.addAttribute("companyTypes", companyTypeService.findAll());
+        model.addAttribute("prospects", prospectService.findAll());
+
+        return "salesForm/salesForm";
+    }
+
+    @GetMapping("/editSalesActivity/{id}")
+    public String editForm(Model model, @PathVariable Long id) {
+        model.addAttribute("salesReportForm", salesReportFormService.findById(id));
 
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("companyTypes", companyTypeService.findAll());
