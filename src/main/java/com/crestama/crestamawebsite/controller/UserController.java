@@ -59,14 +59,26 @@ public class UserController {
             return "user/userForm";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEnabled(true);
 
         userService.save(user);
         return "redirect:/users/users";
     }
 
-    @GetMapping("/deleteUser/{id}")
-    public String delete(@PathVariable Long id) {
-        userService.deleteById(id);
+    @GetMapping("/disableUser/{id}")
+    public String disableUser(@PathVariable Long id) {
+        User user = userService.findById(id);
+        user.setEnabled(false);
+        userService.save(user);
+
+        return "redirect:/users/users";
+    }
+
+    @GetMapping("/enableUser/{id}")
+    public String enableUser(@PathVariable Long id) {
+        User user = userService.findById(id);
+        user.setEnabled(true);
+        userService.save(user);
 
         return "redirect:/users/users";
     }

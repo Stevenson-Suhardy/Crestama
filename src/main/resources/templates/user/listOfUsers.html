@@ -56,10 +56,14 @@
                     <a class="btn btn-info btn-sm" th:href="@{/users/editUser/{id}(id=${user.getId()})}">
                         Update
                     </a>
-                    <a class="btn btn-danger btn-sm" th:href="@{/users/deleteUser/{id}(id=${user.getId()})}"
-                       onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false"
+                    <a th:if="${user.isEnabled() == true && !user.getEmail().equals('admin')}" class="btn btn-danger btn-sm" th:href="@{/users/disableUser/{id}(id=${user.getId()})}"
+                       onclick="if (!(confirm('Are you sure you want to disable this user?'))) return false"
                     >
-                        Delete
+                        Disable
+                    </a>
+                    <a th:if="${user.isEnabled() == false}" class="btn btn-danger btn-sm" th:href="@{/users/enableUser/{id}(id=${user.getId()})}"
+                    >
+                        Enable
                     </a>
                 </td>
             </tr>

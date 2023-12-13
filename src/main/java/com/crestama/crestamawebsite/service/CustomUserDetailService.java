@@ -3,10 +3,8 @@ package com.crestama.crestamawebsite.service;
 import com.crestama.crestamawebsite.entity.Permission;
 import com.crestama.crestamawebsite.entity.Role;
 import com.crestama.crestamawebsite.entity.User;
-import com.crestama.crestamawebsite.service.role.RoleService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,15 +21,11 @@ import java.util.List;
 @Transactional
 public class CustomUserDetailService implements UserDetailsService {
     private UserService userService;
-    private MessageSource messages;
-    private RoleService roleService;
 
     // Constructor
     @Autowired
-    public CustomUserDetailService(UserService userService, MessageSource messages, RoleService roleService) {
+    public CustomUserDetailService(UserService userService) {
         this.userService = userService;
-        this.messages = messages;
-        this.roleService = roleService;
     }
 
     // Overridden methods
@@ -41,7 +34,7 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.findByEmail(email);
 
-        if (user == null) {
+        if (user == null || !user.isEnabled()) {
             throw new UsernameNotFoundException(email);
         }
         return new org.springframework.security.core.userdetails.User(
