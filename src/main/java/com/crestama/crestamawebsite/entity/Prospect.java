@@ -2,6 +2,9 @@ package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Prospect {
     @Id
@@ -11,6 +14,17 @@ public class Prospect {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "prospect")
+    private Set<SalesReportForm> salesReportForms = new HashSet<>();
+
+    public Set<SalesReportForm> getSalesReportForms() {
+        return salesReportForms;
+    }
+
+    public void setSalesReportForms(Set<SalesReportForm> salesReportForms) {
+        this.salesReportForms = salesReportForms;
+    }
 
     public Prospect() {};
 

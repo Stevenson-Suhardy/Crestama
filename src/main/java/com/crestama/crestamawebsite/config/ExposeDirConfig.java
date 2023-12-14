@@ -13,6 +13,7 @@ public class ExposeDirConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         exposeDirectory("product-photos", registry);
+        exposeDirectory("sales-reports", registry);
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {

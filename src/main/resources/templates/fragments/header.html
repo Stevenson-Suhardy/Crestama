@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="/styles/css/home/animate.css">
   <link rel="stylesheet" href="/styles/css/home/owl.carousel.css">
   <link rel="stylesheet" href="/styles/css/home/owl.theme.default.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/fontawesome-free-6.4.2-web/css/all.css">
 
   <!-- MAIN CSS -->
   <link rel="stylesheet" href="/styles/css/home/tooplate-style.css">
@@ -40,7 +40,7 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         <li><a th:href="@{/}" class="smoothScroll">Home</a></li>
-        <li><a href="#about" class="smoothScroll">About Us</a></li>
+        <li><a th:href="@{/about}" class="smoothScroll">About Us</a></li>
         <li><a href="#footer" class="smoothScroll">Contact</a></li>
         <li><a th:href="@{/career}" class="smoothScroll">Career</a></li>
         <li><a th:href="@{/manage}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF', 'ROLE_SALES')" class="smoothScroll">Manage</a></li>

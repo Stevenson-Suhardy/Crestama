@@ -20,12 +20,10 @@ public class SalesReportForm {
 
     @Column(name = "submissionDate")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @NotNull(message = "Submission Date is required.")
     private LocalDateTime submissionDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull(message = "User is required.")
     private User user;
 
     @Column(name = "startActivityDate")
@@ -43,7 +41,7 @@ public class SalesReportForm {
     @NotEmpty(message = "Activity Type is required.")
     private String activityType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyType_id", referencedColumnName = "id")
     @NotNull(message = "Company Type is required.")
     private CompanyType companyType;
@@ -58,7 +56,7 @@ public class SalesReportForm {
     @NotEmpty(message = "Street Address is required.")
     private String streetAddress;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     @NotNull(message = "City is required.")
     private City city;
@@ -78,7 +76,7 @@ public class SalesReportForm {
     @NotEmpty(message = "Detailed Activity is required.")
     private String detailedActivity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prospect_id", referencedColumnName = "id")
     @NotNull(message = "Prospect is required.")
     private Prospect prospect;

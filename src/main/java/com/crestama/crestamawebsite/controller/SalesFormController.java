@@ -12,11 +12,13 @@ import com.crestama.crestamawebsite.service.validation.SalesFormValidation;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.apache.commons.compress.utils.IOUtils;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -95,25 +98,14 @@ public class SalesFormController {
     @PostMapping("/save")
     public String saveForm(@ModelAttribute @Valid SalesReportForm salesReportForm,
                            BindingResult result,
-                           HttpServletResponse response) throws IOException {
-        // Validate the form
-        String err = salesFormValidation.validateSalesForm(salesReportForm);
-
-        // Check if there are any errors
-        if (!err.isEmpty()) {
-            ObjectError error = new ObjectError("compareDateError", err);
-            result.addError(error);
-        }
-        if (result.hasErrors()) {
-            // Return to the form if there are any
-            return "salesForm/salesForm";
-        }
-
+                           HttpServletResponse response, Model model) throws IOException {
         // Set the submission date
         salesReportForm.setSubmissionDate(LocalDateTime.now());
         // Getting the session
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
+        // Validate the form
+        String err = salesFormValidation.validateSalesForm(salesReportForm);
 
         if (session != null && session.getAttribute("token") != null) {
             // Getting user using token
@@ -125,6 +117,20 @@ public class SalesFormController {
 
             // Set the user
             salesReportForm.setUser(user);
+
+            // Check if there are any errors
+            if (!err.isEmpty()) {
+                ObjectError error = new ObjectError("compareDateError", err);
+                result.addError(error);
+            }
+            if (result.hasErrors()) {
+                model.addAttribute("cities", cityService.findAll());
+                model.addAttribute("companyTypes", companyTypeService.findAll());
+                model.addAttribute("prospects", prospectService.findAll());
+                // Return to the form if there are any
+                return "salesForm/salesForm";
+            }
+
             // Save the form to the database
             salesReportFormService.save(salesReportForm);
 
@@ -152,7 +158,7 @@ public class SalesFormController {
     public String createForm(@RequestParam(required = false, value = "start")
                                  @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                            @RequestParam(required = false, value = "end")
-                           @DateTimeFormat(pattern = "yyyy-MM-dd") Date end)
+                           @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model)
             throws IOException {
         File currDir = new File("sales-reports");
         String path = currDir.getAbsolutePath();
@@ -198,7 +204,9 @@ public class SalesFormController {
                 }
             }
         }
-        return "redirect:/salesForm/salesActivities";
+        model.addAttribute("filePath", "/sales-reports/" + fileLocation);
+
+        return "salesForm/downloadForm";
     }
 
     public Worksheet formHeadings(Workbook workbook) {
