@@ -5,6 +5,9 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import java.util.*;
 
+/**
+ * This class creates a custom RequestHeader format
+ */
 public class RequestHeaderWrapper extends HttpServletRequestWrapper {
     public RequestHeaderWrapper(HttpServletRequest request) {
         super(request);

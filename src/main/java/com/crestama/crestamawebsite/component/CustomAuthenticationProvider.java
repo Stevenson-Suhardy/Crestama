@@ -25,12 +25,21 @@ import java.util.List;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
+    // Private members
     private UserService userService;
     private PasswordEncoder passwordEncoder;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
     private RefreshTokenService refreshTokenService;
 
+    /**
+     * Autowire Services
+     * @param userService
+     * @param passwordEncoder
+     * @param customUserDetailService
+     * @param tokenManager
+     * @param refreshTokenService
+     */
     @Autowired
     public CustomAuthenticationProvider(UserService userService, PasswordEncoder passwordEncoder,
                                         CustomUserDetailService customUserDetailService,
@@ -44,6 +53,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         this.refreshTokenService = refreshTokenService;
     }
 
+    /**
+     * Overriding authenticate method
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         User tempUser = userService.findByEmail(authentication.getName());
@@ -85,6 +100,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return null;
     }
 
+    /**
+     * Set the authentication class
+     * @param authentication
+     * @return
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
