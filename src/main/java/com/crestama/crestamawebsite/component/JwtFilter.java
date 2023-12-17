@@ -57,7 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                response.sendRedirect("/refreshToken");
             }
         }
         else {
