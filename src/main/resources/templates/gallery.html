@@ -63,10 +63,27 @@
     <div class="container">
         <div class="row">
             <div class="img-gallery">
-                <img th:each="product : ${products}" th:data-name="${product.getImagePath()}"
+                <img th:each="product, iStat : ${products.getContent()}" th:data-name="${product.getImagePath()}"
                      th:src="${product.getImagePath()}" th:alt="${product.getName()}"
                      onclick="openFullImg(this.getAttribute('data-name'))"
                 />
+            </div>
+            <div class="text-center">
+                <ul class="pagination" th:if="${products.totalPages > 0}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage - 1})}"
+                                             th:if="${currentPage > 1}">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:each="pageNumber : ${pageNumbers}"
+                           th:href="@{/gallery(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                        ></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage + 1})}"
+                                             th:if="${currentPage < products.totalPages}">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
