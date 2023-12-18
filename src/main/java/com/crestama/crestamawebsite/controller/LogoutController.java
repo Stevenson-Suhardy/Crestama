@@ -15,7 +15,6 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class LogoutController {
 //    private RefreshTokenService refreshTokenService;
-    @Autowired
     public LogoutController() {}
 
     SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
