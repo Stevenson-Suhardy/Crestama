@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 
 import java.util.Collection;
 
-@Entity
+@Entity(name="user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,22 +13,27 @@ public class User {
 
     @NotEmpty(message = "First Name is required.")
     @NotNull(message = "First Name is required.")
+    @Column(name="first_name")
     private String firstName;
 
     @NotEmpty(message = "Last Name is required.")
     @NotNull(message = "Last Name is required.")
+    @Column(name="last_name")
     private String lastName;
 
     @NotNull(message = "Email Address is required.")
     @NotEmpty(message = "Email Address is required.")
     @Email(message = "Email Address is not valid.")
+    @Column(name="email")
     private String email;
 
     @Pattern(
         regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,68}$",
         message = "Password does not match the requirements."
     )
+    @Column(name="password")
     private String password;
+    @Column(name="enabled")
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -47,8 +52,7 @@ public class User {
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String password, boolean enabled,
-                boolean tokenExpired, Collection<Role> roles) {
+    public User(String firstName, String lastName, String email, String password, boolean enabled, Collection<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "city")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

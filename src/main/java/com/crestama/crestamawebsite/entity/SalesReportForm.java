@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-@Entity
+@Entity(name = "sales_report_form")
 public class SalesReportForm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

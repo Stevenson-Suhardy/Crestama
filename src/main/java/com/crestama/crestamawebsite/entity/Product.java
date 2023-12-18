@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
+@Entity(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="id")
     private Long id;
 
     @Column(name="name")

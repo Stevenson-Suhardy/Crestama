@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 
-@Entity
+@Entity(name="role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "roles")
