@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Crestama - Gallery Page</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Too plate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="/styles/css/home/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/css/home/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/css/home/animate.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.carousel.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="/styles/css/static.style.css">
+    <link rel="stylesheet" href="/styles/css/gallery.style.css">
+
+</head>
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+<!-- PRE LOADER -->
+<section class="preloader">
+    <div class="spinner">
+
+        <span class="spinner-rotate"></span>
+
+    </div>
+</section>
+
+<section>
+    <div class="full-img" id="fullImgBox">
+        <img id="fullImg" src="/product-photos/2/2_2.jpg" alt="random picture" />
+        <span onclick="closeFullImg()">X</span>
+    </div>
+</section>
+
+<!-- MENU -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- Title -->
+<section id="home" class="slider" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row">
+            <div class="item item-first">
+                <div class="caption">
+                    <div class="col-md-offset-1 col-md-10">
+                        <h1>Gallery</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Gallery -->
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="img-gallery">
+                <img th:each="product, iStat : ${products.getContent()}" th:data-name="${product.getImagePath()}"
+                     th:src="${product.getImagePath()}" th:alt="${product.getName()}"
+                     onclick="openFullImg(this.getAttribute('data-name'))"
+                />
+            </div>
+            <div class="text-center">
+                <ul class="pagination" th:if="${products.totalPages > 0}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage - 1})}"
+                                             th:if="${currentPage > 1}">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:each="pageNumber : ${pageNumbers}"
+                           th:href="@{/gallery(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                        ></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage + 1})}"
+                                             th:if="${currentPage < products.totalPages}">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/home/jquery.js"></script>
+<script src="/js/home/bootstrap.min.js"></script>
+<script src="/js/home/jquery.sticky.js"></script>
+<script src="/js/home/jquery.stellar.min.js"></script>
+<script src="/js/home/wow.min.js"></script>
+<script src="/js/home/smoothscroll.js"></script>
+<script src="/js/home/owl.carousel.min.js"></script>
+<script src="/js/home/custom.js"></script>
+<script src="/js/gallery.js"></script>
+
+</body>
+</html>

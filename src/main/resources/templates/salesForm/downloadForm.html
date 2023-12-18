@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Download Form</title>
+    <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="/styles/css/sales/salesForm.style.css" rel="stylesheet" />
+</head>
+<body>
+<div class="wrapper">
+    <div class="form-signin">
+        <p class="text-center"><a th:href="${filePath}">Download Generated File</a></p>
+        <p class="text-center">
+            <a class="btn btn-secondary" th:href="@{/salesForm/salesActivities}">Back to List of Sales Activities Page</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>

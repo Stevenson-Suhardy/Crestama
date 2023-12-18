@@ -3,3 +3,11 @@
     color: white;
     width: 50%;
 }
+
+.p-viewer {
+    margin-right: 62rem;
+    margin-top: -55px;
+    float: right;
+    position: relative;
+    cursor: pointer;
+}
