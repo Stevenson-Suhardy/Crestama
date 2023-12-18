@@ -1,7 +1,7 @@
 package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.entity.User;
-import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
+//import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,11 +14,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LogoutController {
-    private RefreshTokenService refreshTokenService;
+//    private RefreshTokenService refreshTokenService;
     @Autowired
-    public LogoutController(RefreshTokenService refreshTokenService) {
-        this.refreshTokenService = refreshTokenService;
-    }
+    public LogoutController() {}
 
     SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
@@ -27,7 +25,6 @@ public class LogoutController {
                          HttpServletRequest request, HttpServletResponse response) {
         // Deleting User Refresh Token
         User user = (User) session.getAttribute("user");
-        refreshTokenService.deleteByUserId(user.getId());
 
         this.logoutHandler.logout(request, response, authentication);
         session.invalidate();

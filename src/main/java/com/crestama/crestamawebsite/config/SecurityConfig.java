@@ -2,7 +2,7 @@ package com.crestama.crestamawebsite.config;
 
 import com.crestama.crestamawebsite.component.*;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
-import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
+//import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,22 +28,20 @@ public class SecurityConfig {
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
 
-    private RefreshTokenService refreshTokenService;
+//    private RefreshTokenService refreshTokenService;
     @Autowired
     public SecurityConfig(
             UserService userService,
             JwtFilter jwtFilter,
             RequestWrapperFilter requestWrapperFilter,
             CustomUserDetailService customUserDetailService,
-            TokenManager tokenManager,
-            RefreshTokenService refreshTokenService
+            TokenManager tokenManager
     ) {
         this.userService = userService;
         this.jwtFilter = jwtFilter;
         this.requestWrapperFilter = requestWrapperFilter;
         this.customUserDetailService = customUserDetailService;
         this.tokenManager = tokenManager;
-        this.refreshTokenService = refreshTokenService;
     }
 
     @Bean
@@ -89,7 +87,7 @@ public class SecurityConfig {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .authenticationProvider(new CustomAuthenticationProvider(
                         userService, encoder(),
-                        customUserDetailService, tokenManager, refreshTokenService
+                        customUserDetailService, tokenManager
                 ))
                 .build();
     }

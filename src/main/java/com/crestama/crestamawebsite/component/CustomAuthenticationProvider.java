@@ -1,10 +1,10 @@
 package com.crestama.crestamawebsite.component;
 
-import com.crestama.crestamawebsite.entity.RefreshToken;
+//import com.crestama.crestamawebsite.entity.RefreshToken;
 import com.crestama.crestamawebsite.entity.Role;
 import com.crestama.crestamawebsite.entity.User;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
-import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
+//import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private PasswordEncoder passwordEncoder;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
-    private RefreshTokenService refreshTokenService;
+//    private RefreshTokenService refreshTokenService;
 
     /**
      * Autowire Services
@@ -43,14 +43,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     public CustomAuthenticationProvider(UserService userService, PasswordEncoder passwordEncoder,
                                         CustomUserDetailService customUserDetailService,
-                                        TokenManager tokenManager,
-                                        RefreshTokenService refreshTokenService
+                                        TokenManager tokenManager
                                         ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetailService = customUserDetailService;
         this.tokenManager = tokenManager;
-        this.refreshTokenService = refreshTokenService;
     }
 
     /**
@@ -72,9 +70,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 }
 
                 // Delete existing refresh token in the database
-                if (refreshTokenService.findByUserId(tempUser.getId()) != null) {
-                    refreshTokenService.deleteByUserId(tempUser.getId());
-                }
+//                if (refreshTokenService.findByUserId(tempUser.getId()) != null) {
+//                    refreshTokenService.deleteByUserId(tempUser.getId());
+//                }
 
                 // Getting session
                 ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -85,9 +83,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 String token = tokenManager.generateJwtToken(userDetails);
 
                 // Generating Refresh Token and saving it to the database
-                RefreshToken refreshToken = refreshTokenService.save(
-                        refreshTokenService.createRefreshToken(tempUser.getId())
-                );
+//                RefreshToken refreshToken = refreshTokenService.save(
+//                        refreshTokenService.createRefreshToken(tempUser.getId())
+//                );
 
                 // Setting session attributes
                 session.setAttribute("token", "Bearer " + token);

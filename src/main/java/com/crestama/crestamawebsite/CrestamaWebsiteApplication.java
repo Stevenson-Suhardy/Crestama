@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = "com.crestama.crestamawebsite")
-@EntityScan(basePackages = {"com.crestama.crestamawebsite"})
-@EnableJpaRepositories(basePackages = {"com.crestama.crestamawebsite"})
+@SpringBootApplication
+@EntityScan
+@EnableJpaRepositories
 public class CrestamaWebsiteApplication {
 
 	public static void main(String[] args) {

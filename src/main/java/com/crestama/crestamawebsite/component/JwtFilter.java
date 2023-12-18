@@ -74,8 +74,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 username = tokenManager.getUsernameFromToken(token);
             } catch (IllegalArgumentException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            } catch (ExpiredJwtException e) {
-                response.sendRedirect("/refreshToken");
+            }
+            catch (ExpiredJwtException e) {
+                response.sendRedirect("/login");
             }
         }
         else {
