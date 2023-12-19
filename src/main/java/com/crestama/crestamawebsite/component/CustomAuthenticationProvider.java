@@ -69,11 +69,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getName()));
                 }
 
-                // Delete existing refresh token in the database
-//                if (refreshTokenService.findByUserId(tempUser.getId()) != null) {
-//                    refreshTokenService.deleteByUserId(tempUser.getId());
-//                }
-
                 // Getting session
                 ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
                 HttpSession session = attr.getRequest().getSession(false);
@@ -83,9 +78,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 String token = tokenManager.generateJwtToken(userDetails);
 
                 // Generating Refresh Token and saving it to the database
-//                RefreshToken refreshToken = refreshTokenService.save(
-//                        refreshTokenService.createRefreshToken(tempUser.getId())
-//                );
 
                 // Setting session attributes
                 session.setAttribute("token", "Bearer " + token);
