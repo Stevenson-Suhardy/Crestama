@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  sql:
+    networks:
+      - crestama-network
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=crestama
+    ports:
+      - "3307:3306"
+  crestama-website:
+    networks:
+      - crestama-network
+    depends_on:
+      - sql
+    restart: on-failure
+    environment:
+      - DATABASE_HOST=sql
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=crestama
+      - DATABASE_PORT=3306
+    build: .
+    ports:
+      - "8080:8080"
+
+networks:
+  crestama-network:
