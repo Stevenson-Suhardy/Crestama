@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 
-@Entity
+@Entity(name="permission")
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
