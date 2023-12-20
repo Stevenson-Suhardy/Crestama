@@ -5,10 +5,7 @@ import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.*;
 
@@ -59,5 +56,16 @@ public class S3Util {
         ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(request);
 
         return objectBytes.asByteArray();
+    }
+
+    public static void deleteObject(String fileName) {
+        try {
+            DeleteObjectRequest request = DeleteObjectRequest.builder().bucket(BUCKET).key(fileName).build();
+
+            s3Client.deleteObject(request);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

@@ -43,7 +43,7 @@ public class HomeController {
         return "career";
     }
 
-    @GetMapping("/gallery")
+    @GetMapping("/gallery-photos")
     public String gallery(Model model, @RequestParam("page") Optional<Integer> page,
                           @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);

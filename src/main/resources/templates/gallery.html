@@ -71,16 +71,16 @@
             <div class="text-center">
                 <ul class="pagination" th:if="${products.totalPages > 0}">
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage - 1})}"
+                        <a class="page-link" th:href="@{/gallery-photos(size=${products.size}, page=${currentPage - 1})}"
                                              th:if="${currentPage > 1}">Previous</a>
                     </li>
                     <li class="page-item">
                         <a class="page-link" th:each="pageNumber : ${pageNumbers}"
-                           th:href="@{/gallery(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                           th:href="@{/gallery-photos(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
                         ></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage + 1})}"
+                        <a class="page-link" th:href="@{/gallery-photos(size=${products.size}, page=${currentPage + 1})}"
                                              th:if="${currentPage < products.totalPages}">Next</a>
                     </li>
                 </ul>

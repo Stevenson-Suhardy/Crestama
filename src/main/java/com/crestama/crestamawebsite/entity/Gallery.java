@@ -55,6 +55,10 @@ public class Gallery {
         return S3Util.imageFolderURL + id + "/" + imagePath;
     }
 
+    public String getImageName() {
+        return imagePath;
+    }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }

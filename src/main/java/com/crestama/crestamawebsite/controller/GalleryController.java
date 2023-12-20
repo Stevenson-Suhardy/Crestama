@@ -19,7 +19,6 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/gallery")
 public class GalleryController {
-    protected final String photoDirectory = "gallery-photos/";
     private GalleryService galleryService;
 
     @Autowired
@@ -96,8 +95,9 @@ public class GalleryController {
     @Transactional
     public String deleteItem(@PathVariable Long id) {
         try {
-            deleteGalleryFolder(galleryService.findById(id));
+            Gallery item = galleryService.findById(id);
 
+            S3Util.deleteObject("gallery-photos/" + item.getId() + "/" + item.getImageName());
             galleryService.deleteById(id);
         }
         catch (Exception e) {
@@ -105,33 +105,5 @@ public class GalleryController {
         }
 
         return "redirect:/gallery/items";
-    }
-
-    @Transactional
-    public void deleteGalleryFolder(Gallery gallery) {
-        try {
-            File folder = new File(photoDirectory + gallery.getId());
-            String[] files = folder.list();
-
-            assert files != null;
-            for (String file: files) {
-                File currentFile = new File(folder.getPath(), file);
-                if (currentFile.delete()) {
-                    System.out.println("File deleted.");
-                }
-                else {
-                    System.out.println("Cannot delete file.");
-                }
-            }
-            if (folder.delete()) {
-                System.out.println("Folder deleted.");
-            }
-            else {
-                System.out.println("Cannot delete folder.");
-            }
-        }
-        catch (Exception e) {
-            System.out.println("Failed to delete image!");
-        }
     }
 }

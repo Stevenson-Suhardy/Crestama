@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/roleHierarchy").hasRole("ADMIN")
                         .requestMatchers("/salesForm/**").hasRole("SALES")
                         .requestMatchers("/users/**").hasRole("ADMIN")
-                        .requestMatchers("/products/**").hasRole("STAFF")
+                        .requestMatchers("/gallery/**").hasRole("STAFF")
                         .requestMatchers("/manage").hasAnyRole("SALES", "STAFF")
                         .anyRequest().permitAll()
         ).formLogin(form ->
