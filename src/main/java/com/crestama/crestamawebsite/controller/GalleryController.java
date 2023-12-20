@@ -82,7 +82,7 @@ public class GalleryController {
         String uploadDir = "gallery-photos/" + savedGallery.getId() + "/";
 
         try {
-            S3Util.uploadFile(uploadDir + fileName, multipartFile.getInputStream());
+            S3Util.uploadImage(uploadDir + fileName, multipartFile.getInputStream());
         }
         catch (Exception e) {
             model.addAttribute("imageErr", "There was a problem with the image upload.");

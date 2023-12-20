@@ -9,16 +9,20 @@ import com.crestama.crestamawebsite.service.prospect.ProspectService;
 import com.crestama.crestamawebsite.service.salesReportForm.SalesReportFormService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import com.crestama.crestamawebsite.service.validation.SalesFormValidation;
+import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.coyote.Response;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -166,7 +171,9 @@ public class SalesFormController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fileLocation = dtf.format(LocalDateTime.now()) + ".xlsx";
 
-        try (OutputStream os = Files.newOutputStream(Paths.get(path, fileLocation));
+        Path stream = Paths.get(path, fileLocation);
+
+        try (OutputStream os = Files.newOutputStream(stream);
              Workbook workbook = new Workbook(os, "MyApplication", "1.0")) {
             Worksheet ws = formHeadings(workbook);
 
@@ -191,11 +198,10 @@ public class SalesFormController {
                             s.getCity().getCityName(),
                             s.getContactPersonName(),
                             s.getContactPersonPhone(),
-                            "test email",
+                            s.getContactPersonEmail(),
                             s.getDetailedActivity(),
                             s.getProspect().getId() + ": " + s.getProspect().getDescription(),
                             s.getComments(),
-                            ""
                     }).toArray(String[][]::new);
 
             for (int i = 0; i < listSalesReportForm.size(); i++) {
@@ -204,9 +210,25 @@ public class SalesFormController {
                 }
             }
         }
-        model.addAttribute("filePath", "/sales-reports/" + fileLocation);
+        InputStream inputStream = Files.newInputStream(stream);
+
+        S3Util.uploadReport("sales-reports/" + fileLocation, inputStream);
+
+        model.addAttribute("filePath", "/salesForm/download/" + fileLocation);
 
         return "salesForm/downloadForm";
+    }
+
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+        byte[] data = S3Util.downloadReport("sales-reports/" + fileName);
+        final ByteArrayResource resource = new ByteArrayResource(data);
+
+        return ResponseEntity
+                .ok()
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; fileName=\"" + fileName + "\"")
+                .body(resource);
     }
 
     public Worksheet formHeadings(Workbook workbook) {
@@ -215,7 +237,7 @@ public class SalesFormController {
             ws.width(i, 25);
         }
 
-        ws.range(0, 0, 0, 15).style()
+        ws.range(0, 0, 0, 13).style()
                 .fontName("Calibri")
                 .fontSize(9)
                 .bold()
@@ -235,7 +257,6 @@ public class SalesFormController {
         ws.value(0, 11, "Detail Aktivitas");
         ws.value(0, 12, "Prospek");
         ws.value(0, 13, "Catatan");
-        ws.value(0, 14, "File Upload");
 
 
         return ws;
