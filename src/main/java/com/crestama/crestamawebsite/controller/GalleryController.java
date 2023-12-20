@@ -2,7 +2,7 @@ package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.entity.Gallery;
 import com.crestama.crestamawebsite.service.gallery.GalleryService;
-import com.crestama.crestamawebsite.utility.FileUploadUtil;
+import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class GalleryController {
 
     @GetMapping("/addItem")
     public String addItem(Model model) {
-        model.addAttribute("item", new Gallery());
+        model.addAttribute("gallery", new Gallery());
 
         return "gallery/itemForm";
     }
@@ -45,7 +45,7 @@ public class GalleryController {
     public String editItem(Model model, @PathVariable Long id) {
         Gallery gallery = galleryService.findById(id);
 
-        model.addAttribute("item", gallery);
+        model.addAttribute("gallery", gallery);
 
         return "gallery/itemForm";
     }
@@ -53,8 +53,9 @@ public class GalleryController {
     @Transactional
     @PostMapping("/save")
     public String saveItem(@ModelAttribute @Valid Gallery gallery,
-                              @RequestParam("image") MultipartFile multipartFile,
-                              BindingResult result, Model model)
+                           BindingResult result,
+                           @RequestParam("image") MultipartFile multipartFile,
+                           Model model)
             throws IOException {
         if (result.hasErrors()) {
             if (multipartFile.getOriginalFilename() != null) {
@@ -63,12 +64,14 @@ public class GalleryController {
 
                     return "gallery/itemForm";
                 }
+                else {
+                    return "gallery/itemForm";
+                }
             }
             else {
                 model.addAttribute("imageErr", "Item Image is required");
-
-                return "gallery/itemForm";
             }
+            return "gallery/itemForm";
         }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -76,9 +79,15 @@ public class GalleryController {
         gallery.setImagePath(fileName);
         Gallery savedGallery = galleryService.save(gallery);
 
-        String uploadDir = "gallery-photos/" + savedGallery.getId();
+        String uploadDir = "gallery-photos/" + savedGallery.getId() + "/";
 
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        try {
+            S3Util.uploadFile(uploadDir + fileName, multipartFile.getInputStream());
+        }
+        catch (Exception e) {
+            model.addAttribute("imageErr", "There was a problem with the image upload.");
+            return "gallery/itemForm";
+        }
 
         return "redirect:/gallery/items";
     }

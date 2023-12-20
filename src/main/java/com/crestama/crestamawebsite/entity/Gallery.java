@@ -1,5 +1,6 @@
 package com.crestama.crestamawebsite.entity;
 
+import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -16,8 +17,6 @@ public class Gallery {
     private String name;
 
     @Column(name="image_path")
-    @NotEmpty(message = "Gallery Image is required.")
-    @NotNull(message = "Gallery Image is required.")
     private String imagePath;
 
     // Constructors
@@ -53,7 +52,7 @@ public class Gallery {
             return null;
         }
 
-        return "/gallery-photos/" + id + "/" + imagePath;
+        return S3Util.imageFolderURL + id + "/" + imagePath;
     }
 
     public void setImagePath(String imagePath) {
