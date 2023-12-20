@@ -36,8 +36,9 @@
         <h2 class="form-signin-heading text-center">Login</h2>
         <input type="text" class="form-control" name="username" placeholder="Email Address" />
         <input type="password" class="form-control" name="password" placeholder="Password" />
-        <div class="d-grid gap-2" style="margin-bottom: 10px;">
+        <div class="d-flex gap-2" style="margin-bottom: 10px; align-items: center; justify-content: center;">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+            <a class="btn btn-lg btn-danger btn-block" th:href="@{/}">Cancel</a>
         </div>
     </form>
 </div>

@@ -52,8 +52,6 @@ public class SalesReportForm {
     private String companyName;
 
     @Column(name = "streetAddress")
-    @NotNull(message = "Street Address is required.")
-    @NotEmpty(message = "Street Address is required.")
     private String streetAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,6 +68,9 @@ public class SalesReportForm {
     @NotNull(message = "Contact Person Phone Number is required.")
     @NotEmpty(message = "Contact Person Phone Number is required.")
     private String contactPersonPhone;
+
+    @Column(name = "contactPersonEmail")
+    private String contactPersonEmail;
 
     @Column(name = "detailedActivity")
     @NotNull(message = "Detailed Activity is required.")
@@ -89,8 +90,8 @@ public class SalesReportForm {
 
     public SalesReportForm(User user, LocalDateTime startActivityDate, LocalDateTime endActivityDate, String activityType,
                            CompanyType companyType, String companyName, String streetAddress, City city,
-                           String contactPersonName, String contactPersonPhone, String detailedActivity,
-                           Prospect prospect, String comments) throws Exception {
+                           String contactPersonName, String contactPersonPhone, String contactPersonEmail,
+                           String detailedActivity, Prospect prospect, String comments) throws Exception {
 
         this.submissionDate = LocalDateTime.now();
         this.user = user;
@@ -103,6 +104,7 @@ public class SalesReportForm {
         this.city = city;
         this.contactPersonName = contactPersonName;
         this.contactPersonPhone = contactPersonPhone;
+        this.contactPersonEmail = contactPersonEmail;
         this.detailedActivity = detailedActivity;
         this.prospect = prospect;
         this.comments = comments;
@@ -202,6 +204,14 @@ public class SalesReportForm {
 
     public void setContactPersonPhone(String contactPersonPhone) {
         this.contactPersonPhone = contactPersonPhone;
+    }
+
+    public String getContactPersonEmail() {
+        return contactPersonEmail;
+    }
+
+    public void setContactPersonEmail(String contactPersonEmail) {
+        this.contactPersonEmail = contactPersonEmail;
     }
 
     public String getDetailedActivity() {
