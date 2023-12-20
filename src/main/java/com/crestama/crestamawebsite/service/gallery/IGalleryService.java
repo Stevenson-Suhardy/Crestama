@@ -1,4 +1,4 @@
-package com.crestama.crestamawebsite.service.product;
+package com.crestama.crestamawebsite.service.gallery;
 
 import com.crestama.crestamawebsite.entity.Gallery;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
 package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.entity.Gallery;
-import com.crestama.crestamawebsite.service.product.GalleryService;
+import com.crestama.crestamawebsite.service.gallery.GalleryService;
 import com.crestama.crestamawebsite.utility.FileUploadUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/gallery")

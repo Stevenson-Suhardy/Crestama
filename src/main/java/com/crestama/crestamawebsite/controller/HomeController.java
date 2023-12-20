@@ -1,7 +1,7 @@
 package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.entity.Gallery;
-import com.crestama.crestamawebsite.service.product.GalleryService;
+import com.crestama.crestamawebsite.service.gallery.GalleryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
