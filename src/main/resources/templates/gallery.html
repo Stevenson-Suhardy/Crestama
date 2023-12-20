@@ -34,7 +34,7 @@
 
 <section>
     <div class="full-img" id="fullImgBox">
-        <img id="fullImg" src="/product-photos/2/2_2.jpg" alt="random picture" />
+        <img id="fullImg" src="/gallery-photos/2/2_2.jpg" alt="random picture" />
         <span onclick="closeFullImg()">X</span>
     </div>
 </section>
@@ -63,8 +63,8 @@
     <div class="container">
         <div class="row">
             <div class="img-gallery">
-                <img th:each="product, iStat : ${products.getContent()}" th:data-name="${product.getImagePath()}"
-                     th:src="${product.getImagePath()}" th:alt="${product.getName()}"
+                <img th:each="gallery, iStat : ${products.getContent()}" th:data-name="${gallery.getImagePath()}"
+                     th:src="${gallery.getImagePath()}" th:alt="${gallery.getName()}"
                      onclick="openFullImg(this.getAttribute('data-name'))"
                 />
             </div>

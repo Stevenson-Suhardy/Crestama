@@ -1,7 +1,7 @@
 package com.crestama.crestamawebsite.service.product;
 
-import com.crestama.crestamawebsite.repository.ProductRepository;
-import com.crestama.crestamawebsite.entity.Product;
+import com.crestama.crestamawebsite.entity.Gallery;
+import com.crestama.crestamawebsite.repository.GalleryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,53 +15,53 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductService implements IProductService {
-    private ProductRepository productRepository;
+public class GalleryService implements IGalleryService {
+    private GalleryRepository galleryRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public GalleryService(GalleryRepository galleryRepository) {
+        this.galleryRepository = galleryRepository;
     }
 
     // Overridden methods
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Gallery> findAll() {
+        return galleryRepository.findAll();
     }
 
     @Override
-    public Product findById(Long id) {
-        Optional<Product> result = productRepository.findById(id);
-        Product product = null;
+    public Gallery findById(Long id) {
+        Optional<Gallery> result = galleryRepository.findById(id);
+        Gallery gallery = null;
 
         if (result.isPresent()) {
-            product = result.get();
+            gallery = result.get();
         }
         else {
             throw new RuntimeException("Did not find product id - " + id);
         }
 
-        return product;
+        return gallery;
     }
 
     @Override
     @Transactional
-    public Product save(Product product) {
-        return productRepository.save(product);
+    public Gallery save(Gallery gallery) {
+        return galleryRepository.save(gallery);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        productRepository.deleteById(id);
+        galleryRepository.deleteById(id);
     }
 
     @Override
-    public Page<Product> findPaginated(Pageable pageable) {
+    public Page<Gallery> findPaginated(Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
-        List<Product> list;
+        List<Gallery> list;
 
         if (findAll().size() < startItem) {
             list = Collections.emptyList();
@@ -70,6 +70,6 @@ public class ProductService implements IProductService {
             list = findAll().subList(startItem, toIndex);
         }
 
-        return new PageImpl<Product>(list, PageRequest.of(currentPage, pageSize), findAll().size());
+        return new PageImpl<Gallery>(list, PageRequest.of(currentPage, pageSize), findAll().size());
     }
 }

@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 public class ExposeDirConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDirectory("product-photos", registry);
+        exposeDirectory("gallery-photos", registry);
         exposeDirectory("sales-reports", registry);
     }
 

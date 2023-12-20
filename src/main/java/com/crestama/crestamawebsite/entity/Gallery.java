@@ -4,25 +4,27 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-@Entity(name = "product")
-public class Product {
+@Entity(name = "gallery")
+public class Gallery {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @Column(name="name")
-    @NotEmpty(message = "Product Name is required.")
-    @NotNull(message = "Product Name is required.")
+    @NotEmpty(message = "Gallery Name is required.")
+    @NotNull(message = "Gallery Name is required.")
     private String name;
 
     @Column(name="image_path")
+    @NotEmpty(message = "Gallery Image is required.")
+    @NotNull(message = "Gallery Image is required.")
     private String imagePath;
 
     // Constructors
 
-    public Product() {}
+    public Gallery() {}
 
-    public Product(String name, String imagePath) {
+    public Gallery(String name, String imagePath) {
         this.name = name;
         this.imagePath = imagePath;
     }
@@ -51,7 +53,7 @@ public class Product {
             return null;
         }
 
-        return "/product-photos/" + id + "/" + imagePath;
+        return "/gallery-photos/" + id + "/" + imagePath;
     }
 
     public void setImagePath(String imagePath) {
@@ -62,7 +64,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Gallery {" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", imagePath='" + imagePath + '\'' +

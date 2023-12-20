@@ -1,7 +1,7 @@
 package com.crestama.crestamawebsite.controller;
 
-import com.crestama.crestamawebsite.entity.Product;
-import com.crestama.crestamawebsite.service.product.ProductService;
+import com.crestama.crestamawebsite.entity.Gallery;
+import com.crestama.crestamawebsite.service.product.GalleryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +17,9 @@ import java.util.stream.IntStream;
 
 @Controller
 public class HomeController {
-    private ProductService productService;
+    private GalleryService productService;
     @Autowired
-    public HomeController(ProductService productService) {
+    public HomeController(GalleryService productService) {
         this.productService = productService;
     }
 
@@ -49,7 +49,7 @@ public class HomeController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
 
-        Page<Product> productPage = productService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Gallery> productPage = productService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("products", productPage);
