@@ -15,13 +15,16 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.coyote.Response;
-import org.dhatim.fastexcel.Workbook;
-import org.dhatim.fastexcel.Worksheet;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +34,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.awt.*;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -171,48 +169,73 @@ public class SalesFormController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fileLocation = dtf.format(LocalDateTime.now()) + ".xlsx";
 
-        Path stream = Paths.get(path, fileLocation);
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet ws = formHeadings(workbook);
 
-        try (OutputStream os = Files.newOutputStream(stream);
-             Workbook workbook = new Workbook(os, "MyApplication", "1.0")) {
-            Worksheet ws = formHeadings(workbook);
+        List<SalesReportForm> listSalesReportForm = null;
 
-            List<SalesReportForm> listSalesReportForm = null;
+        if (start == null || end == null) {
+            listSalesReportForm = salesReportFormService.findAll();
+        }
+        else {
+            listSalesReportForm = salesReportFormService.findByDateRange(start, end);
+        }
 
-            if (start == null || end == null) {
-                listSalesReportForm = salesReportFormService.findAll();
-            }
-            else {
-                listSalesReportForm = salesReportFormService.findByDateRange(start, end);
-            }
+        String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
+                {
+                        s.getSubmissionDate().format(formatter),
+                        s.getUser().getId().toString(),
+                        s.getStartActivityDate().format(formatter),
+                        s.getActivityType(),
+                        s.getCompanyType().getType(),
+                        s.getCompanyName(),
+                        s.getStreetAddress(),
+                        s.getCity().getCityName(),
+                        s.getContactPersonName(),
+                        s.getContactPersonPhone(),
+                        s.getContactPersonEmail(),
+                        s.getDetailedActivity(),
+                        s.getProspect().getId() + ": " + s.getProspect().getDescription(),
+                        s.getComments(),
+                }).toArray(String[][]::new);
 
-            String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
-                    {
-                            s.getSubmissionDate().format(formatter),
-                            s.getUser().getId().toString(),
-                            s.getStartActivityDate().format(formatter),
-                            s.getActivityType(),
-                            s.getCompanyType().getType(),
-                            s.getCompanyName(),
-                            s.getStreetAddress(),
-                            s.getCity().getCityName(),
-                            s.getContactPersonName(),
-                            s.getContactPersonPhone(),
-                            s.getContactPersonEmail(),
-                            s.getDetailedActivity(),
-                            s.getProspect().getId() + ": " + s.getProspect().getDescription(),
-                            s.getComments(),
-                    }).toArray(String[][]::new);
+        XSSFRow row = ws.createRow(1);
+        XSSFCell cell = row.createCell(0);
 
-            for (int i = 0; i < listSalesReportForm.size(); i++) {
-                for (int j = 0; j < HEADINGS; j++) {
-                    ws.value(i+1, j, salesReportFormArray[i][j]);
-                }
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+        XSSFFont fontHeading = workbook.createFont();
+        fontHeading.setFontName("Calibri");
+        fontHeading.setFontHeightInPoints((short) 9);
+        cellStyle.setFont(fontHeading);
+
+        cell.setCellStyle(cellStyle);
+
+        for (int i = 0; i < listSalesReportForm.size(); i++) {
+            row = ws.createRow(i+1);
+            for (int j = 0; j < HEADINGS; j++) {
+                cell = row.createCell(j);
+
+                cell.setCellValue(salesReportFormArray[i][j]);
             }
         }
-        InputStream inputStream = Files.newInputStream(stream);
 
-        S3Util.uploadReport("sales-reports/" + fileLocation, inputStream);
+        for (int i = 0; i <= 13; i++) {
+            ws.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.flush();
+            outputStream.close();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        S3Util.uploadReport("sales-reports/" + fileLocation, outputStream);
 
         model.addAttribute("filePath", "/salesForm/download/" + fileLocation);
 
@@ -231,33 +254,46 @@ public class SalesFormController {
                 .body(resource);
     }
 
-    public Worksheet formHeadings(Workbook workbook) {
-        Worksheet ws = workbook.newWorksheet("Sheet 1");
-        for (int i = 0; i <= 15; i++) {
-            ws.width(i, 25);
+    public XSSFSheet formHeadings(XSSFWorkbook workbook) {
+        final String[] headings = {
+                "Submission Date",
+                "Kode Sales",
+                "Tanggal & Jam Mulai Aktivitas",
+                "Jenis Aktivitas",
+                "Jenis Perusahaan Customer",
+                "Nama Lengkap Perusahaan Customer",
+                "Street Address",
+                "City",
+                "Nama Contact Person",
+                "Nomor HP Contact Person",
+                "Email Customer (Perusahaan)",
+                "Detail Aktivitas",
+                "Prospek",
+                "Catatan"
+        };
+
+        XSSFSheet ws = workbook.createSheet("Sheet1");
+
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+
+        XSSFFont fontHeading = workbook.createFont();
+        fontHeading.setBold(true);
+        fontHeading.setFontName("Calibri");
+        fontHeading.setFontHeightInPoints((short) 9);
+
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        cellStyle.setFont(fontHeading);
+
+
+        XSSFRow headerRow =  ws.createRow(0);
+        XSSFCell cell;
+
+        for (int i = 0; i <= 13; i++) {
+            cell = headerRow.createCell(i);
+            cell.setCellValue(headings[i]);
+            cell.setCellStyle(cellStyle);
         }
-
-        ws.range(0, 0, 0, 13).style()
-                .fontName("Calibri")
-                .fontSize(9)
-                .bold()
-                .fillColor("83F28F")
-                .set();
-        ws.value(0, 0, "Submission Date");
-        ws.value(0, 1, "Kode Sales");
-        ws.value(0, 2, "Tanggal & Jam Mulai Aktivitas");
-        ws.value(0, 3, "Jenis Aktivitas");
-        ws.value(0, 4, "Jenis Perusahaan Customer");
-        ws.value(0, 5, "Nama Lengkap Perusahaan Customer");
-        ws.value(0, 6, "Street Address");
-        ws.value(0, 7, "City");
-        ws.value(0, 8, "Nama Contact Person");
-        ws.value(0, 9, "Nomor HP Contact Person");
-        ws.value(0, 10, "Email Customer (Perusahaan)");
-        ws.value(0, 11, "Detail Aktivitas");
-        ws.value(0, 12, "Prospek");
-        ws.value(0, 13, "Catatan");
-
 
         return ws;
     }

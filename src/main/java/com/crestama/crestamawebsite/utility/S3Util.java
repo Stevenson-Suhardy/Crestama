@@ -38,13 +38,14 @@ public class S3Util {
         }
     }
 
-    public static void uploadReport(String fileName, InputStream inputStream) {
+    public static void uploadReport(String fileName, ByteArrayOutputStream excel) {
         try {
-            PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName)
-                    .contentType("xlsx")
-                    .build();
+            PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName).build();
 
-            s3Client.putObject(request, RequestBody.fromInputStream(inputStream, inputStream.available()));
+            try (InputStream inputStream = new ByteArrayInputStream(excel.toByteArray())) {
+                s3Client.putObject(request, RequestBody.fromInputStream(inputStream, inputStream.available()));
+            }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
