@@ -45,6 +45,21 @@ public class SalesReportFormService implements ISalesReportForm {
         return salesReportFormRepository.findByDateRange(start, end);
     }
 
+    @Override
+    public List<SalesReportForm> findByStartDate(Date start) {
+        return salesReportFormRepository.findByStartDate(start);
+    }
+
+    @Override
+    public List<SalesReportForm> findByEndDate(Date end) {
+        return salesReportFormRepository.findByEndDate(end);
+    }
+
+    @Override
+    public List<SalesReportForm> findByUser(Long id) {
+        return salesReportFormRepository.findByUser(id);
+    }
+
     @Transactional
     @Override
     public SalesReportForm save(SalesReportForm salesReportForm) {

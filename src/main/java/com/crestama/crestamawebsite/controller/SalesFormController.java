@@ -1,6 +1,7 @@
 package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.component.TokenManager;
+import com.crestama.crestamawebsite.entity.Role;
 import com.crestama.crestamawebsite.entity.SalesReportForm;
 import com.crestama.crestamawebsite.entity.User;
 import com.crestama.crestamawebsite.service.city.CityService;
@@ -9,16 +10,18 @@ import com.crestama.crestamawebsite.service.prospect.ProspectService;
 import com.crestama.crestamawebsite.service.salesReportForm.SalesReportFormService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import com.crestama.crestamawebsite.service.validation.SalesFormValidation;
+import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.apache.commons.compress.utils.IOUtils;
-import org.dhatim.fastexcel.Workbook;
-import org.dhatim.fastexcel.Worksheet;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,12 +30,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.awt.*;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -50,7 +49,7 @@ public class SalesFormController {
     private UserService userService;
     private SalesFormValidation salesFormValidation;
     private final int HEADINGS = 15;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy HH:mm");
 
     @Autowired
     public SalesFormController(SalesReportFormService salesReportFormService,
@@ -68,7 +67,33 @@ public class SalesFormController {
 
     @GetMapping("/salesActivities")
     public String listOfSalesActivity(Model model) {
-        model.addAttribute("salesActivities", salesReportFormService.findAll());
+        // Getting the session
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+
+        if (session != null && session.getAttribute("token") != null) {
+            // Getting user using token
+            String token = (String) session.getAttribute("token");
+            String userEmail = tokenManager.getUsernameFromToken(token.substring(7));
+
+            User user = userService.findByEmail(userEmail);
+
+            boolean isAdmin = false;
+
+            for (Role role : user.getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+
+            if (isAdmin) {
+                model.addAttribute("salesActivities", salesReportFormService.findAll());
+            }
+            else {
+                model.addAttribute("salesActivities", salesReportFormService.findByUser(user.getId()));
+            }
+        }
 
         return "salesForm/listOfSalesActivity";
     }
@@ -130,6 +155,10 @@ public class SalesFormController {
                 // Return to the form if there are any
                 return "salesForm/salesForm";
             }
+            // Capitalize Members
+            salesReportForm.setActivityType(salesReportForm.getActivityType().toUpperCase());
+            salesReportForm.setCompanyName(salesReportForm.getCompanyName().toUpperCase());
+            salesReportForm.setContactPersonName(salesReportForm.getContactPersonName().toUpperCase());
 
             // Save the form to the database
             salesReportFormService.save(salesReportForm);
@@ -163,80 +192,142 @@ public class SalesFormController {
         File currDir = new File("sales-reports");
         String path = currDir.getAbsolutePath();
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM d, yyyy");
         String fileLocation = dtf.format(LocalDateTime.now()) + ".xlsx";
 
-        try (OutputStream os = Files.newOutputStream(Paths.get(path, fileLocation));
-             Workbook workbook = new Workbook(os, "MyApplication", "1.0")) {
-            Worksheet ws = formHeadings(workbook);
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet ws = formHeadings(workbook);
 
-            List<SalesReportForm> listSalesReportForm = null;
+        List<SalesReportForm> listSalesReportForm = null;
 
-            if (start == null || end == null) {
-                listSalesReportForm = salesReportFormService.findAll();
-            }
-            else {
-                listSalesReportForm = salesReportFormService.findByDateRange(start, end);
-            }
+        if (start == null && end == null) {
+            listSalesReportForm = salesReportFormService.findAll();
+        }
+        else if (start == null) {
+            listSalesReportForm = salesReportFormService.findByEndDate(end);
+        }
+        else if (end == null) {
+            listSalesReportForm = salesReportFormService.findByStartDate(start);
+        }
+        else {
+            listSalesReportForm = salesReportFormService.findByDateRange(start, end);
+        }
 
-            String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
-                    {
-                            s.getSubmissionDate().format(formatter),
-                            s.getUser().getId().toString(),
-                            s.getStartActivityDate().format(formatter),
-                            s.getActivityType(),
-                            s.getCompanyType().getType(),
-                            s.getCompanyName(),
-                            s.getStreetAddress(),
-                            s.getCity().getCityName(),
-                            s.getContactPersonName(),
-                            s.getContactPersonPhone(),
-                            "test email",
-                            s.getDetailedActivity(),
-                            s.getProspect().getId() + ": " + s.getProspect().getDescription(),
-                            s.getComments(),
-                            ""
-                    }).toArray(String[][]::new);
+        String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
+                {
+                        s.getSubmissionDate().format(formatter),
+                        s.getUser().getId().toString(),
+                        s.getStartActivityDate().format(formatter),
+                        s.getEndActivityDate().format(formatter),
+                        s.getActivityType(),
+                        s.getCompanyType().getType(),
+                        s.getCompanyName(),
+                        s.getStreetAddress(),
+                        s.getCity().getCityName(),
+                        s.getContactPersonName(),
+                        s.getContactPersonPhone(),
+                        s.getContactPersonEmail(),
+                        s.getDetailedActivity(),
+                        s.getProspect().getId() + ": " + s.getProspect().getDescription(),
+                        s.getComments(),
+                }).toArray(String[][]::new);
 
-            for (int i = 0; i < listSalesReportForm.size(); i++) {
-                for (int j = 0; j < HEADINGS; j++) {
-                    ws.value(i+1, j, salesReportFormArray[i][j]);
-                }
+        XSSFRow row = ws.createRow(1);
+        XSSFCell cell = row.createCell(0);
+
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+        XSSFFont fontHeading = workbook.createFont();
+        fontHeading.setFontName("Calibri");
+        fontHeading.setFontHeightInPoints((short) 9);
+        cellStyle.setFont(fontHeading);
+
+        cell.setCellStyle(cellStyle);
+
+        for (int i = 0; i < listSalesReportForm.size(); i++) {
+            row = ws.createRow(i+1);
+            for (int j = 0; j < HEADINGS; j++) {
+                cell = row.createCell(j);
+
+                cell.setCellValue(salesReportFormArray[i][j]);
             }
         }
-        model.addAttribute("filePath", "/sales-reports/" + fileLocation);
+
+        for (int i = 0; i < HEADINGS; i++) {
+            ws.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.flush();
+            outputStream.close();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        S3Util.uploadReport("sales-reports/" + fileLocation, outputStream);
+
+        model.addAttribute("filePath", "/salesForm/download/" + fileLocation);
 
         return "salesForm/downloadForm";
     }
 
-    public Worksheet formHeadings(Workbook workbook) {
-        Worksheet ws = workbook.newWorksheet("Sheet 1");
-        for (int i = 0; i <= 15; i++) {
-            ws.width(i, 25);
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+        byte[] data = S3Util.downloadReport("sales-reports/" + fileName);
+        final ByteArrayResource resource = new ByteArrayResource(data);
+
+        return ResponseEntity
+                .ok()
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; fileName=\"" + fileName + "\"")
+                .body(resource);
+    }
+
+    public XSSFSheet formHeadings(XSSFWorkbook workbook) {
+        final String[] headings = {
+                "Submission Date",
+                "Kode Sales",
+                "Tanggal & Jam Mulai Aktivitas",
+                "Tanggal & Jam Selesai Aktivitas",
+                "Jenis Aktivitas",
+                "Jenis Perusahaan Customer",
+                "Nama Lengkap Perusahaan Customer",
+                "Street Address",
+                "City",
+                "Nama Contact Person",
+                "Nomor HP Contact Person",
+                "Email Customer (Perusahaan)",
+                "Detail Aktivitas",
+                "Prospek",
+                "Catatan, Rencana Project, Rencana Follow Up, dll"
+        };
+
+        XSSFSheet ws = workbook.createSheet("Sheet1");
+
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+
+        XSSFFont fontHeading = workbook.createFont();
+        fontHeading.setBold(true);
+        fontHeading.setFontName("Calibri");
+        fontHeading.setFontHeightInPoints((short) 9);
+
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        cellStyle.setFont(fontHeading);
+
+
+        XSSFRow headerRow =  ws.createRow(0);
+        XSSFCell cell;
+
+        for (int i = 0; i < HEADINGS; i++) {
+            cell = headerRow.createCell(i);
+            cell.setCellValue(headings[i]);
+            cell.setCellStyle(cellStyle);
         }
-
-        ws.range(0, 0, 0, 15).style()
-                .fontName("Calibri")
-                .fontSize(9)
-                .bold()
-                .fillColor("83F28F")
-                .set();
-        ws.value(0, 0, "Submission Date");
-        ws.value(0, 1, "Kode Sales");
-        ws.value(0, 2, "Tanggal & Jam Mulai Aktivitas");
-        ws.value(0, 3, "Jenis Aktivitas");
-        ws.value(0, 4, "Jenis Perusahaan Customer");
-        ws.value(0, 5, "Nama Lengkap Perusahaan Customer");
-        ws.value(0, 6, "Street Address");
-        ws.value(0, 7, "City");
-        ws.value(0, 8, "Nama Contact Person");
-        ws.value(0, 9, "Nomor HP Contact Person");
-        ws.value(0, 10, "Email Customer (Perusahaan)");
-        ws.value(0, 11, "Detail Aktivitas");
-        ws.value(0, 12, "Prospek");
-        ws.value(0, 13, "Catatan");
-        ws.value(0, 14, "File Upload");
-
 
         return ws;
     }

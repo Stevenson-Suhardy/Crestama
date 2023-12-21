@@ -3,10 +3,14 @@
 }
 
 body {
-    font-size: 1.25rem;
+    font-size: 1rem;
     background-color: #f6f8fa;
 }
 
 td {
     line-height: 3rem;
+}
+
+th {
+    cursor: pointer;
 }

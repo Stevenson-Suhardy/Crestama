@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  server:
+    build: .
+    image: "crestama"
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: "mysql:latest"
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: crestamadb
+      MYSQL_ROOT_PASSWORD: root

@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <h2 class="form-signin-heading text-center">Add Product</h2>
+        <h2 class="form-signin-heading text-center">Add New Sales Activity</h2>
         <input type="hidden" th:field="*{id}" />
 
         <label for="start">Start Activity Date and Time</label>
@@ -54,6 +54,9 @@
 
         <label for="contactPersonPhone">Contact Person Phone Number</label>
         <input id="contactPersonPhone" type="text" th:field="*{contactPersonPhone}" class="form-control" />
+
+        <label for="contactPersonEmail">Contact Person Email</label>
+        <input id="contactPersonEmail" type="text" th:field="*{contactPersonEmail}" class="form-control" />
 
         <label for="detailedActivity">Detailed Activity</label>
         <input id="detailedActivity" type="text" th:field="*{detailedActivity}" class="form-control" />

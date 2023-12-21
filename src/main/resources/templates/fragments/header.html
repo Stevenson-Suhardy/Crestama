@@ -42,7 +42,7 @@
         <li><a th:href="@{/}" class="smoothScroll">Home</a></li>
         <li><a th:href="@{/about}" class="smoothScroll">About Us</a></li>
         <li><a href="#footer" class="smoothScroll">Contact</a></li>
-        <li><a th:href="@{/gallery}" class="smoothScroll">Gallery</a></li>
+        <li><a th:href="@{/gallery-photos}" class="smoothScroll">Gallery</a></li>
         <li><a th:href="@{/career}" class="smoothScroll">Career</a></li>
         <li><a th:href="@{/manage}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF', 'ROLE_SALES')" class="smoothScroll">Manage</a></li>
         <li sec:authorize="isAuthenticated()"><a>Current User: <span sec:authentication="name"></span></a></li>

@@ -19,18 +19,23 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid">
     <div class="d-flex bd-highlight mb-3">
         <div class="me-auto p-2 bd-highlight"><h2>Sales Activities</h2></div>
         <div class="p-2 bd-highlight">
             <a class="btn btn-primary" th:href="@{/salesForm}">Create</a>
-            <a class="btn btn-success" th:href="@{/salesForm/excelFormDateRange}">Generate Excel Form</a>
+            <a class="btn btn-success" sec:authorize="hasRole('ADMIN')" th:href="@{/salesForm/excelFormDateRange}">
+                Generate Excel Form</a>
             <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
         </div>
     </div>
 
+    <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..">
+
+    <br>
+
     <div class="table-responsive">
-        <table class="table" style="white-space: nowrap;">
+        <table id="rootTable" class="table">
             <thead>
             <tr>
                 <th scope="col">Submission Date</th>
@@ -50,12 +55,12 @@
                 <th scope="col">Actions</th>
             </tr>
             </thead>
-            <tbody id="mytable">
+            <tbody id="myTable">
             <tr th:each="salesActivity : ${salesActivities}">
-                <td th:text="${#temporals.format(salesActivity.getSubmissionDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${#temporals.format(salesActivity.getSubmissionDate(), 'dd/MM/yyyy HH:mm')}" />
                 <td th:text="${salesActivity.getUser().getFirstName() + ' ' + salesActivity.getUser().getLastName()}" />
-                <td th:text="${#temporals.format(salesActivity.getStartActivityDate(), 'dd-MM-yyyy hh:mm a')}" />
-                <td th:text="${#temporals.format(salesActivity.getEndActivityDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${#temporals.format(salesActivity.getStartActivityDate(), 'dd/MM/yyyy HH:mm')}" />
+                <td th:text="${#temporals.format(salesActivity.getEndActivityDate(), 'dd/MM/yyyy HH:mm')}" />
                 <td th:text="${salesActivity.getActivityType()}" />
                 <td th:text="${salesActivity.getCompanyType().getType()}" />
                 <td th:text="${salesActivity.getCompanyName()}" />
@@ -82,5 +87,7 @@
         </table>
     </div>
 </div>
+<script src="/js/jQuery-3.7.1.js"></script>
+<script src="/js/sales/listOfSalesActivity.js"></script>
 </body>
 </html>

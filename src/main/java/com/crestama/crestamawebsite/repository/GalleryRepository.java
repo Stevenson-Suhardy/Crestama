@@ -1,9 +1,9 @@
 package com.crestama.crestamawebsite.repository;
 
-import com.crestama.crestamawebsite.entity.Product;
+import com.crestama.crestamawebsite.entity.Gallery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface GalleryRepository extends JpaRepository<Gallery, Long> {
 }

@@ -52,12 +52,39 @@ public class UserController {
 
     @Transactional
     @PostMapping("/save")
-    public String save(@ModelAttribute @Valid User user, BindingResult result, Model model) {
+    public String save(@ModelAttribute @Valid User user,
+                       BindingResult result,
+                       @RequestParam("confirmPassword") String confirmPassword, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("roles", roleService.findAll());
 
             return "user/userForm";
         }
+        if (confirmPassword != null) {
+            if (confirmPassword.isEmpty() || confirmPassword.isBlank()) {
+                model.addAttribute("roles", roleService.findAll());
+                model.addAttribute("confirmError",
+                        "Confirm Password is required.");
+
+                return "user/userForm";
+            }
+            else {
+                if (!user.getPassword().equals(confirmPassword)) {
+                    model.addAttribute("roles", roleService.findAll());
+                    model.addAttribute("confirmError",
+                            "Password does not match with Confirm Password");
+
+                    return "user/userForm";
+                }
+            }
+        }
+        else {
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("confirmError",
+                    "Confirm Password is required.");
+            return "user/userForm";
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
 

@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "city")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="cityName")
+    @Column(name="city_name")
     private String cityName;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "city")

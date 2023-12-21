@@ -15,4 +15,10 @@ public interface ISalesReportForm {
     void deleteById(Long id);
 
     List<SalesReportForm> findByDateRange(Date start, Date end);
+
+    List<SalesReportForm> findByStartDate(Date start);
+
+    List<SalesReportForm> findByEndDate(Date end);
+
+    List<SalesReportForm> findByUser(Long id);
 }

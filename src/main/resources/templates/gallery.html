@@ -34,7 +34,7 @@
 
 <section>
     <div class="full-img" id="fullImgBox">
-        <img id="fullImg" src="/product-photos/2/2_2.jpg" alt="random picture" />
+        <img id="fullImg" src="/gallery-photos/2/2_2.jpg" alt="random picture" />
         <span onclick="closeFullImg()">X</span>
     </div>
 </section>
@@ -63,24 +63,24 @@
     <div class="container">
         <div class="row">
             <div class="img-gallery">
-                <img th:each="product, iStat : ${products.getContent()}" th:data-name="${product.getImagePath()}"
-                     th:src="${product.getImagePath()}" th:alt="${product.getName()}"
+                <img th:each="gallery, iStat : ${products.getContent()}" th:data-name="${gallery.getImagePath()}"
+                     th:src="${gallery.getImagePath()}" th:alt="${gallery.getName()}"
                      onclick="openFullImg(this.getAttribute('data-name'))"
                 />
             </div>
             <div class="text-center">
                 <ul class="pagination" th:if="${products.totalPages > 0}">
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage - 1})}"
+                        <a class="page-link" th:href="@{/gallery-photos(size=${products.size}, page=${currentPage - 1})}"
                                              th:if="${currentPage > 1}">Previous</a>
                     </li>
                     <li class="page-item">
                         <a class="page-link" th:each="pageNumber : ${pageNumbers}"
-                           th:href="@{/gallery(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                           th:href="@{/gallery-photos(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
                         ></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery(size=${products.size}, page=${currentPage + 1})}"
+                        <a class="page-link" th:href="@{/gallery-photos(size=${products.size}, page=${currentPage + 1})}"
                                              th:if="${currentPage < products.totalPages}">Next</a>
                     </li>
                 </ul>

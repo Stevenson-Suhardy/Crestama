@@ -2,7 +2,6 @@ package com.crestama.crestamawebsite.config;
 
 import com.crestama.crestamawebsite.component.*;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
-import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,23 +25,19 @@ public class SecurityConfig {
     private RequestWrapperFilter requestWrapperFilter;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
-
-    private RefreshTokenService refreshTokenService;
     @Autowired
     public SecurityConfig(
             UserService userService,
             JwtFilter jwtFilter,
             RequestWrapperFilter requestWrapperFilter,
             CustomUserDetailService customUserDetailService,
-            TokenManager tokenManager,
-            RefreshTokenService refreshTokenService
+            TokenManager tokenManager
     ) {
         this.userService = userService;
         this.jwtFilter = jwtFilter;
         this.requestWrapperFilter = requestWrapperFilter;
         this.customUserDetailService = customUserDetailService;
         this.tokenManager = tokenManager;
-        this.refreshTokenService = refreshTokenService;
     }
 
     @Bean
@@ -53,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/roleHierarchy").hasRole("ADMIN")
                         .requestMatchers("/salesForm/**").hasRole("SALES")
                         .requestMatchers("/users/**").hasRole("ADMIN")
-                        .requestMatchers("/products/**").hasRole("STAFF")
+                        .requestMatchers("/gallery/**").hasRole("STAFF")
                         .requestMatchers("/manage").hasAnyRole("SALES", "STAFF")
                         .anyRequest().permitAll()
         ).formLogin(form ->
@@ -85,18 +79,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-        expressionHandler.setRoleHierarchy(roleHierarchy());
-        return expressionHandler;
-    }
-
-    @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .authenticationProvider(new CustomAuthenticationProvider(
                         userService, encoder(),
-                        customUserDetailService, tokenManager, refreshTokenService
+                        customUserDetailService, tokenManager
                 ))
                 .build();
     }

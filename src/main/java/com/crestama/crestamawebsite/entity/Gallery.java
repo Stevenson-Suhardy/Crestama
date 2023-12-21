@@ -1,19 +1,19 @@
 package com.crestama.crestamawebsite.entity;
 
+import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-public class Product {
+@Entity(name = "gallery")
+public class Gallery {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="id")
     private Long id;
 
     @Column(name="name")
-    @NotEmpty(message = "Product Name is required.")
-    @NotNull(message = "Product Name is required.")
+    @NotEmpty(message = "Gallery Name is required.")
+    @NotNull(message = "Gallery Name is required.")
     private String name;
 
     @Column(name="image_path")
@@ -21,9 +21,9 @@ public class Product {
 
     // Constructors
 
-    public Product() {}
+    public Gallery() {}
 
-    public Product(String name, String imagePath) {
+    public Gallery(String name, String imagePath) {
         this.name = name;
         this.imagePath = imagePath;
     }
@@ -52,7 +52,11 @@ public class Product {
             return null;
         }
 
-        return "/product-photos/" + id + "/" + imagePath;
+        return S3Util.imageFolderURL + id + "/" + imagePath;
+    }
+
+    public String getImageName() {
+        return imagePath;
     }
 
     public void setImagePath(String imagePath) {
@@ -63,7 +67,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Gallery {" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", imagePath='" + imagePath + '\'' +

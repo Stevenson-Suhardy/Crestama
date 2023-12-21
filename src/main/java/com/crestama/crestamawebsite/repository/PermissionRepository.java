@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
-    @Query(value="SELECT * FROM Permission WHERE name=?", nativeQuery = true)
+    @Query(value="SELECT * FROM permission WHERE name=?", nativeQuery = true)
     Permission findByName(String name);
 }
