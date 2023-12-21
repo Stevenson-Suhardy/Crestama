@@ -2,7 +2,6 @@ package com.crestama.crestamawebsite.config;
 
 import com.crestama.crestamawebsite.component.*;
 import com.crestama.crestamawebsite.service.CustomUserDetailService;
-//import com.crestama.crestamawebsite.service.refreshToken.RefreshTokenService;
 import com.crestama.crestamawebsite.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,8 +25,6 @@ public class SecurityConfig {
     private RequestWrapperFilter requestWrapperFilter;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
-
-//    private RefreshTokenService refreshTokenService;
     @Autowired
     public SecurityConfig(
             UserService userService,

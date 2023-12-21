@@ -14,7 +14,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LogoutController {
-//    private RefreshTokenService refreshTokenService;
     public LogoutController() {}
 
     SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
@@ -22,7 +21,6 @@ public class LogoutController {
     @PostMapping("/logout")
     public String logout(HttpSession session, Authentication authentication,
                          HttpServletRequest request, HttpServletResponse response) {
-        // Deleting User Refresh Token
         User user = (User) session.getAttribute("user");
 
         this.logoutHandler.logout(request, response, authentication);

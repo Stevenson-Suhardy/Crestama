@@ -30,7 +30,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private PasswordEncoder passwordEncoder;
     private CustomUserDetailService customUserDetailService;
     private TokenManager tokenManager;
-//    private RefreshTokenService refreshTokenService;
 
     /**
      * Autowire Services
@@ -38,7 +37,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
      * @param passwordEncoder
      * @param customUserDetailService
      * @param tokenManager
-     * @param refreshTokenService
      */
     @Autowired
     public CustomAuthenticationProvider(UserService userService, PasswordEncoder passwordEncoder,
@@ -76,8 +74,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 // Generating JWT Token storing the user details
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(tempUser.getEmail());
                 String token = tokenManager.generateJwtToken(userDetails);
-
-                // Generating Refresh Token and saving it to the database
 
                 // Setting session attributes
                 session.setAttribute("token", "Bearer " + token);
