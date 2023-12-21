@@ -62,6 +62,7 @@ public class UserController {
         }
         if (confirmPassword != null) {
             if (confirmPassword.isEmpty() || confirmPassword.isBlank()) {
+                model.addAttribute("roles", roleService.findAll());
                 model.addAttribute("confirmError",
                         "Confirm Password is required.");
 
@@ -69,6 +70,7 @@ public class UserController {
             }
             else {
                 if (!user.getPassword().equals(confirmPassword)) {
+                    model.addAttribute("roles", roleService.findAll());
                     model.addAttribute("confirmError",
                             "Password does not match with Confirm Password");
 
@@ -77,15 +79,9 @@ public class UserController {
             }
         }
         else {
+            model.addAttribute("roles", roleService.findAll());
             model.addAttribute("confirmError",
                     "Confirm Password is required.");
-            return "user/userForm";
-        }
-
-        if (!user.getPassword().equals(confirmPassword)) {
-            model.addAttribute("confirmError",
-                    "Password does not match with Confirm Password");
-
             return "user/userForm";
         }
 
