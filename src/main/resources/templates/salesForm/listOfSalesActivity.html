@@ -30,8 +30,12 @@
         </div>
     </div>
 
+    <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..">
+
+    <br>
+
     <div class="table-responsive">
-        <table class="table">
+        <table id="rootTable" class="table">
             <thead>
             <tr>
                 <th scope="col">Submission Date</th>
@@ -51,7 +55,7 @@
                 <th scope="col">Actions</th>
             </tr>
             </thead>
-            <tbody id="mytable">
+            <tbody id="myTable">
             <tr th:each="salesActivity : ${salesActivities}">
                 <td th:text="${#temporals.format(salesActivity.getSubmissionDate(), 'dd/MM/yyyy HH:mm')}" />
                 <td th:text="${salesActivity.getUser().getFirstName() + ' ' + salesActivity.getUser().getLastName()}" />
@@ -83,5 +87,7 @@
         </table>
     </div>
 </div>
+<script src="/js/jQuery-3.7.1.js"></script>
+<script src="/js/sales/listOfSalesActivity.js"></script>
 </body>
 </html>

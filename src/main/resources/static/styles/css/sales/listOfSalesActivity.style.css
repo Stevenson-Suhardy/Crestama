@@ -10,3 +10,7 @@ body {
 td {
     line-height: 3rem;
 }
+
+th {
+    cursor: pointer;
+}
