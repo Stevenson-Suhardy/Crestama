@@ -1,6 +1,7 @@
 package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.component.TokenManager;
+import com.crestama.crestamawebsite.entity.Role;
 import com.crestama.crestamawebsite.entity.SalesReportForm;
 import com.crestama.crestamawebsite.entity.User;
 import com.crestama.crestamawebsite.service.city.CityService;
@@ -13,14 +14,9 @@ import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.coyote.Response;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.*;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -53,7 +49,7 @@ public class SalesFormController {
     private UserService userService;
     private SalesFormValidation salesFormValidation;
     private final int HEADINGS = 15;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy HH:mm");
 
     @Autowired
     public SalesFormController(SalesReportFormService salesReportFormService,
@@ -71,7 +67,33 @@ public class SalesFormController {
 
     @GetMapping("/salesActivities")
     public String listOfSalesActivity(Model model) {
-        model.addAttribute("salesActivities", salesReportFormService.findAll());
+        // Getting the session
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+
+        if (session != null && session.getAttribute("token") != null) {
+            // Getting user using token
+            String token = (String) session.getAttribute("token");
+            String userEmail = tokenManager.getUsernameFromToken(token.substring(7));
+
+            User user = userService.findByEmail(userEmail);
+
+            boolean isAdmin = false;
+
+            for (Role role : user.getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+
+            if (isAdmin) {
+                model.addAttribute("salesActivities", salesReportFormService.findAll());
+            }
+            else {
+                model.addAttribute("salesActivities", salesReportFormService.findByUser(user.getId()));
+            }
+        }
 
         return "salesForm/listOfSalesActivity";
     }
@@ -133,6 +155,10 @@ public class SalesFormController {
                 // Return to the form if there are any
                 return "salesForm/salesForm";
             }
+            // Capitalize Members
+            salesReportForm.setActivityType(salesReportForm.getActivityType().toUpperCase());
+            salesReportForm.setCompanyName(salesReportForm.getCompanyName().toUpperCase());
+            salesReportForm.setContactPersonName(salesReportForm.getContactPersonName().toUpperCase());
 
             // Save the form to the database
             salesReportFormService.save(salesReportForm);
@@ -166,7 +192,7 @@ public class SalesFormController {
         File currDir = new File("sales-reports");
         String path = currDir.getAbsolutePath();
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM d, yyyy");
         String fileLocation = dtf.format(LocalDateTime.now()) + ".xlsx";
 
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -174,8 +200,14 @@ public class SalesFormController {
 
         List<SalesReportForm> listSalesReportForm = null;
 
-        if (start == null || end == null) {
+        if (start == null && end == null) {
             listSalesReportForm = salesReportFormService.findAll();
+        }
+        else if (start == null) {
+            listSalesReportForm = salesReportFormService.findByEndDate(end);
+        }
+        else if (end == null) {
+            listSalesReportForm = salesReportFormService.findByStartDate(start);
         }
         else {
             listSalesReportForm = salesReportFormService.findByDateRange(start, end);
@@ -186,6 +218,7 @@ public class SalesFormController {
                         s.getSubmissionDate().format(formatter),
                         s.getUser().getId().toString(),
                         s.getStartActivityDate().format(formatter),
+                        s.getEndActivityDate().format(formatter),
                         s.getActivityType(),
                         s.getCompanyType().getType(),
                         s.getCompanyName(),
@@ -219,7 +252,7 @@ public class SalesFormController {
             }
         }
 
-        for (int i = 0; i <= 13; i++) {
+        for (int i = 0; i < HEADINGS; i++) {
             ws.autoSizeColumn(i);
         }
 
@@ -259,6 +292,7 @@ public class SalesFormController {
                 "Submission Date",
                 "Kode Sales",
                 "Tanggal & Jam Mulai Aktivitas",
+                "Tanggal & Jam Selesai Aktivitas",
                 "Jenis Aktivitas",
                 "Jenis Perusahaan Customer",
                 "Nama Lengkap Perusahaan Customer",
@@ -269,7 +303,7 @@ public class SalesFormController {
                 "Email Customer (Perusahaan)",
                 "Detail Aktivitas",
                 "Prospek",
-                "Catatan"
+                "Catatan, Rencana Project, Rencana Follow Up, dll"
         };
 
         XSSFSheet ws = workbook.createSheet("Sheet1");
@@ -289,7 +323,7 @@ public class SalesFormController {
         XSSFRow headerRow =  ws.createRow(0);
         XSSFCell cell;
 
-        for (int i = 0; i <= 13; i++) {
+        for (int i = 0; i < HEADINGS; i++) {
             cell = headerRow.createCell(i);
             cell.setCellValue(headings[i]);
             cell.setCellStyle(cellStyle);

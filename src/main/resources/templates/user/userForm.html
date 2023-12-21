@@ -12,9 +12,10 @@
         <!-- Place for messages: error, alert etc ... -->
         <div class="form-group">
             <div class="col-xs-15">
-                <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors()}">
+                <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors() || confirmError != null}">
                     <ul>
                         <li th:each="err: ${#fields.allErrors()}" th:text="${err}"></li>
+                        <li th:if="${confirmError != null}" th:text="${confirmError}"></li>
                     </ul>
                 </div>
             </div>
@@ -36,6 +37,18 @@
             <input id="password" type="password" th:field="*{password}" class="form-control" />
             <span class="p-viewer">
                     <i class="fa-solid fa-eye" id="togglePassword"></i>
+                </span>
+        </div>
+        <ul style="font-size: 14px;">
+            <li>Password must be at least 8 characters long.</li>
+            <li>Password must contain at least 1 upper case letter.</li>
+            <li>Password must have at least 1 special character.</li>
+        </ul>
+        <div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password" name="confirmPassword" class="form-control" />
+            <span class="p-viewer">
+                    <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
                 </span>
         </div>
 

@@ -15,5 +15,14 @@ public interface SalesReportFormRepository extends JpaRepository<SalesReportForm
             nativeQuery = true)
     List<SalesReportForm> findByDateRange(@Param("start") Date start, @Param("end") Date end);
 
+    @Query(value = "SELECT * FROM sales_report_form WHERE start_activity_date > :start",
+            nativeQuery = true)
+    List<SalesReportForm> findByStartDate(@Param("start") Date start);
 
+    @Query(value = "SELECT * FROM sales_report_form WHERE start_activity_date < :end",
+            nativeQuery = true)
+    List<SalesReportForm> findByEndDate(@Param("end") Date end);
+
+    @Query(value = "SELECT * FROM sales_report_form WHERE user_id = ?", nativeQuery = true)
+    List<SalesReportForm> findByUser(Long id);
 }

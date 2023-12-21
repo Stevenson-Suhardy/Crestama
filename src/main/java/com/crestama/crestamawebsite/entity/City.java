@@ -11,7 +11,7 @@ public class City {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="cityName")
+    @Column(name="city_name")
     private String cityName;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "city")

@@ -30,7 +30,7 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table" style="white-space: nowrap;">
+        <table class="table">
             <thead>
             <tr>
                 <th scope="col">Submission Date</th>
@@ -52,10 +52,10 @@
             </thead>
             <tbody id="mytable">
             <tr th:each="salesActivity : ${salesActivities}">
-                <td th:text="${#temporals.format(salesActivity.getSubmissionDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${#temporals.format(salesActivity.getSubmissionDate(), 'dd/MM/yyyy HH:mm')}" />
                 <td th:text="${salesActivity.getUser().getFirstName() + ' ' + salesActivity.getUser().getLastName()}" />
-                <td th:text="${#temporals.format(salesActivity.getStartActivityDate(), 'dd-MM-yyyy hh:mm a')}" />
-                <td th:text="${#temporals.format(salesActivity.getEndActivityDate(), 'dd-MM-yyyy hh:mm a')}" />
+                <td th:text="${#temporals.format(salesActivity.getStartActivityDate(), 'dd/MM/yyyy HH:mm')}" />
+                <td th:text="${#temporals.format(salesActivity.getEndActivityDate(), 'dd/MM/yyyy HH:mm')}" />
                 <td th:text="${salesActivity.getActivityType()}" />
                 <td th:text="${salesActivity.getCompanyType().getType()}" />
                 <td th:text="${salesActivity.getCompanyName()}" />

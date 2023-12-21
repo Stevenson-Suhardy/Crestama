@@ -57,19 +57,14 @@ public class GalleryController {
                            Model model)
             throws IOException {
         if (result.hasErrors()) {
-            if (multipartFile.getOriginalFilename() != null) {
-                if (multipartFile.getOriginalFilename().isEmpty() || multipartFile.getOriginalFilename().isBlank()) {
-                    model.addAttribute("imageErr", "Item Image is required");
-
-                    return "gallery/itemForm";
-                }
-                else {
-                    return "gallery/itemForm";
-                }
-            }
-            else {
+            if (!ValidateImage(multipartFile)) {
                 model.addAttribute("imageErr", "Item Image is required");
             }
+            return "gallery/itemForm";
+        }
+
+        if (!ValidateImage(multipartFile)) {
+            model.addAttribute("imageErr", "Item Image is required");
             return "gallery/itemForm";
         }
 
@@ -105,5 +100,14 @@ public class GalleryController {
         }
 
         return "redirect:/gallery/items";
+    }
+
+    private boolean ValidateImage(MultipartFile multipartFile) {
+        if (multipartFile.getOriginalFilename() != null) {
+            return !multipartFile.getOriginalFilename().isEmpty() && !multipartFile.getOriginalFilename().isBlank();
+        }
+        else {
+            return false;
+        }
     }
 }

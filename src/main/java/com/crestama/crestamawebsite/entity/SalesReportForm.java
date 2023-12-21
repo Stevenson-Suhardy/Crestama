@@ -18,7 +18,7 @@ public class SalesReportForm {
     @Column(name="id")
     private Long id;
 
-    @Column(name = "submissionDate")
+    @Column(name = "submission_date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime submissionDate;
 
@@ -26,32 +26,32 @@ public class SalesReportForm {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "startActivityDate")
+    @Column(name = "start_activity_date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotNull(message = "Start Activity Date is required.")
     private LocalDateTime startActivityDate;
 
-    @Column(name = "endActivityDate")
+    @Column(name = "end_activity_date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotNull(message = "End Activity Date is required.")
     private LocalDateTime endActivityDate;
 
-    @Column(name = "activityType")
+    @Column(name = "activity_type")
     @NotNull(message = "Activity Type is required.")
     @NotEmpty(message = "Activity Type is required.")
     private String activityType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "companyType_id", referencedColumnName = "id")
+    @JoinColumn(name = "company_type_id", referencedColumnName = "id")
     @NotNull(message = "Company Type is required.")
     private CompanyType companyType;
 
-    @Column(name = "companyName")
+    @Column(name = "company_name")
     @NotNull(message = "Company Name is required.")
     @NotEmpty(message = "Company Name is required.")
     private String companyName;
 
-    @Column(name = "streetAddress")
+    @Column(name = "street_address")
     private String streetAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -59,20 +59,20 @@ public class SalesReportForm {
     @NotNull(message = "City is required.")
     private City city;
 
-    @Column(name = "contactPersonName")
+    @Column(name = "contact_person_name")
     @NotNull(message = "Contact Person Name is required.")
     @NotEmpty(message = "Contact Person Name is required.")
     private String contactPersonName;
 
-    @Column(name = "contactPersonPhone")
+    @Column(name = "contact_person_phone")
     @NotNull(message = "Contact Person Phone Number is required.")
     @NotEmpty(message = "Contact Person Phone Number is required.")
     private String contactPersonPhone;
 
-    @Column(name = "contactPersonEmail")
+    @Column(name = "contact_person_email")
     private String contactPersonEmail;
 
-    @Column(name = "detailedActivity")
+    @Column(name = "detailed_activity")
     @NotNull(message = "Detailed Activity is required.")
     @NotEmpty(message = "Detailed Activity is required.")
     private String detailedActivity;
