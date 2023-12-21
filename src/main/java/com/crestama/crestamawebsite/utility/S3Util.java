@@ -16,6 +16,8 @@ public class S3Util {
     public static final String imageFolderURL =
             "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/gallery-photos/";
 
+    public static final String sectionImageFolderURL = "/";
+
     public static final String reportFolderURL =
             "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/sales-reports/";
 
