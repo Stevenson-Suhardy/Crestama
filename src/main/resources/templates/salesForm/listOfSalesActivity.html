@@ -24,7 +24,8 @@
         <div class="me-auto p-2 bd-highlight"><h2>Sales Activities</h2></div>
         <div class="p-2 bd-highlight">
             <a class="btn btn-primary" th:href="@{/salesForm}">Create</a>
-            <a class="btn btn-success" th:href="@{/salesForm/excelFormDateRange}">Generate Excel Form</a>
+            <a class="btn btn-success" sec:authorize="hasRole('ADMIN')" th:href="@{/salesForm/excelFormDateRange}">
+                Generate Excel Form</a>
             <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
         </div>
     </div>
