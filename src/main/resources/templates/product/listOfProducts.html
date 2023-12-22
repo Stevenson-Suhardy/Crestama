@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" />
+    <link href="/styles/css/products/listOfProducts.style.css" rel="stylesheet" />
+
+    <title>List of Products</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-mynav">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/products/products}">List of Products</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex bd-highlight mb-3">
+        <div class="me-auto p-2 bd-highlight"><h2>Products</h2></div>
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-primary" th:href="@{/products/addProduct}">Create</a>
+            <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="mytable">
+            <tr th:each="product : ${products}">
+                <td th:text="${product.getName()}" />
+                <td th:text="${product.getDescription()}" />
+                <td>
+                    <a class="btn btn-success btn-sm" th:href="@{/sections/product/{id}/sections(id=${product.getId()})}">
+                        Details
+                    </a>
+                    <a class="btn btn-info btn-sm" th:href="@{/products/editProduct/{id}(id=${product.getId()})}">
+                        Update
+                    </a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-danger btn-sm" th:href="@{/products/deleteProduct/{id}(id=${product.getId()})}"
+                       onclick="if (!(confirm('Are you sure you want to delete this product (including all sections and images)?'))) return false"
+                    >
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

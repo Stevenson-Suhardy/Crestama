@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Section Form</title>
+    <link href="/styles/css/products/productForm.style.css" rel="stylesheet" />
+    <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+<div class="wrapper">
+    <form class="form-signin" action="#" th:action="@{/sections/{id}/save(id=${productId})}"
+          th:object="${section}" method="POST">
+        <!-- Place for messages: error, alert etc ... -->
+        <div class="form-group">
+            <div class="col-xs-15">
+                <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors()}">
+                    <ul>
+                        <li th:each="err: ${#fields.allErrors()}" th:text="${err}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <h2 class="form-signin-heading text-center">Add Section</h2>
+        <input type="hidden" th:field="*{id}" />
+
+        <label for="firstName">Section Name</label>
+        <input id="firstName" type="text" th:field="*{name}" class="form-control" />
+
+        <br>
+
+        <label for="lastName">Description</label>
+        <textarea id="lastName" type="text" th:field="*{description}" class="form-control"></textarea>
+
+        <br>
+
+        <div class="form-button gap-3 text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <a class="btn btn-danger" th:href="@{/sections/product/{id}/sections(id=${productId})}">Cancel</a>
+        </div>
+    </form>
+</div>
+<script src="/js/togglePassword.js"></script>
+</body>
+</html>

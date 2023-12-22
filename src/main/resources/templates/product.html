@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Crestama - Gallery Page</title>
+    <title>Crestama - Product Page</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="description" content="">
@@ -18,7 +18,7 @@
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/styles/css/static.style.css">
-    <link rel="stylesheet" href="/styles/css/gallery.style.css">
+    <link rel="stylesheet" href="/styles/css/product.style.css">
 
 </head>
 <body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
@@ -49,7 +49,7 @@
             <div class="item item-first">
                 <div class="caption">
                     <div class="col-md-offset-1 col-md-10">
-                        <h1>Gallery</h1>
+                        <h1 th:text="${product.getName()}"></h1>
                     </div>
                 </div>
             </div>
@@ -62,28 +62,33 @@
 <section id="about">
     <div class="container">
         <div class="row">
-            <div class="img-gallery">
-                <img th:each="gallery, iStat : ${items.getContent()}" th:data-name="${gallery.getImagePath()}"
-                     th:src="${gallery.getImagePath()}" th:alt="${gallery.getName()}"
-                     onclick="openFullImg(this.getAttribute('data-name'))"
-                />
-            </div>
-            <div class="text-center">
-                <ul class="pagination" th:if="${items.totalPages > 0}">
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery-photos(size=${items.size}, page=${currentPage - 1})}"
-                                             th:if="${currentPage > 1}">Previous</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:each="pageNumber : ${pageNumbers}"
-                           th:href="@{/gallery-photos(size=${items.size}, page=${pageNumber})}" th:text="${pageNumber}"
-                        ></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery-photos(size=${items.size}, page=${currentPage + 1})}"
-                                             th:if="${currentPage < items.totalPages}">Next</a>
-                    </li>
-                </ul>
+            <div class="col-sm-12">
+                <h2 th:text="${product.getName()}"></h2>
+                <p th:text="${product.getDescription()}"></p>
+                <div class="tab-container">
+                    <ul class="nav nav-tabs nav-tabs-left nav-centered" role="tablist">
+                        <li role="presentation" th:each="section : ${product.getSections()}">
+                            <a th:href="'#' + ${section.getId()}" data-toggle="tab" role="tab" th:text="${section.getName()}">
+
+                            </a>
+                        </li>
+                    </ul>
+                    <div id="my_side_tabs" class="tab-content side-tabs side-tabs-left">
+                        <div th:each="section : ${product.getSections()}" class="tab-pane fade in" th:id="${section.getId()}"
+                             role="tabpanel">
+                            <div class="col-sm-6">
+                                <h3 th:text="${section.getName()}"></h3>
+                                <p th:text="${section.getDescription()}"></p>
+                            </div>
+                            <div class="img-gallery">
+                                <img th:each="sectionImage : ${section.getImages()}" th:data-name="${sectionImage.getImagePath()}"
+                                     th:src="${sectionImage.getImagePath()}" th:alt="${sectionImage.getImageName()}"
+                                     onclick="openFullImg(this.getAttribute('data-name'))"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -96,13 +101,14 @@
 <!-- SCRIPTS -->
 <script src="/js/home/jquery.js"></script>
 <script src="/js/home/bootstrap.min.js"></script>
+<script src="/styles/bootstrap-5.3.1-dist/js/bootstrap.bundle.js"></script>
 <script src="/js/home/jquery.sticky.js"></script>
 <script src="/js/home/jquery.stellar.min.js"></script>
 <script src="/js/home/wow.min.js"></script>
 <script src="/js/home/smoothscroll.js"></script>
 <script src="/js/home/owl.carousel.min.js"></script>
 <script src="/js/home/custom.js"></script>
-<script src="/js/gallery.js"></script>
+<script src="/js/product.js"></script>
 
 </body>
 </html>
