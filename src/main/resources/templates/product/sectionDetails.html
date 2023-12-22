@@ -44,7 +44,7 @@
                 <td>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-danger btn-sm"
                        th:href="@{/sectionImages/section/{sectionId}/deleteImage/{sectionImageId}
-                       (sectionId=${sectionImage.getId()}, sectionIMageId=${sectionImage.getId()})}"
+                       (sectionId=${section.getId()}, sectionImageId=${sectionImage.getId()})}"
                        onclick="if (!(confirm('Are you sure you want to delete this image?'))) return false"
                     >
                         Delete
