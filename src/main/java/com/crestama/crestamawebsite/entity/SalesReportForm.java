@@ -54,10 +54,9 @@ public class SalesReportForm {
     @Column(name = "street_address")
     private String streetAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", referencedColumnName = "id")
     @NotNull(message = "City is required.")
-    private City city;
+    @NotEmpty(message = "City is required.")
+    private String city;
 
     @Column(name = "contact_person_name")
     @NotNull(message = "Contact Person Name is required.")
@@ -89,7 +88,7 @@ public class SalesReportForm {
 
 
     public SalesReportForm(User user, LocalDateTime startActivityDate, LocalDateTime endActivityDate, String activityType,
-                           CompanyType companyType, String companyName, String streetAddress, City city,
+                           CompanyType companyType, String companyName, String streetAddress, String city,
                            String contactPersonName, String contactPersonPhone, String contactPersonEmail,
                            String detailedActivity, Prospect prospect, String comments) throws Exception {
 
@@ -182,11 +181,11 @@ public class SalesReportForm {
         this.streetAddress = streetAddress;
     }
 
-    public City getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(String city) {
         this.city = city;
     }
 

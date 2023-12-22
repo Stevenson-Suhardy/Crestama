@@ -4,7 +4,6 @@ import com.crestama.crestamawebsite.component.TokenManager;
 import com.crestama.crestamawebsite.entity.Role;
 import com.crestama.crestamawebsite.entity.SalesReportForm;
 import com.crestama.crestamawebsite.entity.User;
-import com.crestama.crestamawebsite.service.city.CityService;
 import com.crestama.crestamawebsite.service.companyType.CompanyTypeService;
 import com.crestama.crestamawebsite.service.prospect.ProspectService;
 import com.crestama.crestamawebsite.service.salesReportForm.SalesReportFormService;
@@ -42,7 +41,6 @@ import java.util.List;
 @RequestMapping("/salesForm")
 public class SalesFormController {
     private SalesReportFormService salesReportFormService;
-    private CityService cityService;
     private CompanyTypeService companyTypeService;
     private ProspectService prospectService;
     private TokenManager tokenManager;
@@ -52,12 +50,10 @@ public class SalesFormController {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy HH:mm");
 
     @Autowired
-    public SalesFormController(SalesReportFormService salesReportFormService,
-                               CityService cityService, CompanyTypeService companyTypeService,
+    public SalesFormController(SalesReportFormService salesReportFormService, CompanyTypeService companyTypeService,
                                ProspectService prospectService, TokenManager tokenManager,
                                UserService userService, SalesFormValidation salesFormValidation) {
         this.salesReportFormService = salesReportFormService;
-        this.cityService = cityService;
         this.companyTypeService = companyTypeService;
         this.prospectService = prospectService;
         this.tokenManager = tokenManager;
@@ -102,7 +98,6 @@ public class SalesFormController {
     public String showForm(Model model) {
         model.addAttribute("salesReportForm", new SalesReportForm());
 
-        model.addAttribute("cities", cityService.findAll());
         model.addAttribute("companyTypes", companyTypeService.findAll());
         model.addAttribute("prospects", prospectService.findAll());
 
@@ -113,7 +108,6 @@ public class SalesFormController {
     public String editForm(Model model, @PathVariable Long id) {
         model.addAttribute("salesReportForm", salesReportFormService.findById(id));
 
-        model.addAttribute("cities", cityService.findAll());
         model.addAttribute("companyTypes", companyTypeService.findAll());
         model.addAttribute("prospects", prospectService.findAll());
 
@@ -149,7 +143,6 @@ public class SalesFormController {
                 result.addError(error);
             }
             if (result.hasErrors()) {
-                model.addAttribute("cities", cityService.findAll());
                 model.addAttribute("companyTypes", companyTypeService.findAll());
                 model.addAttribute("prospects", prospectService.findAll());
                 // Return to the form if there are any
@@ -159,6 +152,7 @@ public class SalesFormController {
             salesReportForm.setActivityType(salesReportForm.getActivityType().toUpperCase());
             salesReportForm.setCompanyName(salesReportForm.getCompanyName().toUpperCase());
             salesReportForm.setContactPersonName(salesReportForm.getContactPersonName().toUpperCase());
+            salesReportForm.setCity(salesReportForm.getCity().toUpperCase());
 
             // Save the form to the database
             salesReportFormService.save(salesReportForm);
@@ -223,7 +217,7 @@ public class SalesFormController {
                         s.getCompanyType().getType(),
                         s.getCompanyName(),
                         s.getStreetAddress(),
-                        s.getCity().getCityName(),
+                        s.getCity(),
                         s.getContactPersonName(),
                         s.getContactPersonPhone(),
                         s.getContactPersonEmail(),
