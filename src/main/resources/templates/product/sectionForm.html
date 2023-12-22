@@ -2,13 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Product Form</title>
+    <title>Section Form</title>
     <link href="/styles/css/products/productForm.style.css" rel="stylesheet" />
     <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
 <div class="wrapper">
-    <form class="form-signin" action="#" th:action="@{/products/save}" th:object="${product}" method="POST">
+    <form class="form-signin" action="#" th:action="@{/sections/{id}/save(id=${productId})}"
+          th:object="${section}" method="POST">
         <!-- Place for messages: error, alert etc ... -->
         <div class="form-group">
             <div class="col-xs-15">
@@ -19,10 +20,10 @@
                 </div>
             </div>
         </div>
-        <h2 class="form-signin-heading text-center">Add Product</h2>
+        <h2 class="form-signin-heading text-center">Add Section</h2>
         <input type="hidden" th:field="*{id}" />
 
-        <label for="firstName">Product Name</label>
+        <label for="firstName">Section Name</label>
         <input id="firstName" type="text" th:field="*{name}" class="form-control" />
 
         <br>
@@ -34,7 +35,7 @@
 
         <div class="form-button gap-3 text-center">
             <button class="btn btn-primary" type="submit">Submit</button>
-            <a class="btn btn-danger" th:href="@{/products/products}">Cancel</a>
+            <a class="btn btn-danger" th:href="@{/sections/product/{id}/sections(id=${productId})}">Cancel</a>
         </div>
     </form>
 </div>

@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" />
+    <link href="/styles/css/products/listOfProducts.style.css" rel="stylesheet" />
+
+    <title>List of Sections</title>
 </head>
 <body>
 
+<nav class="navbar navbar-dark bg-mynav">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/product/{id}(id=${product.getId()})/sections}">List of Sections</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex bd-highlight mb-3">
+        <div class="me-auto p-2 bd-highlight"><h2>Sections for <span th:text="${product.getName()}"></span></h2></div>
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-primary" th:href="@{/sections/product/{id}/sections/addSection(id=${product.getId()})}">Create</a>
+            <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Section Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="mytable">
+            <tr th:each="section : ${product.getSections()}">
+                <td th:text="${section.getName()}" />
+                <td th:text="${section.getDescription()}" />
+                <td>
+                    <a class="btn btn-success btn-sm">
+                        Details
+                    </a>
+                    <a class="btn btn-info btn-sm"
+                       th:href="@{/sections/product/{productId}/sections/editSection/{sectionId}(productId=${product.getId()},
+                       sectionId=${section.getId()})}">
+                        Update
+                    </a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-danger btn-sm" th:href="@{/products/deleteProduct/{id}(id=${product.getId()})}"
+                    >
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

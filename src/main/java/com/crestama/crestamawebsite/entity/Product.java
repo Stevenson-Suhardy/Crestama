@@ -1,6 +1,8 @@
 package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Collection;
 import java.util.Set;
@@ -12,9 +14,12 @@ public class Product {
     private Long id;
 
     @Column(name="name")
+    @NotNull(message = "Product Name is required.")
+    @NotEmpty(message = "Product Name is required.")
     private String name;
 
-    @Column(name="description")
+    @Lob
+    @Column(name="description", columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
