@@ -17,7 +17,7 @@ public class Product {
     @Column(name="description")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "section")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     private Collection<Section> sections;
 
     public Product(String name, String description, Collection<Section> sections) {

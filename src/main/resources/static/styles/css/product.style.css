@@ -1,0 +1,36 @@
+ul.nav > li > a:hover {
+    background-color: blue;
+    color: white;
+}
+
+ul.nav > li.active > a {
+    color: blue;
+}
+
+ul.nav > li.active > a[aria-expanded="true"]  {
+    background-color: white;
+    color: blue;
+}
+
+#about {
+    background-color: white;
+}
+
+#footer {
+    background-color: black;
+}
+
+h4,
+div.opening-hours > p,
+div.contact-info > p,
+div.contact-info > p > a{
+    color: white;
+}
+
+div.contact-info > p {
+    color: white;
+}
+
+ul.social-icon > li > a {
+    color: white;
+}

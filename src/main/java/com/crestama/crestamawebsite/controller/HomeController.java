@@ -63,4 +63,9 @@ public class HomeController {
 
         return "gallery";
     }
+
+    @GetMapping("/product")
+    public String product(Model model) {
+        return "product";
+    }
 }

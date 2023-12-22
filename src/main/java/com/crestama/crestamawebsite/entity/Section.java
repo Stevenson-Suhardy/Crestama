@@ -15,7 +15,7 @@ public class Section {
     private String name;
 
     @Column(name="images")
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sectionImage")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "section")
     private Collection<SectionImage> images;
 
     @Column(name="description")

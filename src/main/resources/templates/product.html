@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Crestama - Product Page</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Too plate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="/styles/css/home/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/css/home/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/css/home/animate.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.carousel.css">
+    <link rel="stylesheet" href="/styles/css/home/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="/styles/css/static.style.css">
+    <link rel="stylesheet" href="/styles/css/product.style.css">
+
+</head>
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+<!-- PRE LOADER -->
+<section class="preloader">
+    <div class="spinner">
+
+        <span class="spinner-rotate"></span>
+
+    </div>
+</section>
+
+<!-- MENU -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- Title -->
+<section id="home" class="slider" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row">
+            <div class="item item-first">
+                <div class="caption">
+                    <div class="col-md-offset-1 col-md-10">
+                        <h1>Product Title</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Gallery -->
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Website &amp; Software Development</h2>
+                <div class="tab-container">
+                    <ul class="nav nav-tabs nav-tabs-left nav-centered" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#web-dev" data-toggle="tab" role="tab">
+                                Website Development
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#graphic" data-toggle="tab" role="tab">
+                                Graphic Design
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#marketing" data-toggle="tab" role="tab">
+                                Online Marketing
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#business" data-toggle="tab" role="tab">
+                                Business Solutions
+                            </a>
+                        </li>
+                    </ul>
+                    <div id="my_side_tabs" class="tab-content side-tabs side-tabs-left">
+                        <div class="tab-pane fade in active" id="web-dev" role="tabpanel">
+                            <div class="col-sm-6">
+                                <h3>Custom Web Design</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                                <ul>
+                                    <li>Responsive</li>
+                                    <li>Search Engine Optimization (SEO)</li>
+                                    <li>W3C Compliant</li>
+                                    <li>Custom CMS</li>
+                                    <li>Hosting</li>
+                                    <li>Webmaster Services</li>
+                                    <li>Content Writing</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="graphic" role="tabpanel">
+                            <div class="col-sm-6">
+                                <h3>UI/UX Designs</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                                <ul>
+                                    <li>Smartphone &amp; Tablet UI</li>
+                                    <li>Responsive Website UI</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3>Logos</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="marketing" role="tabpanel">
+                            <div class="col-sm-6">
+                                <h3>Online Advertising</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                                <ul>
+                                    <li>Facebook</li>
+                                    <li>Google AdWords</li>
+                                    <li>YouTube Ads</li>
+                                    <li>Custom Ads</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3>Social Media</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                                <ul>
+                                    <li>Blogging</li>
+                                    <li>Facebook</li>
+                                    <li>Twitter</li>
+                                    <li>LinkedIn</li>
+                                    <li>Instagram</li>
+                                    <li>Pinterest</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3>Fundraising</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="business" role="tabpanel">
+                            <div class="col-sm-6">
+                                <h3>Consulting</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                                <ul>
+                                    <li>Company Branding</li>
+                                    <li>Website Security</li>
+                                    <li>Computer IT &amp; Repair</li>
+                                    <li>Data Storage</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3>Analytics &amp; Reporting</h3>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/home/jquery.js"></script>
+<script src="/js/home/bootstrap.min.js"></script>
+<script src="/styles/bootstrap-5.3.1-dist/js/bootstrap.bundle.js"></script>
+<script src="/js/home/jquery.sticky.js"></script>
+<script src="/js/home/jquery.stellar.min.js"></script>
+<script src="/js/home/wow.min.js"></script>
+<script src="/js/home/smoothscroll.js"></script>
+<script src="/js/home/owl.carousel.min.js"></script>
+<script src="/js/home/custom.js"></script>
+<script src="/js/product.js"></script>
+
+</body>
+</html>
