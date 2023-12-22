@@ -16,7 +16,8 @@ public class S3Util {
     public static final String imageFolderURL =
             "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/gallery-photos/";
 
-    public static final String sectionImageFolderURL = "/";
+    public static final String sectionImageFolderURL =
+            "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/section-images/";
 
     public static final String reportFolderURL =
             "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/sales-reports/";
@@ -27,6 +28,20 @@ public class S3Util {
                 .region(Region.US_EAST_1).build();
 
     public static void uploadImage(String fileName, InputStream inputStream) throws IOException {
+        try {
+            PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName)
+                    .acl("public-read")
+                    .contentType("image/*")
+                    .build();
+
+            s3Client.putObject(request, RequestBody.fromInputStream(inputStream, inputStream.available()));
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void uploadSectionImage(String fileName, InputStream inputStream) throws IOException {
         try {
             PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName)
                     .acl("public-read")

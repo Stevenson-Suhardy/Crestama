@@ -63,25 +63,25 @@
     <div class="container">
         <div class="row">
             <div class="img-gallery">
-                <img th:each="gallery, iStat : ${products.getContent()}" th:data-name="${gallery.getImagePath()}"
+                <img th:each="gallery, iStat : ${items.getContent()}" th:data-name="${gallery.getImagePath()}"
                      th:src="${gallery.getImagePath()}" th:alt="${gallery.getName()}"
                      onclick="openFullImg(this.getAttribute('data-name'))"
                 />
             </div>
             <div class="text-center">
-                <ul class="pagination" th:if="${products.totalPages > 0}">
+                <ul class="pagination" th:if="${items.totalPages > 0}">
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery-photos(size=${products.size}, page=${currentPage - 1})}"
+                        <a class="page-link" th:href="@{/gallery-photos(size=${items.size}, page=${currentPage - 1})}"
                                              th:if="${currentPage > 1}">Previous</a>
                     </li>
                     <li class="page-item">
                         <a class="page-link" th:each="pageNumber : ${pageNumbers}"
-                           th:href="@{/gallery-photos(size=${products.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                           th:href="@{/gallery-photos(size=${items.size}, page=${pageNumber})}" th:text="${pageNumber}"
                         ></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/gallery-photos(size=${products.size}, page=${currentPage + 1})}"
-                                             th:if="${currentPage < products.totalPages}">Next</a>
+                        <a class="page-link" th:href="@{/gallery-photos(size=${items.size}, page=${currentPage + 1})}"
+                                             th:if="${currentPage < items.totalPages}">Next</a>
                     </li>
                 </ul>
             </div>

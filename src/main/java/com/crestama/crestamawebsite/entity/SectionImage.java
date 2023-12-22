@@ -41,6 +41,10 @@ public class SectionImage {
         return S3Util.sectionImageFolderURL + id + "/" + imagePath;
     }
 
+    public String getImageName() {
+        return imagePath;
+    }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }

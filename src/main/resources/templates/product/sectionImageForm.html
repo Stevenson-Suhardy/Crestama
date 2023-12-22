@@ -2,13 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Item Form</title>
+    <title>Section Image Form</title>
     <link href="/styles/css/gallery/itemForm.style.css" rel="stylesheet" />
     <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
 <div class="wrapper">
-    <form class="form-signin" action="#" th:action="@{/gallery/save}" th:object="${gallery}" enctype="multipart/form-data" method="POST">
+    <form class="form-signin" action="#" th:action="@{/sectionImages/{id}/save(id=${sectionId})}"
+          th:object="${sectionImage}" enctype="multipart/form-data" method="POST">
         <div class="form-group">
             <div class="col-xs-15">
                 <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors() || imageErr != null}">
@@ -22,15 +23,12 @@
         <h2 class="form-signin-heading text-center">Add Gallery Item</h2>
         <input type="hidden" th:field="*{id}" />
 
-        <label for="name">Name</label>
-        <input id="name" type="text" th:field="*{name}" class="form-control" />
-
         <label for="image">Image</label>
         <input id="image" type="file" name="image" accept="image/*" class="form-control" />
 
         <div class="form-button gap-3 text-center">
             <button class="btn btn-primary" type="submit">Submit</button>
-            <a class="btn btn-danger" th:href="@{/gallery/items}">Cancel</a>
+            <a class="btn btn-danger" th:href="@{/sectionImages/section/{id}/sectionImages(id=${sectionId})}">Cancel</a>
         </div>
     </form>
 </div>

@@ -1,6 +1,8 @@
 package com.crestama.crestamawebsite.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Collection;
 import java.util.Set;
@@ -12,6 +14,8 @@ public class Section {
     private Long id;
 
     @Column(name="name")
+    @NotNull(message = "Section Name is required.")
+    @NotEmpty(message = "Section Name is required.")
     private String name;
 
     @Column(name="images")

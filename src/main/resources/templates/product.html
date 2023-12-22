@@ -32,6 +32,13 @@
     </div>
 </section>
 
+<section>
+    <div class="full-img" id="fullImgBox">
+        <img id="fullImg" src="/gallery-photos/2/2_2.jpg" alt="random picture" />
+        <span onclick="closeFullImg()">X</span>
+    </div>
+</section>
+
 <!-- MENU -->
 <div th:replace="~{fragments/header :: header}"></div>
 
@@ -42,7 +49,7 @@
             <div class="item item-first">
                 <div class="caption">
                     <div class="col-md-offset-1 col-md-10">
-                        <h1>Product Title</h1>
+                        <h1 th:text="${product.getName()}"></h1>
                     </div>
                 </div>
             </div>
@@ -56,102 +63,28 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Website &amp; Software Development</h2>
+                <h2 th:text="${product.getName()}"></h2>
+                <p th:text="${product.getDescription()}"></p>
                 <div class="tab-container">
                     <ul class="nav nav-tabs nav-tabs-left nav-centered" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#web-dev" data-toggle="tab" role="tab">
-                                Website Development
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#graphic" data-toggle="tab" role="tab">
-                                Graphic Design
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#marketing" data-toggle="tab" role="tab">
-                                Online Marketing
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#business" data-toggle="tab" role="tab">
-                                Business Solutions
+                        <li role="presentation" th:each="section : ${product.getSections()}">
+                            <a th:href="'#' + ${section.getId()}" data-toggle="tab" role="tab" th:text="${section.getName()}">
+
                             </a>
                         </li>
                     </ul>
                     <div id="my_side_tabs" class="tab-content side-tabs side-tabs-left">
-                        <div class="tab-pane fade in active" id="web-dev" role="tabpanel">
+                        <div th:each="section : ${product.getSections()}" class="tab-pane fade in" th:id="${section.getId()}"
+                             role="tabpanel">
                             <div class="col-sm-6">
-                                <h3>Custom Web Design</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                                <ul>
-                                    <li>Responsive</li>
-                                    <li>Search Engine Optimization (SEO)</li>
-                                    <li>W3C Compliant</li>
-                                    <li>Custom CMS</li>
-                                    <li>Hosting</li>
-                                    <li>Webmaster Services</li>
-                                    <li>Content Writing</li>
-                                </ul>
+                                <h3 th:text="${section.getName()}"></h3>
+                                <p th:text="${section.getDescription()}"></p>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="graphic" role="tabpanel">
-                            <div class="col-sm-6">
-                                <h3>UI/UX Designs</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                                <ul>
-                                    <li>Smartphone &amp; Tablet UI</li>
-                                    <li>Responsive Website UI</li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <h3>Logos</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="marketing" role="tabpanel">
-                            <div class="col-sm-6">
-                                <h3>Online Advertising</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                                <ul>
-                                    <li>Facebook</li>
-                                    <li>Google AdWords</li>
-                                    <li>YouTube Ads</li>
-                                    <li>Custom Ads</li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <h3>Social Media</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                                <ul>
-                                    <li>Blogging</li>
-                                    <li>Facebook</li>
-                                    <li>Twitter</li>
-                                    <li>LinkedIn</li>
-                                    <li>Instagram</li>
-                                    <li>Pinterest</li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <h3>Fundraising</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="business" role="tabpanel">
-                            <div class="col-sm-6">
-                                <h3>Consulting</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                                <ul>
-                                    <li>Company Branding</li>
-                                    <li>Website Security</li>
-                                    <li>Computer IT &amp; Repair</li>
-                                    <li>Data Storage</li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <h3>Analytics &amp; Reporting</h3>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                            <div class="img-gallery">
+                                <img th:each="sectionImage : ${section.getImages()}" th:data-name="${sectionImage.getImagePath()}"
+                                     th:src="${sectionImage.getImagePath()}" th:alt="${sectionImage.getImageName()}"
+                                     onclick="openFullImg(this.getAttribute('data-name'))"
+                                />
                             </div>
                         </div>
                     </div>

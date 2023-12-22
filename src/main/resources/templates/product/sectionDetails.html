@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" />
+    <link href="/styles/css/products/listOfProducts.style.css" rel="stylesheet" />
+
+    <title>List of Section Images</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-mynav">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/sectionImages/section/{id}/sectionImages(id=${section.getId()})}">List of Section Images</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex bd-highlight mb-3">
+        <div class="me-auto p-2 bd-highlight"><h2>Section Images for <span th:text="${section.getName()}"></span></h2></div>
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-primary" th:href="@{/sectionImages/section/{id}/sectionImages/addImage(id=${section.getId()})}">Create</a>
+            <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="mytable">
+            <tr th:each="sectionImage : ${section.getImages()}">
+                <td>
+                    <img width="100px" th:src="${sectionImage.getImagePath()}" th:alt="${sectionImage.getImageName()}" />
+                </td>
+                <td>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-danger btn-sm"
+                       th:href="@{/sectionImages/section/{sectionId}/deleteImage/{sectionImageId}
+                       (sectionId=${sectionImage.getId()}, sectionIMageId=${sectionImage.getId()})}"
+                       onclick="if (!(confirm('Are you sure you want to delete this image?'))) return false"
+                    >
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
