@@ -1,14 +1,19 @@
 package com.crestama.crestamawebsite.controller;
 
 import com.crestama.crestamawebsite.entity.Section;
+import com.crestama.crestamawebsite.entity.SectionImage;
 import com.crestama.crestamawebsite.service.product.ProductService;
 import com.crestama.crestamawebsite.service.section.SectionService;
+import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/sections")
@@ -65,6 +70,16 @@ public class SectionController {
 
     @GetMapping("/product/{productId}/deleteSection/{sectionId}")
     public String deleteSection(@PathVariable Long productId, @PathVariable Long sectionId) {
+        ArrayList<ObjectIdentifier> objects = new ArrayList<>();
+
+        for (SectionImage image: sectionService.findById(sectionId).getImages()) {
+            objects.add(ObjectIdentifier.builder()
+                    .key("section-images/" + image.getId() + "/" + image.getImageName())
+                    .build());
+        }
+
+        S3Util.deleteSectionImages(objects);
+
         sectionService.deleteById(sectionId);
 
         return "redirect:/sections/product/" + productId + "/sections";
