@@ -48,26 +48,42 @@ public class SectionImageController {
                        BindingResult result,
                        @RequestParam("image") MultipartFile multipartFile,
                        @PathVariable Long id, Model model) {
-        if (!ValidateImage(multipartFile)) {
-            model.addAttribute("imageErr", "Section Image is required");
-            model.addAttribute("sectionId", id);
-
-            return "product/sectionImageForm";
-        }
-
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-        sectionImage.setImagePath(fileName);
-        sectionImage.setSection(sectionService.findById(id));
-        SectionImage savedSectionImage = sectionImageService.save(sectionImage);
-
-        String uploadDir = "section-images/" + savedSectionImage.getId() + "/";
-
         try {
-            S3Util.uploadSectionImage(uploadDir + fileName, multipartFile.getInputStream());
+            if (!ValidateImage(multipartFile)) {
+                model.addAttribute("imageErr", "Section Image is required");
+                model.addAttribute("sectionId", id);
+
+                return "product/sectionImageForm";
+            }
+            if (multipartFile.getSize() > 5000000) {
+                model.addAttribute("imageErr", "Image size must not be more than 5 MB.");
+                model.addAttribute("sectionId", id);
+
+                return "product/sectionImageForm";
+            }
+
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            sectionImage.setImagePath(fileName);
+            sectionImage.setSection(sectionService.findById(id));
+            SectionImage savedSectionImage = sectionImageService.save(sectionImage);
+
+            String uploadDir = "section-images/" + savedSectionImage.getId() + "/";
+
+            try {
+                S3Util.uploadSectionImage(uploadDir + fileName, multipartFile.getInputStream());
+            }
+            catch (Exception e) {
+                model.addAttribute("imageErr", "There was a problem with the image upload.");
+                if (sectionImageService.findById(savedSectionImage.getId()) != null) {
+                    sectionImageService.deleteById(savedSectionImage.getId());
+                }
+
+                return "product/sectionImageForm";
+            }
         }
         catch (Exception e) {
-            model.addAttribute("imageErr", "There was a problem with the image upload.");
+            model.addAttribute("imageErr", "Image size must not be more than 5 MB.");
+
             return "product/sectionImageForm";
         }
 
