@@ -1,5 +1,6 @@
 package com.crestama.crestamawebsite.utility;
 
+import org.springframework.beans.factory.annotation.Value;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -11,17 +12,20 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class S3Util {
-    private static final String BUCKET = "elasticbeanstalk-us-east-1-739285003742";
-    private static final String accessKey = "AKIA2YIGR5XPN4X656J5";
-    private static final String secretAccessKey = "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";
-    public static final String imageFolderURL =
-            "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/gallery-photos/";
+    @Value("${s3.bucket}")
+    private static final String BUCKET = "";
 
-    public static final String sectionImageFolderURL =
-            "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/section-images/";
+    @Value("${s3.access.key}")
+    private static final String accessKey = "";
 
-    public static final String reportFolderURL =
-            "https://elasticbeanstalk-us-east-1-739285003742.s3.amazonaws.com/sales-reports/";
+    @Value("${s3.secret.access.key}")
+    private static final String secretAccessKey = "";
+
+    @Value("${s3.image.folder}")
+    public static final String imageFolderURL = "";
+
+    @Value("${s3.section.image.folder}")
+    public static final String sectionImageFolderURL = "";
 
     private static final S3Client s3Client = S3Client.builder().credentialsProvider(
                         () -> AwsBasicCredentials.create(accessKey, secretAccessKey)

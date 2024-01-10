@@ -32,6 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-### Gallery and Sales Reports ###
-gallery-photos
-sales-reports
+### Application Properties ###
+!**/src/main/resources/application.properties
