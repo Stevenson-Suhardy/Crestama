@@ -44,10 +44,8 @@
         <label for="streetAddress">Street Address</label>
         <input id="streetAddress" type="text" th:field="*{streetAddress}" class="form-control" />
 
-        <label for="cities">City</label>
-        <select id="cities" class="form-control" th:field="*{city}">
-            <option th:each="city: ${cities}" th:text="${city.getCityName()}" th:value="${city.getId()}"></option>
-        </select>
+        <label for="city">City</label>
+        <input id="city" type="text" th:field="*{city}" class="form-control" />
 
         <label for="contactPersonName">Contact Person Name</label>
         <input id="contactPersonName" type="text" th:field="*{contactPersonName}" class="form-control" />

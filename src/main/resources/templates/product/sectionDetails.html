@@ -24,6 +24,7 @@
         <div class="me-auto p-2 bd-highlight"><h2>Section Images for <span th:text="${section.getName()}"></span></h2></div>
         <div class="p-2 bd-highlight">
             <a class="btn btn-primary" th:href="@{/sectionImages/section/{id}/sectionImages/addImage(id=${section.getId()})}">Create</a>
+            <a class="btn btn-info" th:href="@{/products/products}">Back to Product Page</a>
             <a class="btn btn-secondary" th:href="@{/manage}">Back to Manage Page</a>
         </div>
     </div>

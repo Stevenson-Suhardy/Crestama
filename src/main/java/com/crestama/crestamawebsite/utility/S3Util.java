@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class S3Util {
     private static final String BUCKET = "elasticbeanstalk-us-east-1-739285003742";
@@ -81,6 +82,20 @@ public class S3Util {
             DeleteObjectRequest request = DeleteObjectRequest.builder().bucket(BUCKET).key(fileName).build();
 
             s3Client.deleteObject(request);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void deleteSectionImages(ArrayList<ObjectIdentifier> objects) {
+        try {
+            DeleteObjectsRequest request = DeleteObjectsRequest.builder()
+                    .bucket(BUCKET)
+                    .delete(Delete.builder().objects(objects).build())
+                    .build();
+
+            s3Client.deleteObjects(request);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
