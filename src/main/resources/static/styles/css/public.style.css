@@ -1,0 +1,13 @@
+.slider .container {
+    height: 25vh;
+}
+
+.slider .caption {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgba(20,20,20,0.2);
+    height: 35%;
+    color: #fff;
+}
