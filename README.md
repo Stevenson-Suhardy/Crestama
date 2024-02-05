@@ -61,7 +61,10 @@
 ## Project Visuals
 
 Home Page:
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]]
+
+Manage Page:
+[![Product Name Screen Shot][product-screenshot-2]]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -76,16 +79,6 @@ Home Page:
 * MySQL
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -114,6 +107,7 @@ Project Link: [https://github.com/Stevenson-Suhardy/Crestama](https://github.com
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/stevensonsuhardy/
 [product-screenshot]: src/main/resources/static/assets/images/demo-1.png
+[product-screenshot-2]: src/main/resources/static/assets/images/demo-2.png
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
