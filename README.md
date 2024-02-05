@@ -61,10 +61,10 @@
 ## Project Visuals
 
 Home Page:
-[![Product Name Screen Shot][product-screenshot]]
+[product-screenshot]
 
 Manage Page:
-[![Product Name Screen Shot][product-screenshot-2]]
+[product-screenshot-2]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
