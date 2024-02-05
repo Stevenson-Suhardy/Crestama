@@ -69,8 +69,11 @@ Home Page:
 
 ### Built With
 
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* Spring (Java)
+* JavaScript
 * [![JQuery][JQuery.com]][JQuery-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* MySQL
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -87,12 +90,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+- [ ] Admin and Employees can manage texts, pictures, and products the website
+- [ ] Utilizing AWS Services to deploy website
+- [ ] Generate and Download Sales Report for Admin
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
