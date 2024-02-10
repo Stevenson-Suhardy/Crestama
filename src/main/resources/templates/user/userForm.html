@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <form class="form-signin" action="#" th:action="@{/users/save}" th:object="${user}" enctype="multipart/form-data" method="POST">
+    <form class="form-signin" action="#" th:action="@{/users/save}" th:object="${user}" method="POST">
         <!-- Place for messages: error, alert etc ... -->
         <div class="form-group">
             <div class="col-xs-15">
@@ -41,6 +41,7 @@
         </div>
         <ul style="font-size: 14px;">
             <li>Password must be at least 8 characters long.</li>
+            <li>Password must contain at least 1 number.</li>
             <li>Password must contain at least 1 upper case letter.</li>
             <li>Password must have at least 1 special character.</li>
         </ul>
@@ -48,8 +49,8 @@
             <label for="confirmPassword">Confirm Password</label>
             <input id="confirmPassword" type="password" name="confirmPassword" class="form-control" />
             <span class="p-viewer">
-                    <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
-                </span>
+                <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
+            </span>
         </div>
 
         <label for="role">Role</label>

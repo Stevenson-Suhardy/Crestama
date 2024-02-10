@@ -22,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -115,6 +116,7 @@ public class SalesFormController {
     }
 
     @PostMapping("/save")
+    @Transactional
     public String saveForm(@ModelAttribute @Valid SalesReportForm salesReportForm,
                            BindingResult result,
                            HttpServletResponse response, Model model) throws IOException {

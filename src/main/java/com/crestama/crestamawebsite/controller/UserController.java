@@ -55,6 +55,7 @@ public class UserController {
     public String save(@ModelAttribute @Valid User user,
                        BindingResult result,
                        @RequestParam("confirmPassword") String confirmPassword, Model model) {
+        System.out.println(user.getId());
         if (result.hasErrors()) {
             model.addAttribute("roles", roleService.findAll());
 

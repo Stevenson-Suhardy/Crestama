@@ -56,7 +56,7 @@
                     <a class="btn btn-info btn-sm" th:href="@{/users/editUser/{id}(id=${user.getId()})}">
                         Update
                     </a>
-                    <a sec:authorize="hasRole('ADMIN')" th:if="${user.isEnabled() == true && !user.getEmail().equals('admin')}" class="btn btn-danger btn-sm" th:href="@{/users/disableUser/{id}(id=${user.getId()})}"
+                    <a sec:authorize="hasRole('ADMIN')" th:if="${user.isEnabled() == true && !user.getEmail().equals('admin@gmail.com')}" class="btn btn-danger btn-sm" th:href="@{/users/disableUser/{id}(id=${user.getId()})}"
                        onclick="if (!(confirm('Are you sure you want to disable this user?'))) return false"
                     >
                         Disable
