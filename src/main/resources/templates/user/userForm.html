@@ -12,10 +12,11 @@
         <!-- Place for messages: error, alert etc ... -->
         <div class="form-group">
             <div class="col-xs-15">
-                <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors() || confirmError != null}">
+                <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors() || confirmError != null || emailError != null}">
                     <ul>
                         <li th:each="err: ${#fields.allErrors()}" th:text="${err}"></li>
                         <li th:if="${confirmError != null}" th:text="${confirmError}"></li>
+                        <li th:if="${emailError != null}" th:text="${emailError}"></li>
                     </ul>
                 </div>
             </div>

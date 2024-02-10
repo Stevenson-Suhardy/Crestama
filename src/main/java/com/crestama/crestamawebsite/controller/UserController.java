@@ -55,12 +55,19 @@ public class UserController {
     public String save(@ModelAttribute @Valid User user,
                        BindingResult result,
                        @RequestParam("confirmPassword") String confirmPassword, Model model) {
-        System.out.println(user.getId());
         if (result.hasErrors()) {
             model.addAttribute("roles", roleService.findAll());
 
             return "user/userForm";
         }
+
+        if (userService.findByEmail(user.getEmail()) != null) {
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("emailError", "Email Address already exists");
+
+            return "user/userForm";
+        }
+
         if (confirmPassword != null) {
             if (confirmPassword.isEmpty() || confirmPassword.isBlank()) {
                 model.addAttribute("roles", roleService.findAll());

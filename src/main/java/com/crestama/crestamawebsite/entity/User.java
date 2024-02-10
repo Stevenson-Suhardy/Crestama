@@ -24,7 +24,7 @@ public class User {
     @NotNull(message = "Email Address is required.")
     @NotEmpty(message = "Email Address is required.")
     @Email(message = "Email Address is not valid.")
-    @Column(name="email")
+    @Column(name="email", unique = true)
     private String email;
 
     @Pattern(
