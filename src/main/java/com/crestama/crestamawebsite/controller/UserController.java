@@ -47,7 +47,14 @@ public class UserController {
         model.addAttribute("user", userService.findById(id));
         model.addAttribute("roles", roleService.findAll());
 
-        return "user/userForm";
+        return "user/updateUser";
+    }
+
+    @GetMapping("/changePassword/{id}")
+    public String changePassword(Model model, @PathVariable Long id) {
+        model.addAttribute("user", userService.findById(id));
+
+        return "user/changePassword";
     }
 
     @Transactional
@@ -97,6 +104,82 @@ public class UserController {
         user.setEnabled(true);
 
         userService.save(user);
+        return "redirect:/users/users";
+    }
+
+    @Transactional
+    @PostMapping("/update")
+    public String update(@ModelAttribute @Valid User user,
+                         BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("roles", roleService.findAll());
+
+            return "user/updateUser";
+        }
+
+        User tempUser = userService.findById(user.getId());
+        User searchUser = userService.findByEmail(user.getEmail());
+
+        if (searchUser != null) {
+            if (!searchUser.getEmail().equals(tempUser.getEmail())) {
+                model.addAttribute("roles", roleService.findAll());
+                model.addAttribute("emailError", "Email Address already exists");
+
+                return "user/updateUser";
+            }
+        }
+
+        // Set password and enabled status
+        user.setPassword(tempUser.getPassword());
+        user.setEnabled(tempUser.isEnabled());
+
+        userService.save(user);
+
+        return "redirect:/users/users";
+    }
+
+    @Transactional
+    @PostMapping("/updatePassword")
+    public String updatePassword(@ModelAttribute @Valid User user,
+                                 BindingResult result,
+                                 @RequestParam("confirmPassword") String confirmPassword, Model model) {
+        if (result.hasErrors()) {
+            return "user/changePassword";
+        }
+
+        if (confirmPassword != null) {
+            if (confirmPassword.isEmpty() || confirmPassword.isBlank()) {
+                model.addAttribute("roles", roleService.findAll());
+                model.addAttribute("confirmError",
+                        "Confirm New Password is required.");
+
+                return "user/changePassword";
+            }
+            else {
+                if (!user.getPassword().equals(confirmPassword)) {
+                    model.addAttribute("roles", roleService.findAll());
+                    model.addAttribute("confirmError",
+                            "New Password does not match with Confirm New Password");
+
+                    return "user/changePassword";
+                }
+            }
+        }
+        else {
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("confirmError",
+                    "Confirm New Password is required.");
+            return "user/changePassword";
+        }
+
+        String password = user.getPassword();
+
+        // Copy existing data into user and change the password to match new password
+        user = userService.findById(user.getId());
+        user.setPassword(passwordEncoder.encode(password));
+
+        userService.save(user);
+
         return "redirect:/users/users";
     }
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User Form</title>
+  <link href="/styles/css/users/userForm.style.css" rel="stylesheet" />
+  <link href="/styles/bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+<div class="wrapper">
+  <form class="form-signin" action="#" th:action="@{/users/update}" th:object="${user}" method="POST">
+    <!-- Place for messages: error, alert etc ... -->
+    <div class="form-group">
+      <div class="col-xs-15">
+        <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${#fields.hasAnyErrors() || confirmError != null || emailError != null}">
+          <ul>
+            <li th:each="err: ${#fields.allErrors()}" th:text="${err}"></li>
+            <li th:if="${confirmError != null}" th:text="${confirmError}"></li>
+            <li th:if="${emailError != null}" th:text="${emailError}"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <h2 class="form-signin-heading text-center">Add User</h2>
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{enabled}" />
+
+    <label for="firstName">First Name</label>
+    <input id="firstName" type="text" th:field="*{firstName}" class="form-control" />
+
+    <label for="lastName">Last Name</label>
+    <input id="lastName" type="text" th:field="*{lastName}" class="form-control" />
+
+    <label for="email">Email Address</label>
+    <input id="email" type="text" th:field="*{email}" class="form-control" />
+
+    <label for="role">Role</label>
+    <select name="role" id="role" type="text" th:field="*{roles}" class="form-control">
+      <option th:each="role : ${roles}"
+              th:value="${role.getId()}" th:text="${role.getName()}">
+      </option>
+    </select>
+
+    <div class="form-button gap-3 text-center">
+      <button class="btn btn-primary" type="submit">Submit</button>
+      <a class="btn btn-danger" th:href="@{/users/users}">Cancel</a>
+    </div>
+  </form>
+</div>
+<script src="/js/togglePassword.js"></script>
+</body>
+</html>
