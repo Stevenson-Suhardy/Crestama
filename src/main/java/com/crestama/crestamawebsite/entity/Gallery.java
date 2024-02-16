@@ -4,6 +4,7 @@ import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity(name = "gallery")
 public class Gallery {

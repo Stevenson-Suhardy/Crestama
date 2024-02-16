@@ -20,10 +20,12 @@ import java.io.IOException;
 @RequestMapping("/gallery")
 public class GalleryController {
     private GalleryService galleryService;
+    private S3Util s3Util;
 
     @Autowired
-    public GalleryController(GalleryService productService) {
+    public GalleryController(GalleryService productService, S3Util s3Util) {
         this.galleryService = productService;
+        this.s3Util = s3Util;
     }
 
     @GetMapping("/items")
@@ -76,7 +78,7 @@ public class GalleryController {
         String uploadDir = "gallery-photos/" + savedGallery.getId() + "/";
 
         try {
-            S3Util.uploadImage(uploadDir + fileName, multipartFile.getInputStream());
+            s3Util.uploadImage(uploadDir + fileName, multipartFile.getInputStream());
         }
         catch (Exception e) {
             model.addAttribute("imageErr", "There was a problem with the image upload.");
@@ -92,7 +94,7 @@ public class GalleryController {
         try {
             Gallery item = galleryService.findById(id);
 
-            S3Util.deleteObject("gallery-photos/" + item.getId() + "/" + item.getImageName());
+            s3Util.deleteObject("gallery-photos/" + item.getId() + "/" + item.getImageName());
             galleryService.deleteById(id);
         }
         catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.crestama.crestamawebsite.utility;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -11,30 +12,31 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.*;
 import java.util.ArrayList;
 
+@Component
 public class S3Util {
     @Value("${s3.bucket}")
-    private static final String BUCKET = "";
+    private String bucket;
 
     @Value("${s3.access.key}")
-    private static final String accessKey = "";
+    private String accessKey;
 
     @Value("${s3.secret.access.key}")
-    private static final String secretAccessKey = "";
+    private String secretAccessKey;
 
     @Value("${s3.image.folder}")
-    public static final String imageFolderURL = "";
+    public static String imageFolderURL;
 
     @Value("${s3.section.image.folder}")
-    public static final String sectionImageFolderURL = "";
+    public static String sectionImageFolderURL;
 
-    private static final S3Client s3Client = S3Client.builder().credentialsProvider(
-                        () -> AwsBasicCredentials.create(accessKey, secretAccessKey)
+    private final S3Client s3Client = S3Client.builder().credentialsProvider(
+                        () -> AwsBasicCredentials.create(getAccessKey(), getSecretAccessKey())
                 )
-                .region(Region.US_EAST_1).build();
+                .region(Region.AP_SOUTHEAST_3).build();
 
-    public static void uploadImage(String fileName, InputStream inputStream) throws IOException {
+    public void uploadImage(String fileName, InputStream inputStream) throws IOException {
         try {
-            PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName)
+            PutObjectRequest request = PutObjectRequest.builder().bucket(getBucket()).key(fileName)
                     .acl("public-read")
                     .contentType("image/*")
                     .build();
@@ -46,9 +48,9 @@ public class S3Util {
         }
     }
 
-    public static void uploadSectionImage(String fileName, InputStream inputStream) throws IOException {
+    public void uploadSectionImage(String fileName, InputStream inputStream) throws IOException {
         try {
-            PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName)
+            PutObjectRequest request = PutObjectRequest.builder().bucket(getBucket()).key(fileName)
                     .acl("public-read")
                     .contentType("image/*")
                     .build();
@@ -60,9 +62,9 @@ public class S3Util {
         }
     }
 
-    public static void uploadReport(String fileName, ByteArrayOutputStream excel) {
+    public void uploadReport(String fileName, ByteArrayOutputStream excel) {
         try {
-            PutObjectRequest request = PutObjectRequest.builder().bucket(BUCKET).key(fileName).build();
+            PutObjectRequest request = PutObjectRequest.builder().bucket(getBucket()).key(fileName).build();
 
             try (InputStream inputStream = new ByteArrayInputStream(excel.toByteArray())) {
                 s3Client.putObject(request, RequestBody.fromInputStream(inputStream, inputStream.available()));
@@ -73,17 +75,17 @@ public class S3Util {
         }
     }
 
-    public static byte[] downloadReport(String fileName) {
-        GetObjectRequest request = GetObjectRequest.builder().bucket(BUCKET).key(fileName).build();
+    public byte[] downloadReport(String fileName) {
+        GetObjectRequest request = GetObjectRequest.builder().bucket(getBucket()).key(fileName).build();
 
         ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(request);
 
         return objectBytes.asByteArray();
     }
 
-    public static void deleteObject(String fileName) {
+    public void deleteObject(String fileName) {
         try {
-            DeleteObjectRequest request = DeleteObjectRequest.builder().bucket(BUCKET).key(fileName).build();
+            DeleteObjectRequest request = DeleteObjectRequest.builder().bucket(getBucket()).key(fileName).build();
 
             s3Client.deleteObject(request);
         }
@@ -92,10 +94,10 @@ public class S3Util {
         }
     }
 
-    public static void deleteSectionImages(ArrayList<ObjectIdentifier> objects) {
+    public void deleteSectionImages(ArrayList<ObjectIdentifier> objects) {
         try {
             DeleteObjectsRequest request = DeleteObjectsRequest.builder()
-                    .bucket(BUCKET)
+                    .bucket(getBucket())
                     .delete(Delete.builder().objects(objects).build())
                     .build();
 
@@ -104,5 +106,29 @@ public class S3Util {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public String getSecretAccessKey() {
+        return secretAccessKey;
+    }
+
+    // Set static members
+
+    @Value("${s3.image.folder}")
+    public void setImageFolderURL(String imageFolderURL) {
+        S3Util.imageFolderURL = imageFolderURL;
+    }
+
+    @Value("${s3.section.image.folder}")
+    public void setSectionImageFolderURL(String sectionImageFolderURL) {
+        S3Util.sectionImageFolderURL = sectionImageFolderURL;
     }
 }

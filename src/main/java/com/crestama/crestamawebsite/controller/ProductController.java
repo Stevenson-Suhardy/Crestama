@@ -21,10 +21,12 @@ import java.util.Collection;
 @RequestMapping("/products")
 public class ProductController {
     private ProductService productService;
+    private S3Util s3Util;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, S3Util s3Util) {
         this.productService = productService;
+        this.s3Util = s3Util;
     }
 
     @GetMapping("/products")
@@ -75,7 +77,7 @@ public class ProductController {
             }
         }
 
-        S3Util.deleteSectionImages(objects);
+        s3Util.deleteSectionImages(objects);
 
         productService.deleteById(id);
 

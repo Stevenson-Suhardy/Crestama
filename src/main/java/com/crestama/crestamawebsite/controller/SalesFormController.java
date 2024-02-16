@@ -47,19 +47,22 @@ public class SalesFormController {
     private TokenManager tokenManager;
     private UserService userService;
     private SalesFormValidation salesFormValidation;
+    private S3Util s3Util;
     private final int HEADINGS = 15;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy HH:mm");
 
     @Autowired
     public SalesFormController(SalesReportFormService salesReportFormService, CompanyTypeService companyTypeService,
                                ProspectService prospectService, TokenManager tokenManager,
-                               UserService userService, SalesFormValidation salesFormValidation) {
+                               UserService userService, SalesFormValidation salesFormValidation,
+                               S3Util s3Util) {
         this.salesReportFormService = salesReportFormService;
         this.companyTypeService = companyTypeService;
         this.prospectService = prospectService;
         this.tokenManager = tokenManager;
         this.userService = userService;
         this.salesFormValidation = salesFormValidation;
+        this.s3Util = s3Util;
     }
 
     @GetMapping("/salesActivities")
@@ -264,7 +267,7 @@ public class SalesFormController {
             System.out.println(ex.getMessage());
         }
 
-        S3Util.uploadReport("sales-reports/" + fileLocation, outputStream);
+        s3Util.uploadReport("sales-reports/" + fileLocation, outputStream);
 
         model.addAttribute("filePath", "/salesForm/download/" + fileLocation);
 
@@ -273,7 +276,7 @@ public class SalesFormController {
 
     @GetMapping("/download/{fileName}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
-        byte[] data = S3Util.downloadReport("sales-reports/" + fileName);
+        byte[] data = s3Util.downloadReport("sales-reports/" + fileName);
         final ByteArrayResource resource = new ByteArrayResource(data);
 
         return ResponseEntity

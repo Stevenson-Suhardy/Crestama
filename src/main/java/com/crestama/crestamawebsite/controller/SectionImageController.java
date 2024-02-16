@@ -20,11 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class SectionImageController {
     private SectionService sectionService;
     private SectionImageService sectionImageService;
+    private S3Util s3Util;
 
     @Autowired
-    public SectionImageController(SectionService sectionService, SectionImageService sectionImageService) {
+    public SectionImageController(SectionService sectionService, SectionImageService sectionImageService, S3Util s3Util) {
         this.sectionService = sectionService;
         this.sectionImageService = sectionImageService;
+        this.s3Util = s3Util;
     }
 
     @GetMapping("/section/{id}/sectionImages")
@@ -70,7 +72,7 @@ public class SectionImageController {
             String uploadDir = "section-images/" + savedSectionImage.getId() + "/";
 
             try {
-                S3Util.uploadSectionImage(uploadDir + fileName, multipartFile.getInputStream());
+                s3Util.uploadSectionImage(uploadDir + fileName, multipartFile.getInputStream());
             }
             catch (Exception e) {
                 model.addAttribute("imageErr", "There was a problem with the image upload.");
@@ -96,7 +98,7 @@ public class SectionImageController {
         try {
             SectionImage sectionImage = sectionImageService.findById(sectionImageId);
 
-            S3Util.deleteObject("section-images/" + sectionImage.getId() + "/" + sectionImage.getImageName());
+            s3Util.deleteObject("section-images/" + sectionImage.getId() + "/" + sectionImage.getImageName());
             sectionImageService.deleteById(sectionImageId);
         }
         catch (Exception e) {

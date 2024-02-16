@@ -1,7 +1,8 @@
 package com.crestama.crestamawebsite.entity;
-
 import com.crestama.crestamawebsite.utility.S3Util;
 import jakarta.persistence.*;
+
+import static com.crestama.crestamawebsite.utility.S3Util.sectionImageFolderURL;
 
 @Entity(name="section_image")
 public class SectionImage {

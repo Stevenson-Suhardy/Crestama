@@ -20,11 +20,13 @@ import java.util.ArrayList;
 public class SectionController {
     private ProductService productService;
     private SectionService sectionService;
+    private S3Util s3Util;
 
     @Autowired
-    public SectionController(ProductService productService, SectionService sectionService) {
+    public SectionController(ProductService productService, SectionService sectionService, S3Util s3Util) {
         this.productService = productService;
         this.sectionService = sectionService;
+        this.s3Util = s3Util;
     }
 
     @GetMapping("/product/{id}/sections")
@@ -78,7 +80,7 @@ public class SectionController {
                     .build());
         }
 
-        S3Util.deleteSectionImages(objects);
+        s3Util.deleteSectionImages(objects);
 
         sectionService.deleteById(sectionId);
 
