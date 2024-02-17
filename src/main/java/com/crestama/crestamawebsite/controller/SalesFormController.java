@@ -215,7 +215,7 @@ public class SalesFormController {
         String[][] salesReportFormArray = listSalesReportForm.stream().map(s -> new String[]
                 {
                         s.getSubmissionDate().format(formatter),
-                        s.getUser().getId().toString(),
+                        s.getUser().getFirstName() + " " + s.getUser().getLastName(),
                         s.getStartActivityDate().format(formatter),
                         s.getEndActivityDate().format(formatter),
                         s.getActivityType(),
@@ -289,7 +289,7 @@ public class SalesFormController {
     public XSSFSheet formHeadings(XSSFWorkbook workbook) {
         final String[] headings = {
                 "Submission Date",
-                "Kode Sales",
+                "Name Lengkap Sales",
                 "Tanggal & Jam Mulai Aktivitas",
                 "Tanggal & Jam Selesai Aktivitas",
                 "Jenis Aktivitas",
