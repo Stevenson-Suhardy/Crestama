@@ -68,14 +68,18 @@
                 <p th:text="${product.getDescription()}"></p>
                 <div class="tab-container">
                     <ul class="nav nav-tabs nav-tabs-left nav-centered" role="tablist">
-                        <li role="presentation" th:each="section : ${product.getSections()}">
-                            <a th:href="'#' + ${section.getId()}" data-toggle="tab" role="tab" th:text="${section.getName()}">
-
+                        <li th:class="${iStat.index} == 0 ? 'active' : ''" role="presentation" th:each="section, iStat : ${product.getSections()}">
+                            <a th:href="'#' + ${section.getId()}" data-toggle="tab" role="tab"
+                               th:if="${iStat.index} == 0" aria-expanded="true" th:text="${section.getName()}">
+                            </a>
+                            <a th:href="'#' + ${section.getId()}" data-toggle="tab" role="tab"
+                               th:unless="${iStat.index} == 0" th:text="${section.getName()}">
                             </a>
                         </li>
                     </ul>
                     <div id="my_side_tabs" class="tab-content side-tabs side-tabs-left">
-                        <div th:each="section : ${product.getSections()}" class="tab-pane fade in" th:id="${section.getId()}"
+                        <div th:each="section, iStat : ${product.getSections()}"
+                             th:class="${iStat.index} == 0 ? 'tab-pane fade in active' : 'tab-pane fade in'" th:id="${section.getId()}"
                              role="tabpanel">
                             <div class="col-sm-6">
                                 <h3 th:text="${section.getName()}"></h3>
