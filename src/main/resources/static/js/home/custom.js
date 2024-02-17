@@ -7,13 +7,6 @@
       $('.preloader').fadeOut(1000); // set duration in brackets    
     });
 
-
-    //Navigation Section
-    $('.navbar-collapse a').on('click',function(){
-      $(".navbar-collapse").collapse('hide');
-    });
-
-
     // Owl Carousel
     $('.owl-carousel').owlCarousel({
       animateOut: 'fadeOut',
@@ -29,7 +22,7 @@
 
     // SMOOTHSCROLL
     $(function() {
-      $('.navbar-default a, #home a, footer a').on('click', function(event) {
+      $('#home a, footer a').on('click', function(event) {
         var $anchor = $(this);
           $('html, body').stop().animate({
             scrollTop: $($anchor.attr('href')).offset().top - 49
