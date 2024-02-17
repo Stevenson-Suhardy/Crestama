@@ -44,3 +44,13 @@
     color: #fff;
     cursor: pointer;
 }
+
+ul.pagination > li.page-item > a.page-link:hover {
+    background-color: blue;
+    color: white;
+}
+
+ul.pagination > li.page-item > a.page-link.active {
+    background-color: blue;
+    color: white;
+}

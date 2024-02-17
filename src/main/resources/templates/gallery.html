@@ -75,8 +75,13 @@
                         <a class="page-link" th:href="@{/gallery-photos(size=${items.size}, page=${currentPage - 1})}"
                                              th:if="${currentPage > 1}">Previous</a>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" th:each="pageNumber : ${pageNumbers}"
+                    <li class="page-item" th:each="pageNumber, iStat : ${pageNumbers}">
+                        <a th:if="${param.page != null}"
+                           th:class="${param.page[0].equals(pageNumber.toString())} ? 'page-link active' : 'page-link'"
+                           th:href="@{/gallery-photos(size=${items.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                        ></a>
+                        <a th:unless="${param.page != null}"
+                           th:class="${iStat.index} == 0 ? 'page-link active' : 'page-link'"
                            th:href="@{/gallery-photos(size=${items.size}, page=${pageNumber})}" th:text="${pageNumber}"
                         ></a>
                     </li>
