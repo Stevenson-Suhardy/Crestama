@@ -48,6 +48,9 @@ public class SecurityConfig {
                         .requestMatchers("/salesForm/**").hasRole("SALES")
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers("/gallery/**").hasRole("STAFF")
+                        .requestMatchers("/products/**").hasRole("STAFF")
+                        .requestMatchers("/sections/**").hasRole("STAFF")
+                        .requestMatchers("/sectionImages/**").hasRole("STAFF")
                         .requestMatchers("/manage").hasAnyRole("SALES", "STAFF")
                         .anyRequest().permitAll()
         ).formLogin(form ->
