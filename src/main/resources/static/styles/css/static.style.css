@@ -485,7 +485,7 @@ header span i {
 -----------------------------------------*/
 
 #about {
-    background-color: lightgray;
+    background-color: #fcfcfc;
     background-size: cover;
     padding-top: 150px;
     padding-bottom: 150px;
@@ -1070,4 +1070,3 @@ footer a:hover {
     }
 
 }
-
